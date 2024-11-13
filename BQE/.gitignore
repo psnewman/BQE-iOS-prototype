@@ -1,0 +1,25 @@
+# Swift Package Manager
+.build/
+Package.resolved
+
+# Xcode
+DerivedData/
+*.xcworkspace
+*.xcuserdatad
+*.xcuserstate
+*.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad
+*.xcodeproj/xcuserdata/*.xcuserdatad
+*.xcodeproj/xcuserdata/*.xcuserstate
+
+# Logs
+.log
+
+# User-specific files
+*.swp
+*.swo
+
+# Others
+*.DS_Store
+*.idea/
+*.env
+

@@ -1,0 +1,130 @@
+%PDF-1.7
+
+1 0 obj
+  << /Length 2 0 R >>
+stream
+0.750000 0 0.000000 -0.125000 0.750000 1.000000 d1
+
+endstream
+endobj
+
+2 0 obj
+  51
+endobj
+
+3 0 obj
+  [ 0.750000 ]
+endobj
+
+4 0 obj
+  << /Length 5 0 R >>
+stream
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CIDSystemInfo
+<< /Registry (FigmaPDF)
+   /Ordering (FigmaPDF)
+   /Supplement 0
+>> def
+/CMapName /A-B-C def
+/CMapType 2 def
+1 begincodespacerange
+<00> <FF>
+endcodespacerange
+1 beginbfchar
+<00> <F15B>
+endbfchar
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end
+endstream
+endobj
+
+5 0 obj
+  332
+endobj
+
+6 0 obj
+  << /Subtype /Type3
+     /CharProcs << /C0 1 0 R >>
+     /Encoding << /Type /Encoding
+                  /Differences [ 0 /C0 ]
+               >>
+     /Widths 3 0 R
+     /FontBBox [ 0.000000 0.000000 0.000000 0.000000 ]
+     /FontMatrix [ 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 ]
+     /Type /Font
+     /ToUnicode 4 0 R
+     /FirstChar 0
+     /LastChar 0
+     /Resources << >>
+  >>
+endobj
+
+7 0 obj
+  << /Font << /F1 6 0 R >> >>
+endobj
+
+8 0 obj
+  << /Filter /FlateDecode
+     /Length 9 0 R
+  >>
+stream
+x•îπN,1EsÖ√˜<ﬁóîU":¢§$Ñƒ˜s´mW‚ƒ∑è€µ‹Íô›˘”ÁÎ˙t{u™œÓ‘Nû÷ıÆú±€“väVøœÚÎAY„KLéN√∂ ¢-5˝±æ©hJ¬õà«aÍEp3€NîôCÑTlp:ô‰RˆI;g|?ÃÛÇ†U·F…?^‹+h€ÇQ®õwçî≠©ÖJ*∑úßÃ5¥#≈åSóyåêi^*'ÕÿÖ”1 ≥.ƒc(VlÖ"Ókd˝üxˆ$ÃæÖ≠äÕ∏Wlö@∂Ví#lXà«ê«≤«∞Pn–˛@Ê¬PÅË∆öT"π¬–8Tfÿ√j§€KÉﬂ°≈ÜyLìh¶ÂHC;"¥A¨pf0ÈôÏH≠ïé@µ'‡B°f
+SòfB≈B∞ëÂ√ÜE1ôR¥rõÅ’WœlŒ—Ê>É°·ƒ8F~PÁJ7⁄7ﬂÚ¶HPVxÊÒmmÓÕÍ¿"}®îü)!è‡Ãà,]Ây4n0B<Ù”c3D<¿^DÊ∫– …F)F˘@Ω)†ûkÖœÍM›¸È?Ît°
+Ä%o∞ê3˛=»ÑñÉ⁄]:I∞<´{˝ÔÚø~‘Àµ∫XP›Ú¢ç
+endstream
+endobj
+
+9 0 obj
+  476
+endobj
+
+10 0 obj
+  << /Annots []
+     /Type /Page
+     /MediaBox [ 0.000000 0.000000 20.000000 20.000000 ]
+     /Resources 7 0 R
+     /Contents 8 0 R
+     /Parent 11 0 R
+  >>
+endobj
+
+11 0 obj
+  << /Kids [ 10 0 R ]
+     /Count 1
+     /Type /Pages
+  >>
+endobj
+
+12 0 obj
+  << /Pages 11 0 R
+     /Type /Catalog
+  >>
+endobj
+
+xref
+0 13
+0000000000 65535 f
+0000000010 00000 n
+0000000117 00000 n
+0000000138 00000 n
+0000000169 00000 n
+0000000557 00000 n
+0000000579 00000 n
+0000000991 00000 n
+0000001037 00000 n
+0000001597 00000 n
+0000001619 00000 n
+0000001794 00000 n
+0000001870 00000 n
+trailer
+<< /ID [ (some) (id) ]
+   /Root 12 0 R
+   /Size 13
+>>
+startxref
+1931
+%%EOF
