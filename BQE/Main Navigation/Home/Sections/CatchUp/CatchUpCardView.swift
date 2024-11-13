@@ -12,6 +12,7 @@ struct CatchUpCardView: View {
     @State private var offset = CGSize.zero
     @State private var isDragging = false
     @State private var dragThreshold: CGFloat = 0
+    @State private var dragResistance: CGFloat = 0.5
 
     // MARK: - Body
     var body: some View {
@@ -178,7 +179,8 @@ struct CatchUpCardView: View {
         DragGesture()
             .onChanged { gesture in
                 isDragging = true
-                offset = gesture.translation
+                let resistedDrag = gesture.translation.width * dragResistance
+                offset = CGSize(width: resistedDrag, height: 0)
             }
             .onEnded { _ in
                 handleDragEnd()

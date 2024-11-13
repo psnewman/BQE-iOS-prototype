@@ -44,19 +44,6 @@ struct CatchUpSectionView: View {
             FilterEntryType(selectedEntryType: $selectedExpense)
 
             VStack(spacing: 16) {
-                HStack(alignment: .center) {
-                    Text("\(viewModel.expensesLeft) left")
-                        .bodyStyle()
-                        .foregroundColor(.typographyPrimary)
-                    Spacer()
-                    Button("Undo") {
-                        // Add undo functionality
-                    }
-                    .bodyStyle()
-                    .foregroundColor(.masterPrimary)
-                }
-                .frame(maxWidth: .infinity)
-
                 ZStack {
                     if viewModel.cards.isEmpty {
                         Button("Repeat") {
@@ -89,6 +76,42 @@ struct CatchUpSectionView: View {
                     }
                 }
                 .frame(height: 400)
+                
+//                Stack toolbar
+                HStack {
+                    Button(action: {
+                        // Add undo functionality
+                    }) {
+                        HStack(spacing: 4) {
+                            FAText(iconName: "arrow-rotate-left", size: 16)
+                            Text("Undo")
+                        }
+                    }
+                    .bodyStyle()
+                    .foregroundColor(.masterPrimary)
+
+                    Spacer()
+                    
+                    Text("\(viewModel.expensesLeft) left")
+                        .bodyStyle()
+                        .foregroundColor(.typographyPrimary)
+
+                    Spacer()
+                    
+                    Button(action: {
+                        // Add undo functionality
+                    }) {
+                        HStack(spacing: 4) {
+                            FAText(iconName: "forward", size: 16)
+                            Text("Skip")
+                        }
+                    }
+                    .bodyStyle()
+                    .foregroundColor(.masterPrimary)
+                }
+                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                
             }
         }
         .onAppear {
