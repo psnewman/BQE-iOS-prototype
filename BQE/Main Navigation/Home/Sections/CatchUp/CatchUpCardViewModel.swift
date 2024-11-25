@@ -7,7 +7,7 @@
 
 
 import SwiftUI
-import SVGView
+
 import FASwiftUI
 
 class CatchUpCardViewModel: ObservableObject {

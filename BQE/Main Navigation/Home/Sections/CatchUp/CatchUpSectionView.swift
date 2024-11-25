@@ -1,11 +1,10 @@
 import SwiftUI
-import SVGView
 import FASwiftUI
 
 enum EntryType: String, CaseIterable {
-    case timeAndExpense = "Time & Expense"
-    case time = "Time"
-    case expense = "Expense"
+    case timeAndExpense = "Time & Expenses"
+    case time = "Time Entries"
+    case expense = "Expense Entries"
     
     var icon: String {
         switch self {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// RecentItemView remains the same
 struct RecentItemView: View {
     @State private var icon: String
     @State private var name: String
@@ -57,7 +56,6 @@ struct RecentItemView: View {
     }
 }
 
-// RecentItemsListView remains mostly the same, but renamed to RecentItemsView
 struct RecentItemsSectionView: View {
     let items = ["20-08 - SPOTLIGHT: Construction Documents", "20-04 - BRADFORD: Design Development", "Client Meeting"]
     let types = ["Time Card", "Time Entry", "Timer"]
@@ -77,5 +75,3 @@ struct RecentItemsSectionView: View {
 #Preview {
     RecentItemsSectionView()
 }
-
-// End of file. No additional code.

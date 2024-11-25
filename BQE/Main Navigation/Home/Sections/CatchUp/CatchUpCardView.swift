@@ -1,5 +1,5 @@
 import SwiftUI
-import SVGView
+
 import FASwiftUI
 
 struct CatchUpCardView: View {

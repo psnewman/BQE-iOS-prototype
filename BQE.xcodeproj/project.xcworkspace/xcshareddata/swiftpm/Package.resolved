@@ -1,22 +1,13 @@
 {
-  "originHash" : "a9bd334efd87feaccafe4316c624e9d30adb4595b885f897297178475c5c62d3",
+  "originHash" : "20ba1d3e6b67027f0289fed83d3e66f57a55d22c8c2bd8c5a0cb40a6c119defd",
   "pins" : [
     {
       "identity" : "faswiftui",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattmaddux/FASwiftUI.git",
+      "location" : "https://github.com/mattmaddux/FASwiftUI",
       "state" : {
         "revision" : "f7e69239337e06ebb2c298d04ad86b7b2279e671",
         "version" : "2.1.0"
-      }
-    },
-    {
-      "identity" : "svgview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/exyte/SVGView.git",
-      "state" : {
-        "revision" : "6465962facdd25cb96eaebc35603afa2f15d2c0d",
-        "version" : "1.0.6"
       }
     }
   ],
