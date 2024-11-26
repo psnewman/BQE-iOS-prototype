@@ -1,13 +1,5 @@
-//
-// FavoritesView.swift
-// BQE
-//
-// Created by Paul Newman on 24.04.2024.
-//
-
 import SwiftUI
 
-// Restored full implementation of FavoriteItemView
 struct FavoriteItemView: View {
     @State private var icon: String
     @State private var label: String

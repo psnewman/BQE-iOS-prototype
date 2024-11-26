@@ -21,7 +21,7 @@ struct HomeView: View {
                     MyTimersSectionView()
                 }
                 HomeSectionView(label: "Catch Up") {
-                    CatchUpSectionView()
+                    CardStackView()
                 }
                 HomeSectionView(label: "Weekly Timecard") {
                     TimeCardSectionView()

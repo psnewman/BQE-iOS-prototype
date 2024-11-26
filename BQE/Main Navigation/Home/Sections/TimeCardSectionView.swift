@@ -1,10 +1,3 @@
-//
-//  TimeCardSectionView.swift
-//  BQE
-//
-//  Created by Paul Newman on 11/10/24.
-//
-
 import SwiftUI
 
 struct TimeCardSectionView: View {
@@ -44,12 +37,12 @@ struct TimeCardDayView: View {
                 Text(day)
                     .font(Font.custom("Inter", size: 10))
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.typographyPrimary)
+                    .foregroundColor(Color.typographySecondary)
                 
                 Text(date)
                     .captionStyle()
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.typographyPrimary)
+                    .foregroundColor(Color.typographyPrimary)
             }
             Divider().background(.divider)
                 .padding(.horizontal, 16)

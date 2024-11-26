@@ -1,10 +1,3 @@
-//
-//  RecentItemsView.swift
-//  BQE
-//
-//  Created by Paul Newman on 23.04.2024.
-//
-
 import SwiftUI
 
 struct RecentItemView: View {

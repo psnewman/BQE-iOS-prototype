@@ -1,10 +1,3 @@
-//
-//  EventsSectionView.swift
-//  BQE
-//
-//  Created by Paul Newman on 11/10/24.
-//
-
 import SwiftUI
 
 struct Event: Identifiable {
