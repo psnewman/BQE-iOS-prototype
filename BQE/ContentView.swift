@@ -1,94 +1,115 @@
-import SwiftUI
 import FASwiftUI
-
+import SwiftUI
 
 struct ContentView: View {
     @State private var selectedOption = "My Company 1"
     @State private var isShowingSheet = false
-    
-    
+    @State private var selectedTab = 0
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView {
-                // Home tab with toolbar and no title
+            TabView(selection: $selectedTab) {
                 NavigationStack {
                     HomeView(selectedOption: $selectedOption, isShowingSheet: $isShowingSheet)
+                        .bqeBackground()
                         .toolbar {
-                            // Toolbar only on Home tab
                             ToolbarItem(placement: .topBarLeading) {
                                 DropdownView(selectedOption: $selectedOption, isShowingSheet: $isShowingSheet)
                             }
                         }
-                        .navigationTitle("") // No title for Home tab
+                        .navigationTitle("")
                 }
+                .tint(.white)
+                .tag(0)
                 .tabItem {
-                    Label {
-                        Text("Home")
-                    } icon: {
-                        Image("home")
-                    }
+                    Label("Home", image: selectedTab == 0 ? "homeActive" : "home")
                 }
                 
-                // Other tabs with navigation titles
                 NavigationStack {
-                    FavoritesSectionView()
+                    FavoritesTabView()
+                        .bqeBackground()
                         .navigationTitle("Favorites")
                         .navigationBarTitleDisplayMode(.inline)
                 }
+                .tint(.white)
+                .tag(1)
                 .tabItem {
-                    Label{
-                        Text("Favorites")
-                    } icon: {
-                        Image("favorites")
-                    }
+                    Label("Favorites", image: selectedTab == 1 ? "favoritesActive" : "favorites")
                 }
                 
                 NavigationStack {
                     Text("Create screen")
+                        .bqeBackground()
                         .navigationTitle("Create")
                         .navigationBarTitleDisplayMode(.inline)
                 }
+                .tint(.white)
+                .tag(2)
                 .tabItem {
-                    Label{
-                        Text("Create")
-                    } icon: {
-                        Image("create")
-                    }
+                    Label("Create", image: selectedTab == 2 ? "createActive" : "create")
                 }
                 
                 NavigationStack {
                     Text("Search screen")
+                        .bqeBackground()
                         .navigationTitle("Search")
                         .navigationBarTitleDisplayMode(.inline)
                 }
+                .tint(.white)
+                .tag(3)
                 .tabItem {
-                    Label{
-                        Text("Search")
-                    } icon: {
-                        Image("search")
-                    }
+                    Label("Search", image: selectedTab == 3 ? "searchActive" : "search")
                 }
                 
                 NavigationStack {
                     MenuView()
+                        .bqeBackground()
                         .navigationTitle("Menu")
                         .navigationBarTitleDisplayMode(.inline)
                 }
+                .tint(.white)
+                .tag(4)
                 .tabItem {
-                    Label {
-                        Text("Menu")
-                    } icon: {
-                        Image("menu")
-                    }
+                    Label("Menu", image: selectedTab == 4 ? "menuActive" : "menu")
                 }
             }
             .background(.masterBackground)
             .tint(.masterPrimary)
             
-            // Add this divider at the top of the tab bar
             Divider().background(.divider)
-                .padding(.bottom, 49) // Adjust this value to match your tab bar height
+                .padding(.bottom, 49)
         }
     }
+}
+
+struct BQEBackgroundModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            Color.masterBackground
+                .ignoresSafeArea()
+            VStack {
+                Rectangle()
+                    .frame(height: 0)
+                    .background(LinearGradient(
+                        stops: [
+                            Gradient.Stop(color: Color(red: 0.02, green: 0.08, blue: 0.23), location: 0.00),
+                            Gradient.Stop(color: Color(red: 0.35, green: 0.23, blue: 0.25), location: 1.00),
+                        ],
+                        startPoint: UnitPoint(x: 0, y: 0),
+                        endPoint: UnitPoint(x: 1, y: 1)
+                    ))
+                content
+            }
+        }
+    }
+}
+
+extension View {
+    func bqeBackground() -> some View {
+        modifier(BQEBackgroundModifier())
+    }
+}
+
+#Preview {
+    ContentView()
 }

@@ -22,10 +22,16 @@ enum EntryType: String, CaseIterable {
   }
 }
 
-struct ExpenseCard: Identifiable {
-  let id = UUID()
-  let expenseType: EntryType
-  let expenseName: String
+enum BillableStatus {
+  case nonBillable
+  case billable
+  case billed
+}
+
+struct EntryItem: Identifiable {
+  let id: UUID = UUID()
+  let entryType: EntryType
+  let entryName: String
   let date: String
   let resource: String
   let project: String
@@ -33,19 +39,20 @@ struct ExpenseCard: Identifiable {
   let units: String
   let costRate: String
   let costAmount: String
+  let billable: BillableStatus
 }
 
 class CardViewModel: ObservableObject {
-  @Published var cards: [ExpenseCard] = []
-  @Published var approvedCards: [ExpenseCard] = []
-  @Published var rejectedCards: [ExpenseCard] = []
+  @Published var cards: [EntryItem] = []
+  @Published var approvedCards: [EntryItem] = []
+  @Published var rejectedCards: [EntryItem] = []
   @Published var expensesLeft: Int = 10
 
   private let staticData:
     (
       expenseNames: [String], expenseTypes: [EntryType], dates: [String], resources: [String],
       projects: [String], clients: [String], units: [String], costRates: [String],
-      costAmounts: [String]
+      costAmounts: [String], billables: [BillableStatus]
     ) = (
       expenseNames: [
         "Taxi trip", "Business lunch", "Office supplies", "Client meeting",
@@ -70,21 +77,23 @@ class CardViewModel: ObservableObject {
       ],
       units: ["1.00", "2.50", "3.75", "4.25", "5.00"],
       costRates: ["$33.97", "$45.00", "$55.50", "$65.25", "$75.80"],
-      costAmounts: ["$33.97", "$112.50", "$208.13", "$277.31", "$379.00"]
+      costAmounts: ["$33.97", "$112.50", "$208.13", "$277.31", "$379.00"],
+      billables: [.nonBillable, .billable, .billed]
     )
 
   func loadCards() {
     cards = (0..<10).map { index in
-      ExpenseCard(
-        expenseType: staticData.expenseTypes[index % staticData.expenseTypes.count],
-        expenseName: staticData.expenseNames[index],
+      EntryItem(
+        entryType: staticData.expenseTypes[index % staticData.expenseTypes.count],
+        entryName: staticData.expenseNames[index],
         date: staticData.dates[index % staticData.dates.count],
         resource: staticData.resources[index % staticData.resources.count],
         project: staticData.projects[index % staticData.projects.count],
         client: staticData.clients[index % staticData.clients.count],
         units: staticData.units[index % staticData.units.count],
         costRate: staticData.costRates[index % staticData.costRates.count],
-        costAmount: staticData.costAmounts[index % staticData.costAmounts.count]
+        costAmount: staticData.costAmounts[index % staticData.costAmounts.count],
+        billable: staticData.billables[index % staticData.billables.count]
       )
     }
     expensesLeft = cards.count
@@ -93,12 +102,20 @@ class CardViewModel: ObservableObject {
   func removeTopCard(isApproved: Bool) {
     guard !cards.isEmpty else { return }
 
-    let removedCard: ExpenseCard = cards.removeFirst()
+    let removedCard: EntryItem = cards.removeFirst()
     if isApproved {
       approvedCards.append(removedCard)
     } else {
       rejectedCards.append(removedCard)
     }
+    expensesLeft -= 1
+  }
+
+  func skipTopCard() {
+    guard !cards.isEmpty else { return }
+    
+    let removedCard: EntryItem = cards.removeFirst()
+    rejectedCards.append(removedCard)
     expensesLeft -= 1
   }
 

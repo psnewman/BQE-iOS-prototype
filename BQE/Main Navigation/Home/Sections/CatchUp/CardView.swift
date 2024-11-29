@@ -3,25 +3,29 @@ import SwiftUI
 
 struct CardView: View {
   // MARK: - Properties
-  private let card: ExpenseCard
+  private let card: EntryItem
   private let isTopCard: Bool
   private let isNextCard: Bool
   private let onRemove: (Bool) -> Void
+  @Binding var skipAnimation: Bool
 
   @State private var offset: CGSize = CGSize.zero
   @State private var isDragging: Bool = false
   @State private var dragThreshold: CGFloat = 0
+  @State private var isSkipping: Bool = false
 
   // MARK: - Initialization
   init(
-    card: ExpenseCard,
+    card: EntryItem,
     isTopCard: Bool,
     isNextCard: Bool,
+    skipAnimation: Binding<Bool> = .constant(false),
     onRemove: @escaping (Bool) -> Void
   ) {
     self.card = card
     self.isTopCard = isTopCard
     self.isNextCard = isNextCard
+    self._skipAnimation = skipAnimation
     self.onRemove = onRemove
   }
 
@@ -31,14 +35,31 @@ struct CardView: View {
       cardContent
         .modifier(CardStyle(offset: offset, dragThreshold: dragThreshold))
         .scaleEffect(scaleEffect)
+        .animation(.spring(response: 0.3), value: scaleEffect)
         .offset(y: verticalOffset)
         .offset(x: offset.width, y: offset.height)
         .rotationEffect(.degrees(Double(offset.width / CardAnimationConfig.rotationFactor)))
         .opacity(isTopCard || isNextCard ? 1 : 0)
-        .gesture(isTopCard ? dragGesture : nil)
+        .gesture(isTopCard && !isSkipping ? dragGesture : nil)
+        .onChange(of: isTopCard) { oldValue, newValue in
+          if !newValue {
+            isSkipping = false
+            offset = .zero
+          }
+        }
+        .onChange(of: skipAnimation) { _, newValue in
+          if newValue && isTopCard {
+            skip()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+              skipAnimation = false
+              onRemove(false)
+            }
+          }
+        }
         .onAppear {
           dragThreshold = geometry.size.width * CardAnimationConfig.dragThresholdMultiplier
         }
+        .frame(width: geometry.size.width)
     }
   }
 }
@@ -49,6 +70,7 @@ extension CardView {
     ZStack {
       mainContent
         .padding(16)
+        .fixedSize(horizontal: false, vertical: true)
 
       CardOverlayView(
         offset: offset,
@@ -56,6 +78,7 @@ extension CardView {
         isTopCard: isTopCard
       )
     }
+    .frame(maxWidth: .infinity)
   }
 
   fileprivate var mainContent: some View {
@@ -64,15 +87,15 @@ extension CardView {
       detailsView
       footerView
     }
-    // .padding(16)
   }
 
   fileprivate var headerView: some View {
     VStack(spacing: 8) {
-      ExpenseHeaderView(
-        expenseType: card.expenseType,
-        expenseName: card.expenseName,
-        costAmount: card.costAmount
+      EntryHeaderView(
+        entryType: card.entryType,
+        entryName: card.entryName,
+        costAmount: card.costAmount,
+        billable: card.billable
       )
       Divider()
         .background(.divider)
@@ -81,8 +104,8 @@ extension CardView {
 
   fileprivate var detailsView: some View {
     VStack(alignment: .leading, spacing: 16) {
-      ForEach(ExpenseDetail.allCases) { detail in
-        ExpenseRowView(
+      ForEach(EntryDetail.allCases) { detail in
+        EntryRowView(
           label: detail.label,
           value: detail.value(for: card),
           layout: .horizontal
@@ -97,8 +120,8 @@ extension CardView {
       Divider()
         .background(.divider)
       HStack(spacing: 16) {
-        ForEach(ExpenseSummary.allCases) { summary in
-          ExpenseRowView(
+        ForEach(EntrySummary.allCases) { summary in
+          EntryRowView(
             label: summary.label,
             value: summary.value(for: card),
             layout: .vertical
@@ -159,11 +182,30 @@ extension CardView {
       isDragging = false
     }
   }
+
+  func skip() {
+    isSkipping = true
+    withAnimation(
+      .easeInOut(duration: 0.6)
+    ) {
+      offset = CGSize(
+        width: -CardAnimationConfig.swipeOutDistance / 2,
+        height: -100
+      )
+    }
+  }
+}
+
+// MARK: - Helper Methods
+extension CardView {
+  public func getCardId() -> UUID {
+    return card.id
+  }
 }
 
 // MARK: - Supporting Types
 extension CardView {
-  fileprivate enum ExpenseDetail: CaseIterable, Identifiable {
+  fileprivate enum EntryDetail: CaseIterable, Identifiable {
     case date
     case resource
     case project
@@ -182,18 +224,18 @@ extension CardView {
       }
     }
 
-    func value(for card: ExpenseCard) -> String {
+    func value(for card: EntryItem) -> String {
       switch self {
       case .date: return card.date
       case .resource: return card.resource
       case .project: return card.project
       case .client: return card.client
-      case .description: return card.expenseName
+      case .description: return card.entryName
       }
     }
   }
 
-  fileprivate enum ExpenseSummary: CaseIterable, Identifiable {
+  fileprivate enum EntrySummary: CaseIterable, Identifiable {
     case units
     case costRate
     case costAmount
@@ -208,7 +250,7 @@ extension CardView {
       }
     }
 
-    func value(for card: ExpenseCard) -> String {
+    func value(for card: EntryItem) -> String {
       switch self {
       case .units: return card.units
       case .costRate: return card.costRate
@@ -216,4 +258,25 @@ extension CardView {
       }
     }
   }
+}
+
+#Preview {
+  CardView(
+    card: EntryItem(
+      entryType: .expense,
+      entryName: "Expense Entry",
+      date: "2023-09-01",
+      resource: "John Doe",
+      project: "Project A",
+      client: "Client B",
+      units: "2",
+      costRate: "$50",
+      costAmount: "$100",
+      billable: .billable
+    ),
+    isTopCard: true,
+    isNextCard: false,
+    skipAnimation: .constant(false),
+    onRemove: { _ in }
+  )
 }

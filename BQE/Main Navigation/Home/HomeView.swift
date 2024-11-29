@@ -10,6 +10,7 @@ struct HomeView: View {
         ScrollView {
 
                 Spacer().frame(height: 8)
+                .background(.masterPrimary)
 
                 HomeSectionView(label: "Favorites") {
                     FavoritesSectionView()
@@ -76,7 +77,7 @@ struct DropdownView: View {
                             .frame(minWidth: 120, maxWidth: 220, alignment: .leading)
                         Spacer()
                         FAText(iconName: "chevron-down", size: 12)
-                            .foregroundColor(.typographySecondary)
+                            .foregroundColor(.black)
                     }
                     .padding(.horizontal, 12)
                 }

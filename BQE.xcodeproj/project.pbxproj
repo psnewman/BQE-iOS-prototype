@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4F208CB02C8858A1004620BB /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F208CAF2C8858A0004620BB /* Colors.xcassets */; };
-		4F3D4F0D2BE5083A00BCF14F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4F0C2BE5083A00BCF14F /* SettingsView.swift */; };
 		4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */; };
 		4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */; };
 		4F522B4F2BD83CCF00CC05F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		4F208CAF2C8858A0004620BB /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		4F3D4F0C2BE5083A00BCF14F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4F522B472BD83CCD00CC05F7 /* BQE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BQE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BQEApp.swift; sourceTree = "<group>"; };
 		4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -36,6 +34,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4F1A1B252CE0CD7900A024F8 /* Helpers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Helpers; sourceTree = "<group>"; };
 		4F1A1B262CE0CD9F00A024F8 /* Main Navigation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Main Navigation"; sourceTree = "<group>"; };
+		4F5D9B722CF91F4000948E40 /* TimeEntry */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TimeEntry; sourceTree = "<group>"; };
 		4F5F67262CDD68BD00C06AD8 /* FA files */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "FA files"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -73,10 +72,10 @@
 				4F5F672F2CDD6C4C00C06AD8 /* Info.plist */,
 				4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */,
 				4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */,
+				4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */,
+				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				4F1A1B252CE0CD7900A024F8 /* Helpers */,
-				4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */,
-				4F3D4F0C2BE5083A00BCF14F /* SettingsView.swift */,
 				4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */,
 				4F208CAF2C8858A0004620BB /* Colors.xcassets */,
 				4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */,
@@ -113,6 +112,7 @@
 			fileSystemSynchronizedGroups = (
 				4F1A1B252CE0CD7900A024F8 /* Helpers */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
+				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F5F67262CDD68BD00C06AD8 /* FA files */,
 			);
 			name = BQE;
@@ -178,7 +178,6 @@
 			files = (
 				4FADBB742C814A1D00C3CD70 /* BottomSheetView.swift in Sources */,
 				4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */,
-				4F3D4F0D2BE5083A00BCF14F /* SettingsView.swift in Sources */,
 				4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
