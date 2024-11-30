@@ -108,7 +108,8 @@ extension CardView {
         EntryRowView(
           label: detail.label,
           value: detail.value(for: card),
-          layout: .horizontal
+          layout: .horizontal,
+          isDescription: detail == .description
         )
       }
     }
@@ -116,7 +117,7 @@ extension CardView {
 
   fileprivate var footerView: some View {
     Group {
-      Spacer()
+      // Spacer()
       Divider()
         .background(.divider)
       HStack(spacing: 16) {
@@ -124,7 +125,8 @@ extension CardView {
           EntryRowView(
             label: summary.label,
             value: summary.value(for: card),
-            layout: .vertical
+            layout: .vertical,
+            isDescription: false
           )
           if summary != .costAmount {
             Spacer()
@@ -230,7 +232,7 @@ extension CardView {
       case .resource: return card.resource
       case .project: return card.project
       case .client: return card.client
-      case .description: return card.entryName
+      case .description: return card.description
       }
     }
   }
@@ -264,14 +266,16 @@ extension CardView {
   CardView(
     card: EntryItem(
       entryType: .expense,
-      entryName: "Expense Entry",
-      date: "2023-09-01",
-      resource: "John Doe",
-      project: "Project A",
-      client: "Client B",
-      units: "2",
-      costRate: "$50",
-      costAmount: "$100",
+      entryName: "Business lunch",
+      description:
+        "Business lunch with client team to discuss project requirements and timeline. Total of 4 attendees including project manager and lead architect.",
+      date: "8/11/2023",
+      resource: "Emma Thompson",
+      project: "01-01 - SKYTOWER: Project Management",
+      client: "SKYTOWER Corp",
+      units: "1.00",
+      costRate: "$45.00",
+      costAmount: "$45.00",
       billable: .billable
     ),
     isTopCard: true,

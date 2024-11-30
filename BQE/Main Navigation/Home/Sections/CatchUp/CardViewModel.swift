@@ -32,6 +32,7 @@ struct EntryItem: Identifiable {
   let id: UUID = UUID()
   let entryType: EntryType
   let entryName: String
+  let description: String
   let date: String
   let resource: String
   let project: String
@@ -50,7 +51,8 @@ class CardViewModel: ObservableObject {
 
   private let staticData:
     (
-      expenseNames: [String], expenseTypes: [EntryType], dates: [String], resources: [String],
+      expenseNames: [String], descriptions: [String], expenseTypes: [EntryType], dates: [String],
+      resources: [String],
       projects: [String], clients: [String], units: [String], costRates: [String],
       costAmounts: [String], billables: [BillableStatus]
     ) = (
@@ -58,6 +60,18 @@ class CardViewModel: ObservableObject {
         "Taxi trip", "Business lunch", "Office supplies", "Client meeting",
         "Conference registration", "Hotel stay", "Flight ticket",
         "Software subscription", "Training course", "Equipment rental",
+      ],
+      descriptions: [
+        "Taxi ride from airport to client office for project kickoff meeting. Including waiting time and toll fees.",
+        "Business lunch with client team to discuss project requirements and timeline. Total of 4 attendees.",
+        "Purchase of office supplies including notebooks, pens, and printer paper for the project team.",
+        "Client meeting at downtown office to review project progress and discuss next steps.",
+        "Registration for annual industry conference including workshop sessions and networking events.",
+        "Two nights stay at Marriott hotel for client site visit including parking and internet.",
+        "Round-trip flight ticket to New York for client presentation and project review.",
+        "Annual subscription renewal for project management software license.",
+        "Professional development course on new industry regulations and compliance.",
+        "Rental of presentation equipment for client workshop including projector and sound system.",
       ],
       expenseTypes: [EntryType.expense, .time, .timeAndExpense],
       dates: ["8/11/2023", "8/12/2023", "8/13/2023", "8/14/2023", "8/15/2023"],
@@ -86,6 +100,7 @@ class CardViewModel: ObservableObject {
       EntryItem(
         entryType: staticData.expenseTypes[index % staticData.expenseTypes.count],
         entryName: staticData.expenseNames[index],
+        description: staticData.descriptions[index],
         date: staticData.dates[index % staticData.dates.count],
         resource: staticData.resources[index % staticData.resources.count],
         project: staticData.projects[index % staticData.projects.count],
@@ -113,7 +128,7 @@ class CardViewModel: ObservableObject {
 
   func skipTopCard() {
     guard !cards.isEmpty else { return }
-    
+
     let removedCard: EntryItem = cards.removeFirst()
     rejectedCards.append(removedCard)
     expensesLeft -= 1

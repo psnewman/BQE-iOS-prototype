@@ -7,7 +7,7 @@ struct CardStackView: View {
   @State private var skipAnimation: Bool = false
 
   var body: some View {
-    VStack(spacing: 24) {
+    VStack(spacing: 16) {
       FilterEntryType(selectedEntryType: $selectedEntryType)
 
       VStack(spacing: 16) {
@@ -47,7 +47,7 @@ struct CardStackView: View {
             }
           }
         }
-        .frame(height: 348)
+        .frame(idealHeight: 320)
 
         //                Stack toolbar
         HStack {
@@ -83,7 +83,6 @@ struct CardStackView: View {
           .bodyStyle()
           .foregroundColor(.masterPrimary)
         }
-        .padding(.vertical, 16)
         .frame(maxWidth: .infinity)
 
       }

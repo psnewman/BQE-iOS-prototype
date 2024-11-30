@@ -9,6 +9,7 @@ struct EntryRowView: View {
   let label: String
   let value: String
   let layout: EntryRowLayout
+  let isDescription: Bool
 
   var body: some View {
     Group {
@@ -24,6 +25,8 @@ struct EntryRowView: View {
             .foregroundColor(.typographyPrimary)
             .bodyStyle()
             .frame(maxWidth: .infinity, alignment: .leading)
+            .lineLimit(isDescription ? 2 : 1, reservesSpace: isDescription)
+            .truncationMode(.tail)
         }
       case .vertical:
         VStack(alignment: .leading, spacing: 4) {
