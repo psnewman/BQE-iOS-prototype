@@ -5,6 +5,9 @@ struct CardStackView: View {
   @StateObject private var viewModel: CardViewModel = CardViewModel()
   @State private var selectedEntryType: EntryType = .expense
   @State private var skipAnimation: Bool = false
+  @State private var showUndoButton: Bool = false
+  @State private var undoCounter: Int = 5
+  @State private var undoTimer: Timer? = nil
 
   var body: some View {
     VStack(spacing: 16) {
@@ -37,6 +40,18 @@ struct CardStackView: View {
                 skipAnimation: isTopCard ? $skipAnimation : .constant(false),
                 onRemove: { isApproved in
                   viewModel.removeTopCard(isApproved: isApproved)
+                  showUndoButton = true
+                  undoCounter = 5
+                  undoTimer?.invalidate()
+                  undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                    if undoCounter > 1 {
+                      undoCounter -= 1
+                    } else {
+                      undoCounter = 5
+                      showUndoButton = false
+                      timer.invalidate()
+                    }
+                  }
                 }
               )
               .id(card.id)
@@ -55,36 +70,15 @@ struct CardStackView: View {
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Button(action: {
-                // Add undo functionality
-            }) {
-                HStack(spacing: 8) {
-                    HStack(spacing: 4) {
-                        FAText(iconName: "arrow-rotate-left", size: 12)
-                            .foregroundColor(.masterPrimary)
-                        
-                        Text("Undo")
-                            .bodySmallStyle()
-                            .foregroundColor(.masterPrimary)
-                    }
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .stroke(.masterPrimary, lineWidth: 1)
-                            .frame(width: 16, height: 16)
-                        Text("5")  // Add dynamic count here later
-                            .bodySmallStyle()
-                            .foregroundColor(.masterPrimary)
-                    }
-                }
-                .frame(maxHeight: 24)
-                .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 4))
-                .background(Color.masterPrimary.opacity(0.1))
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(.masterPrimary, lineWidth: 1))
-                .cornerRadius(20)
-            }
-            
+
+          Button(action: {
+            // Add undo functionality
+          }) {
+            UndoButtonView(counter: undoCounter)
+          }
+          .opacity(showUndoButton ? 1 : 0)
+          .animation(.easeInOut, value: showUndoButton)
+
           Button(action: {
             if viewModel.cards.first != nil {
               skipAnimation = true

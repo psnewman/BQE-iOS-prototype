@@ -52,7 +52,8 @@ class CardViewModel: ObservableObject {
 
   private let staticData:
     (
-      expenseNames: [String], descriptions: [String], memos: [String], expenseTypes: [EntryType], dates: [String],
+      expenseNames: [String], descriptions: [String], memos: [String], expenseTypes: [EntryType],
+      dates: [String],
       resources: [String],
       projects: [String], clients: [String], units: [String], costRates: [String],
       costAmounts: [String], billables: [BillableStatus]
