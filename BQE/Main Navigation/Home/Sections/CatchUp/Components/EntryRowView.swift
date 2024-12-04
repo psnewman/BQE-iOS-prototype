@@ -32,9 +32,9 @@ struct EntryRowView: View {
         VStack(alignment: .leading, spacing: 4) {
           Text(label)
             .foregroundColor(.secondary)
-            .font(.caption)
+            .bodySmallStyle()
           Text(value)
-            .font(.subheadline)
+                .bodyStyle()
         }
       }
     }

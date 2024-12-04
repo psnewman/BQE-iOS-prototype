@@ -14,6 +14,8 @@
 		4F522B522BD83CCF00CC05F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B512BD83CCF00CC05F7 /* Preview Assets.xcassets */; };
 		4F52468A2CDEEEE9009CDDD2 /* font-inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */; };
 		4FADBB742C814A1D00C3CD70 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */; };
+		4FCD2BAE2CFFAC8000B73C8B /* SuccessAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCD2BAD2CFFAC8000B73C8B /* SuccessAnimationView.swift */; };
+		4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */; };
 		4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE153192CF478FF00835B73 /* FASwiftUI */; };
 		4FEA14EC2CE5533600E4D166 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4FEA14EB2CE5533600E4D166 /* .gitignore */; };
 /* End PBXBuildFile section */
@@ -28,6 +30,7 @@
 		4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-inter.ttf"; sourceTree = "<group>"; };
 		4F5F672F2CDD6C4C00C06AD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
+		4FCD2BAD2CFFAC8000B73C8B /* SuccessAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAnimationView.swift; sourceTree = "<group>"; };
 		4FEA14EB2CE5533600E4D166 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -36,6 +39,7 @@
 		4F1A1B262CE0CD9F00A024F8 /* Main Navigation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Main Navigation"; sourceTree = "<group>"; };
 		4F5D9B722CF91F4000948E40 /* TimeEntry */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TimeEntry; sourceTree = "<group>"; };
 		4F5F67262CDD68BD00C06AD8 /* FA files */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "FA files"; sourceTree = "<group>"; };
+		4FCD2BB12CFFAE1000B73C8B /* RiveAssets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RiveAssets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */,
+				4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +77,8 @@
 				4F5F672F2CDD6C4C00C06AD8 /* Info.plist */,
 				4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */,
 				4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */,
+				4FCD2BAD2CFFAC8000B73C8B /* SuccessAnimationView.swift */,
+				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 				4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
@@ -114,6 +121,7 @@
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F5F67262CDD68BD00C06AD8 /* FA files */,
+				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 			);
 			name = BQE;
 			productName = BQE;
@@ -146,6 +154,7 @@
 			mainGroup = 4F522B3E2BD83CCD00CC05F7;
 			packageReferences = (
 				4FE152CC2CF470BD00835B73 /* XCRemoteSwiftPackageReference "FASwiftUI" */,
+				4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */,
 			);
 			productRefGroup = 4F522B482BD83CCD00CC05F7 /* Products */;
 			projectDirPath = "";
@@ -176,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FCD2BAE2CFFAC8000B73C8B /* SuccessAnimationView.swift in Sources */,
 				4FADBB742C814A1D00C3CD70 /* BottomSheetView.swift in Sources */,
 				4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */,
 				4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */,
@@ -388,6 +398,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.4.0;
+			};
+		};
 		4FE152CC2CF470BD00835B73 /* XCRemoteSwiftPackageReference "FASwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mattmaddux/FASwiftUI";
@@ -399,6 +417,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
 		4FE153192CF478FF00835B73 /* FASwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4FE152CC2CF470BD00835B73 /* XCRemoteSwiftPackageReference "FASwiftUI" */;

@@ -59,5 +59,5 @@ struct TagView: View {
 }
 
 #Preview {
-    TagView(text: "$100", type: .green)
+  TagView(text: "$100", type: .green)
 }

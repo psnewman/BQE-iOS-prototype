@@ -40,7 +40,7 @@ struct TimeCardDayView: View {
                     .foregroundColor(Color.typographySecondary)
                 
                 Text(date)
-                    .captionStyle()
+                    .bodySmallStyle()
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.typographyPrimary)
             }
@@ -48,7 +48,7 @@ struct TimeCardDayView: View {
                 .padding(.horizontal, 16)
             
             Text(timeTracked)
-                .captionBoldStyle()
+                .bodySmallBoldStyle()
               .multilineTextAlignment(.center)
               .foregroundColor(.typographyPrimary)
         }

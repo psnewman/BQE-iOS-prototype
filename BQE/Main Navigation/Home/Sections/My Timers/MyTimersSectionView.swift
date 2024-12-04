@@ -18,9 +18,9 @@ struct MyTimersSectionView: View {
                 )
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
+                .background(.clear)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
-                        // Delete action
                         print("Delete timer")
                     }
                     label: {
@@ -28,14 +28,12 @@ struct MyTimersSectionView: View {
                     }
                     .tint(.alert)
                     Button {
-                        // Edit action
                         print("Add Time Entry")
                     } label: {
                         Label("Time Entry", systemImage: "calendar.badge.plus")
                     }
                     .tint(.masterPrimary)
                     Button {
-                        // Edit action
                         print("Reset timer")
                     } label: {
                         Label("Reset", systemImage: "arrow.counterclockwise")
@@ -44,12 +42,13 @@ struct MyTimersSectionView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden) // Add this line
         .listStyle(PlainListStyle())
         .frame(height: 192)
         .scrollDisabled(true)
-        
     }
 }
+
 
 #Preview {
     MyTimersSectionView()

@@ -41,7 +41,7 @@ struct TimerRowView: View {
                         .foregroundColor(.typographyPrimary)
                     Text(projectDetails ?? "N/A")
                         .lineLimit(1)
-                        .captionStyle()
+                        .bodySmallStyle()
                         .foregroundColor(.typographySecondary)
                 }
             }
@@ -55,7 +55,7 @@ struct TimerRowView: View {
                 .foregroundColor(.typographyPrimary)
         }
         .frame(maxWidth: .infinity, minHeight: 64, maxHeight: 64)
-        .background(.masterBackground)
+        .background(Color.clear)
         .onReceive(timer) { _ in
             if isActive {
                 elapsedTime += 1

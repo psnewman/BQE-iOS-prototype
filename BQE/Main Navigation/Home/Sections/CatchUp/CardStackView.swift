@@ -47,29 +47,44 @@ struct CardStackView: View {
             }
           }
         }
-        .frame(idealHeight: 320)
+        .frame(idealHeight: 360)
 
         //                Stack toolbar
         HStack {
-          Button(action: {
-            // Add undo functionality
-          }) {
-            HStack(spacing: 4) {
-              FAText(iconName: "arrow-rotate-left", size: 16)
-              Text("Undo")
-            }
-          }
-          .bodyStyle()
-          .foregroundColor(.masterPrimary)
-
-          Spacer()
-
           Text("\(viewModel.expensesLeft) left")
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
-
-          Spacer()
-
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Button(action: {
+                // Add undo functionality
+            }) {
+                HStack(spacing: 8) {
+                    HStack(spacing: 4) {
+                        FAText(iconName: "arrow-rotate-left", size: 12)
+                            .foregroundColor(.masterPrimary)
+                        
+                        Text("Undo")
+                            .bodySmallStyle()
+                            .foregroundColor(.masterPrimary)
+                    }
+                    ZStack {
+                        Circle()
+                            .fill(.white)
+                            .stroke(.masterPrimary, lineWidth: 1)
+                            .frame(width: 16, height: 16)
+                        Text("5")  // Add dynamic count here later
+                            .bodySmallStyle()
+                            .foregroundColor(.masterPrimary)
+                    }
+                }
+                .frame(maxHeight: 24)
+                .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 4))
+                .background(Color.masterPrimary.opacity(0.1))
+                .overlay(RoundedRectangle(cornerRadius: 20).stroke(.masterPrimary, lineWidth: 1))
+                .cornerRadius(20)
+            }
+            
           Button(action: {
             if viewModel.cards.first != nil {
               skipAnimation = true
@@ -82,8 +97,11 @@ struct CardStackView: View {
           }
           .bodyStyle()
           .foregroundColor(.masterPrimary)
+          .frame(maxWidth: .infinity, alignment: .trailing)
+
         }
-        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, minHeight: 24)
 
       }
     }

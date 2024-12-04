@@ -40,13 +40,13 @@ struct EventView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text(event.date, format: .dateTime.weekday().month().day())
-                            .captionStyle()
+                            .bodySmallStyle()
                             .foregroundStyle(.typographySecondary)
                         Spacer()
                         (Text(event.startTime, format: .dateTime.hour().minute()) +
                         Text(" - ") +
                         Text(event.endTime, format: .dateTime.hour().minute()))
-                            .captionStyle()
+                            .bodySmallStyle()
                             .foregroundStyle(.typographySecondary)
                     }
                     .frame(maxWidth: .infinity)
@@ -64,7 +64,7 @@ struct EventView: View {
                         Circle()
                             .fill(Color.random)
                             .frame(width: 24, height: 24)
-                            .overlay(Text(attendee).captionStyle().foregroundColor(.typographyPrimary))
+                            .overlay(Text(attendee).bodySmallStyle().foregroundColor(.typographyPrimary))
                             .overlay(
                                 Circle()
                                     .inset(by: 0.5)

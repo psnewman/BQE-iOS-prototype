@@ -2,13 +2,13 @@ import SwiftUI
 
 extension View {
     // Caption style
-    func captionStyle() -> some View {
-        self.modifier(CaptionModifier())
+    func bodySmallStyle() -> some View {
+        self.modifier(BodySmallModifier())
     }
     
     // Caption bold style
-    func captionBoldStyle() -> some View {
-        self.modifier(CaptionBoldModifier())
+    func bodySmallBoldStyle() -> some View {
+        self.modifier(BodySmallBoldModifier())
     }
     
     // Body style
@@ -33,7 +33,7 @@ extension View {
 }
 
 // Define the modifier structs
-struct CaptionModifier: ViewModifier {
+struct BodySmallModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("Inter", size: 12, relativeTo: .caption))
@@ -42,7 +42,7 @@ struct CaptionModifier: ViewModifier {
     }
 }
 
-struct CaptionBoldModifier: ViewModifier {
+struct BodySmallBoldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("Inter", size: 12, relativeTo: .caption))

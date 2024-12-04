@@ -50,7 +50,7 @@ struct ContentView: View {
                 }
                 
                 NavigationStack {
-                    Text("Search screen")
+                    GlobalSearchView()
                         .bqeBackground()
                         .navigationTitle("Search")
                         .navigationBarTitleDisplayMode(.inline)
