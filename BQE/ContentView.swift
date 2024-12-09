@@ -1,5 +1,7 @@
-import FASwiftUI
 import SwiftUI
+import FASwiftUI
+import RiveRuntime
+
 
 struct ContentView: View {
     @State private var selectedOption = "My Company 1"

@@ -45,11 +45,6 @@ struct EntryItem: Identifiable {
 }
 
 class CardViewModel: ObservableObject {
-  @Published var cards: [EntryItem] = []
-  @Published var approvedCards: [EntryItem] = []
-  @Published var rejectedCards: [EntryItem] = []
-  @Published var expensesLeft: Int = 10
-
   private let staticData:
     (
       expenseNames: [String], descriptions: [String], memos: [String], expenseTypes: [EntryType],
@@ -109,49 +104,38 @@ class CardViewModel: ObservableObject {
       billables: [.nonBillable, .billable, .billed]
     )
 
-  func loadCards() {
-    cards = (0..<10).map { index in
-      EntryItem(
-        entryType: staticData.expenseTypes[index % staticData.expenseTypes.count],
-        entryName: staticData.expenseNames[index],
-        description: staticData.descriptions[index],
-        memo: staticData.memos[index],
-        date: staticData.dates[index % staticData.dates.count],
-        resource: staticData.resources[index % staticData.resources.count],
-        project: staticData.projects[index % staticData.projects.count],
-        client: staticData.clients[index % staticData.clients.count],
-        units: staticData.units[index % staticData.units.count],
-        costRate: staticData.costRates[index % staticData.costRates.count],
-        costAmount: staticData.costAmounts[index % staticData.costAmounts.count],
-        billable: staticData.billables[index % staticData.billables.count]
+  func generateSampleCards() -> [EntryItem] {
+    var generatedCards: [EntryItem] = []
+
+    for _ in 0..<10 {
+      let expenseIndex = Int.random(in: 0..<staticData.expenseNames.count)
+      let typeIndex = Int.random(in: 0..<staticData.expenseTypes.count)
+      let dateIndex = Int.random(in: 0..<staticData.dates.count)
+      let resourceIndex = Int.random(in: 0..<staticData.resources.count)
+      let projectIndex = Int.random(in: 0..<staticData.projects.count)
+      let billableIndex = Int.random(in: 0..<staticData.billables.count)
+      let unitsIndex = Int.random(in: 0..<staticData.units.count)
+      let rateIndex = Int.random(in: 0..<staticData.costRates.count)
+      let amountIndex = Int.random(in: 0..<staticData.costAmounts.count)
+
+      let card = EntryItem(
+        entryType: staticData.expenseTypes[typeIndex],
+        entryName: staticData.expenseNames[expenseIndex],
+        description: staticData.descriptions[expenseIndex],
+        memo: staticData.memos[expenseIndex],
+        date: staticData.dates[dateIndex],
+        resource: staticData.resources[resourceIndex],
+        project: staticData.projects[projectIndex],
+        client: staticData.clients[projectIndex],
+        units: staticData.units[unitsIndex],
+        costRate: staticData.costRates[rateIndex],
+        costAmount: staticData.costAmounts[amountIndex],
+        billable: staticData.billables[billableIndex]
       )
+
+      generatedCards.append(card)
     }
-    expensesLeft = cards.count
-  }
 
-  func removeTopCard(isApproved: Bool) {
-    guard !cards.isEmpty else { return }
-
-    let removedCard: EntryItem = cards.removeFirst()
-    if isApproved {
-      approvedCards.append(removedCard)
-    } else {
-      rejectedCards.append(removedCard)
-    }
-    expensesLeft -= 1
-  }
-
-  func skipTopCard() {
-    guard !cards.isEmpty else { return }
-
-    let removedCard: EntryItem = cards.removeFirst()
-    rejectedCards.append(removedCard)
-    expensesLeft -= 1
-  }
-
-  func resetCards() {
-    loadCards()
-    approvedCards.removeAll()
-    rejectedCards.removeAll()
+    return generatedCards
   }
 }

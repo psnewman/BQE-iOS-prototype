@@ -1,68 +1,89 @@
-import FASwiftUI
 import SwiftUI
+import FASwiftUI
+import RiveRuntime
+
 
 class HomeSectionsState: ObservableObject {
-  @Published var expandedSections: Set<String>
+  private let defaults = UserDefaults.standard
+  private let storageKey = "HomeExpandedSections"
 
-  init() {
-    // Initialize with all sections expanded
-    self.expandedSections = Set([
-      "favorites",
-      "recent-items",
-      "my-timers",
-      "catch-up",
-      "weekly-timecard",
-      "upcoming-events",
-    ])
-  }
+  private let defaultSections = [
+    "favorites",
+    "recent-items",
+    "my-timers",
+    "catch-up",
+    "weekly-timecard",
+    "upcoming-events",
+  ]
 
-  func toggleSection(_ label: String) {
-    if expandedSections.contains(label) {
-      expandedSections.remove(label)
-    } else {
-      expandedSections.insert(label)
+  @Published var expandedSections: Set<String> {
+    didSet {
+      defaults.set(Array(expandedSections), forKey: storageKey)
     }
   }
 
-  func isExpanded(_ label: String) -> Bool {
-    expandedSections.contains(label)
+  init() {
+    if let savedSections = defaults.array(forKey: storageKey) as? [String] {
+      self.expandedSections = Set(savedSections)
+    } else {
+      self.expandedSections = Set(defaultSections)
+    }
   }
 }
 
 struct HomeView: View {
   @Binding var selectedOption: String
   @Binding var isShowingSheet: Bool
+  @StateObject private var sectionsState = HomeSectionsState()
+
+  private struct Section: Identifiable {
+    let id: String
+    let label: String
+    let content: AnyView
+
+    init<V: View>(_ label: String, id: String, @ViewBuilder content: () -> V) {
+      self.label = label
+      self.id = id
+      self.content = AnyView(content())
+    }
+  }
+
+  private var sections: [Section] {
+    [
+      Section("Favorites", id: "favorites") { FavoritesSectionView() },
+      Section("Recent Items", id: "recent-items") { RecentItemsSectionView() },
+      Section("My timers", id: "my-timers") { MyTimersSectionView() },
+      Section("Catch Up", id: "catch-up") { CardStackView() },
+      Section("Weekly Timecard", id: "weekly-timecard") { TimeCardSectionView() },
+      Section("Upcoming Events", id: "upcoming-events") { EventsSectionView() },
+    ]
+  }
 
   var body: some View {
     ScrollView {
       VStack(spacing: 8) {
-        HomeSectionView(label: "Favorites", id: "favorites") {
-          FavoritesSectionView()
-        }
-        
-        HomeSectionView(label: "Recent Items", id: "recent-items") {
-          RecentItemsSectionView()
-        }
-        
-        HomeSectionView(label: "My timers", id: "my-timers") {
-          MyTimersSectionView()
-        }
-        
-        HomeSectionView(label: "Catch Up", id: "catch-up") {
-          CardStackView()
-        }
-        
-        HomeSectionView(label: "Weekly Timecard", id: "weekly-timecard") {
-          TimeCardSectionView()
-        }
-        
-        HomeSectionView(label: "Upcoming Events", id: "upcoming-events") {
-          EventsSectionView()
+        ForEach(sections) { section in
+          HomeSectionView(section.label, isExpanded: expandedBinding(for: section.id), showViewAll: section.id == "recent-items" || section.id == "catch-up" ? false : true) {
+            section.content
+          }
         }
       }
       .padding(.vertical)
     }
     .background(.masterBackground)
+  }
+
+  private func expandedBinding(for id: String) -> Binding<Bool> {
+    Binding(
+      get: { sectionsState.expandedSections.contains(id) },
+      set: { isExpanded in
+        if isExpanded {
+          sectionsState.expandedSections.insert(id)
+        } else {
+          sectionsState.expandedSections.remove(id)
+        }
+      }
+    )
   }
 }
 

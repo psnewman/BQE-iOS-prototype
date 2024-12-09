@@ -11,23 +11,58 @@ import SwiftUI
 
 struct HomeSectionView<Content: View>: View {
   let label: String
-  let id: String
   let content: Content
-  @State private var isExpanded: Bool = true
-  
-  init(label: String, id: String, @ViewBuilder content: () -> Content) {
+  let showViewAll: Bool
+  @Binding var isExpanded: Bool
+
+  init(
+    _ label: String,
+    isExpanded: Binding<Bool>,
+    showViewAll: Bool = false,
+    @ViewBuilder content: () -> Content
+  ) {
     self.label = label
-    self.id = id
+    self._isExpanded = isExpanded
+    self.showViewAll = showViewAll
     self.content = content()
   }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      HomeSectionLabel(label: label, isExpanded: isExpanded)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .onTapGesture {
-          isExpanded.toggle()
+        HStack(alignment: .center) {
+            Label {
+                Text(label.uppercased())
+                    .bodySmallBoldStyle()
+                    .foregroundStyle(.typographyPrimary)
+            } icon: {
+                FAText(iconName: "chevron-right", size: 12)
+                    .foregroundColor(.typographySecondary)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .animation(.easeInOut(duration: 0.2), value: isExpanded)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .onTapGesture {
+                isExpanded.toggle()
+            }
+            if showViewAll {
+                Button {
+                    print("View All")
+                } label: {
+                    HStack(alignment: .center) {
+                        Text("View All")
+                            .bodyStyle()
+                            .foregroundStyle(.masterPrimary)
+                        FAText(iconName: "chevron-right", size: 12)
+                            .foregroundColor(.masterPrimary)
+                    }
+                }
+                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
+        .padding(.top, 8)
+
+        
 
       if isExpanded {
         content
@@ -38,38 +73,13 @@ struct HomeSectionView<Content: View>: View {
     }
     .padding(.horizontal, 16)
     .scrollClipDisabled()
-    .id(id)
-  }
-}
-
-struct HomeSectionLabel: View {
-  let label: String
-  var isExpanded: Bool
-
-  var body: some View {
-    HStack {
-      FAText(iconName: "chevron-right", size: 12)
-        .foregroundColor(.typographySecondary)
-        .rotationEffect(.degrees(isExpanded ? 90 : 0))
-        .animation(.easeInOut(duration: 0.2), value: isExpanded)
-      Text(label.uppercased())
-        .bodySmallBoldStyle()
-        .foregroundStyle(.typographyPrimary)
-    }
-    .padding(.top, 8)
-    .frame(maxWidth: .infinity, alignment: .leading)
-  }
-
-  init(label: String, isExpanded: Bool) {
-    self.label = label
-    self.isExpanded = isExpanded
   }
 }
 
 #Preview {
-  VStack {
-    HomeSectionView(label: "Test Section", id: "test-section") {
-      MyTimersSectionView()
-    }
+  @Previewable @State var isExpanded = true
+  
+  HomeSectionView("Test Section", isExpanded: $isExpanded, showViewAll: true) {
+    MyTimersSectionView()
   }
 }

@@ -1,13 +1,19 @@
 import FASwiftUI
+import RiveRuntime
 import SwiftUI
 
 struct CardStackView: View {
-  @StateObject private var viewModel: CardViewModel = CardViewModel()
+  @StateObject private var stackViewModel: CardStackViewModel = CardStackViewModel()
   @State private var selectedEntryType: EntryType = .expense
   @State private var skipAnimation: Bool = false
   @State private var showUndoButton: Bool = false
   @State private var undoCounter: Int = 5
   @State private var undoTimer: Timer? = nil
+  @StateObject private var successAnimation = RiveViewModel(
+    fileName: "success",
+    stateMachineName: "State Machine 1",
+    autoPlay: false
+  )
 
   var body: some View {
     VStack(spacing: 16) {
@@ -15,23 +21,24 @@ struct CardStackView: View {
 
       VStack(spacing: 16) {
         ZStack {
-          if viewModel.cards.isEmpty {
-            Button("Repeat") {
-              viewModel.resetCards()
+          if stackViewModel.cards.isEmpty {
+            VStack(spacing: 32) {
+              VStack(alignment: .center, spacing: -24) {
+                successAnimation.view()
+                  .frame(width: 200, height: 200)
+                VStack(spacing: 8) {
+                  Text("Well done!")
+                    .titleStyle()
+                  Text("Caught up with all items")
+                    .bodyStyle()
+                }
+              }
             }
-            .bodyStyle()
-            .foregroundColor(.masterPrimary)
-            .padding()
-            .background(.masterBackground)
-            .cornerRadius(8)
-            .overlay(
-              RoundedRectangle(cornerRadius: 8)
-                .stroke(.border, lineWidth: 1)
-            )
           } else {
-            ForEach(viewModel.cards, id: \.id) { card in
-              let isTopCard: Bool = card.id == viewModel.cards.first?.id
-              let isNextCard: Bool = viewModel.cards.count > 1 && card.id == viewModel.cards[1].id
+            ForEach(stackViewModel.cards, id: \.id) { card in
+              let isTopCard: Bool = card.id == stackViewModel.cards.first?.id
+              let isNextCard: Bool =
+                stackViewModel.cards.count > 1 && card.id == stackViewModel.cards[1].id
 
               CardView(
                 card: card,
@@ -39,7 +46,8 @@ struct CardStackView: View {
                 isNextCard: isNextCard,
                 skipAnimation: isTopCard ? $skipAnimation : .constant(false),
                 onRemove: { isApproved in
-                  viewModel.removeTopCard(isApproved: isApproved)
+
+                  stackViewModel.removeTopCard(isApproved: isApproved)
                   showUndoButton = true
                   undoCounter = 5
                   undoTimer?.invalidate()
@@ -57,22 +65,30 @@ struct CardStackView: View {
               .id(card.id)
               .zIndex(
                 Double(
-                  viewModel.cards.count
-                    - (viewModel.cards.firstIndex(where: { $0.id == card.id }) ?? 0)))
+                  stackViewModel.cards.count
+                    - (stackViewModel.cards.firstIndex(where: { $0.id == card.id }) ?? 0)))
             }
+          }
+        }
+        .onChange(of: stackViewModel.cards.count) { oldValue, newValue in
+          if newValue == 0 {
+            successAnimation.triggerInput("startSuccessAnimation")
           }
         }
         .frame(idealHeight: 360)
 
-        //                Stack toolbar
+//          Stack toolbar
         HStack {
-          Text("\(viewModel.expensesLeft) left")
+          Text("\(stackViewModel.expensesLeft) left")
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .opacity(!stackViewModel.shouldShowSuccess ? 1 : 0)
 
           Button(action: {
-            // Add undo functionality
+            stackViewModel.undoLastAction()
+            showUndoButton = false
+            undoTimer?.invalidate()
           }) {
             UndoButtonView(counter: undoCounter)
           }
@@ -80,8 +96,9 @@ struct CardStackView: View {
           .animation(.easeInOut, value: showUndoButton)
 
           Button(action: {
-            if viewModel.cards.first != nil {
+            if stackViewModel.cards.first != nil {
               skipAnimation = true
+              stackViewModel.skipTopCard()
             }
           }) {
             HStack(spacing: 4) {
@@ -92,15 +109,15 @@ struct CardStackView: View {
           .bodyStyle()
           .foregroundColor(.masterPrimary)
           .frame(maxWidth: .infinity, alignment: .trailing)
+          .opacity(!stackViewModel.shouldShowSuccess ? 1 : 0)
 
         }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, minHeight: 24)
-
       }
     }
     .onAppear {
-      viewModel.loadCards()
+      stackViewModel.resetCards()
     }
   }
 }
@@ -120,34 +137,50 @@ struct FilterEntryType: View {
   @Binding var selectedEntryType: EntryType
 
   var body: some View {
-    Menu {
-      ForEach(EntryType.allCases, id: \.self) { type in
-        Button(type.rawValue) {
-          selectedEntryType = type
+    HStack(spacing: 24) {
+      Menu {
+        ForEach(EntryType.allCases, id: \.self) { type in
+          Button(type.rawValue) {
+            selectedEntryType = type
+          }
+        }
+      } label: {
+        HStack(spacing: 24) {
+          FAText(iconName: "filter", size: 16)
+            .foregroundColor(.typographySecondary)
+
+          Text(selectedEntryType.rawValue)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .bodyStyle()
+            .foregroundColor(.typographyPrimary)
+
+          FAText(iconName: "chevron-down", size: 12)
+            .foregroundColor(.typographySecondary)
+        }
+        .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
+        .frame(maxWidth: .infinity, minHeight: 40)
+        .background(.masterBackground)
+        .cornerRadius(8)
+        .overlay(
+          RoundedRectangle(cornerRadius: 8)
+            .inset(by: 0.5)
+            .stroke(.border, lineWidth: 0.5)
+        )
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+
+      Button {
+        print("View All")
+      } label: {
+        HStack(alignment: .center) {
+          Text("View All")
+            .bodyStyle()
+            .foregroundStyle(.masterPrimary)
+          FAText(iconName: "chevron-right", size: 12)
+            .foregroundColor(.masterPrimary)
         }
       }
-    } label: {
-      HStack(spacing: 8) {
-        FAText(iconName: "filter", size: 16)
-          .foregroundColor(.typographySecondary)
-
-        Text(selectedEntryType.rawValue)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .bodyStyle()
-          .foregroundColor(.typographyPrimary)
-
-        FAText(iconName: "chevron-down", size: 12)
-          .foregroundColor(.typographySecondary)
-      }
-      .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
-      .frame(maxWidth: .infinity, minHeight: 40)
-      .background(.masterBackground)
-      .cornerRadius(8)
-      .overlay(
-        RoundedRectangle(cornerRadius: 8)
-          .inset(by: 0.5)
-          .stroke(.border, lineWidth: 0.5)
-      )
+      .buttonStyle(.plain)
     }
   }
 }
