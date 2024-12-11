@@ -1,12 +1,14 @@
+// CardStackView is responsible for displaying a stack of cards related to user entries, allowing users to filter and manage their entries interactively.
 import FASwiftUI
 import RiveRuntime
 import SwiftUI
 
 struct CardStackView: View {
+  // ViewModel for managing the state of the card stack, including the logic for card removal and filtering.
   @StateObject private var stackViewModel: CardStackViewModel = CardStackViewModel()
   @State private var selectedEntryType: EntryType = .expense
   @State private var skipAnimation: Bool = false
-  @State private var showUndoButton: Bool = false
+  // @State private var showUndoButton: Bool = false
   @State private var undoCounter: Int = 5
   @State private var undoTimer: Timer? = nil
   @StateObject private var successAnimation = RiveViewModel(
@@ -17,10 +19,12 @@ struct CardStackView: View {
 
   var body: some View {
     VStack(spacing: 16) {
+      // Filter component for selecting entry type.
       FilterEntryType(selectedEntryType: $selectedEntryType)
 
       VStack(spacing: 16) {
         ZStack {
+          // If there are no cards, display a success message.
           if stackViewModel.cards.isEmpty {
             VStack(spacing: 32) {
               VStack(alignment: .center, spacing: -24) {
@@ -35,6 +39,7 @@ struct CardStackView: View {
               }
             }
           } else {
+            // Render each card in the stack, displaying the top card and the next card for user interaction.
             ForEach(stackViewModel.cards, id: \.id) { card in
               let isTopCard: Bool = card.id == stackViewModel.cards.first?.id
               let isNextCard: Bool =
@@ -45,10 +50,10 @@ struct CardStackView: View {
                 isTopCard: isTopCard,
                 isNextCard: isNextCard,
                 skipAnimation: isTopCard ? $skipAnimation : .constant(false),
+                viewModel: stackViewModel,
                 onRemove: { isApproved in
-
+                  // Handle card removal logic, including showing the undo button.
                   stackViewModel.removeTopCard(isApproved: isApproved)
-                  showUndoButton = true
                   undoCounter = 5
                   undoTimer?.invalidate()
                   undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -56,11 +61,12 @@ struct CardStackView: View {
                       undoCounter -= 1
                     } else {
                       undoCounter = 5
-                      showUndoButton = false
+                      stackViewModel.showUndoButton = false
                       timer.invalidate()
                     }
                   }
                 }
+
               )
               .id(card.id)
               .zIndex(
@@ -75,9 +81,10 @@ struct CardStackView: View {
             successAnimation.triggerInput("startSuccessAnimation")
           }
         }
+        // Todo: try to avoid fixed height
         .frame(idealHeight: 360)
 
-//          Stack toolbar
+        // Stack toolbar
         HStack {
           Text("\(stackViewModel.expensesLeft) left")
             .bodyStyle()
@@ -87,13 +94,13 @@ struct CardStackView: View {
 
           Button(action: {
             stackViewModel.undoLastAction()
-            showUndoButton = false
+            stackViewModel.showUndoButton = false
             undoTimer?.invalidate()
           }) {
             UndoButtonView(counter: undoCounter)
           }
-          .opacity(showUndoButton ? 1 : 0)
-          .animation(.easeInOut, value: showUndoButton)
+          .opacity(stackViewModel.showUndoButton ? 1 : 0)
+          .animation(.easeInOut, value: stackViewModel.showUndoButton)
 
           Button(action: {
             if stackViewModel.cards.first != nil {
@@ -145,8 +152,8 @@ struct FilterEntryType: View {
           }
         }
       } label: {
-        HStack(spacing: 24) {
-          FAText(iconName: "filter", size: 16)
+        HStack(spacing: 4) {
+          FAText(iconName: selectedEntryType.icon, size: 16)
             .foregroundColor(.typographySecondary)
 
           Text(selectedEntryType.rawValue)
@@ -170,7 +177,7 @@ struct FilterEntryType: View {
       .frame(maxWidth: .infinity, alignment: .leading)
 
       Button {
-        print("View All")
+        // Navigate to the dedicated screen
       } label: {
         HStack(alignment: .center) {
           Text("View All")

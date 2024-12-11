@@ -21,19 +21,15 @@ struct EntryHeaderView: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: 4) {
-        HStack(spacing: 8) {
-          FAText(iconName: entryType.icon, size: 16)
-            .foregroundColor(Color.typographySecondary)
-          NavigationLink(destination: TimeEntryView()) {
-            HStack {
-              Text(entryName)
-                .bodyStyle()
-                .foregroundColor(.typographyPrimary)
-                .lineLimit(1)
-                .truncationMode(.tail)
-              FAText(iconName: "chevron-right", size: 12)
-                .foregroundColor(.typographyPrimary)
-            }
+        NavigationLink(destination: TimeEntryView()) {
+          HStack {
+            Text(entryName)
+              .bodyStyle()
+              .foregroundColor(.typographyPrimary)
+              .lineLimit(1)
+              .truncationMode(.tail)
+            FAText(iconName: "chevron-right", size: 12)
+              .foregroundColor(.typographyPrimary)
           }
         }
       }

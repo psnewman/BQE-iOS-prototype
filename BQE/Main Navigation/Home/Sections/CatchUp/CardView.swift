@@ -8,11 +8,11 @@ struct CardView: View {
   private let isNextCard: Bool
   private let onRemove: (Bool) -> Void
   @Binding var skipAnimation: Bool
+  @ObservedObject var viewModel: CardStackViewModel
 
   @State private var offset: CGSize = CGSize.zero
   @State private var isDragging: Bool = false
   @State private var dragThreshold: CGFloat = 0
-  @State private var isSkipping: Bool = false
 
   // MARK: - Initialization
   init(
@@ -20,12 +20,14 @@ struct CardView: View {
     isTopCard: Bool,
     isNextCard: Bool,
     skipAnimation: Binding<Bool> = .constant(false),
+    viewModel: CardStackViewModel,
     onRemove: @escaping (Bool) -> Void
   ) {
     self.card = card
     self.isTopCard = isTopCard
     self.isNextCard = isNextCard
     self._skipAnimation = skipAnimation
+    self.viewModel = viewModel
     self.onRemove = onRemove
   }
 
@@ -33,29 +35,31 @@ struct CardView: View {
   var body: some View {
     GeometryReader { geometry in
       cardContent
-        .modifier(CardStyle(offset: offset, dragThreshold: dragThreshold))
-        .scaleEffect(scaleEffect)
+        .modifier(CardStyle(offset: currentOffset, dragThreshold: dragThreshold))
+        .scaleEffect(currentScale)
         .animation(.spring(response: 0.3), value: scaleEffect)
         .offset(y: verticalOffset)
-        .offset(x: offset.width, y: offset.height)
-        .rotationEffect(.degrees(Double(offset.width / CardAnimationConfig.rotationFactor)))
+        .offset(x: currentOffset.width, y: currentOffset.height)
+        .rotationEffect(
+          viewModel.getCardState(card.id).isSkipping
+            ? .degrees(0) : .degrees(Double(currentOffset.width / CardAnimationConfig.rotationFactor))
+        )
         .opacity(isTopCard || isNextCard ? 1 : 0)
-        .gesture(isTopCard && !isSkipping ? dragGesture : nil)
+        .gesture(isTopCard ? dragGesture : nil)
         .onChange(of: isTopCard) { oldValue, newValue in
           if !newValue {
-            isSkipping = false
             offset = .zero
           }
         }
         .onChange(of: skipAnimation) { _, newValue in
           if newValue && isTopCard {
-            skip()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
               skipAnimation = false
-              onRemove(false)
+              // onRemove(false)
             }
           }
         }
+        .zIndex(Double(viewModel.getCardState(card.id).zIndex))
         .onAppear {
           dragThreshold = geometry.size.width * CardAnimationConfig.dragThresholdMultiplier
         }
@@ -73,10 +77,10 @@ extension CardView {
         .fixedSize(horizontal: false, vertical: true)
 
       CardOverlayView(
-        offset: offset,
+        offset: currentOffset,
         dragThreshold: dragThreshold,
         isTopCard: isTopCard,
-        isSkipped: isSkipping
+        isSkipped: viewModel.getCardState(card.id).isSkipping
       )
     }
     .frame(maxWidth: .infinity)
@@ -118,7 +122,6 @@ extension CardView {
 
   fileprivate var footerView: some View {
     Group {
-      // Spacer()
       Divider()
         .background(.divider)
       HStack(spacing: 16) {
@@ -141,12 +144,39 @@ extension CardView {
 
 // MARK: - Animations
 extension CardView {
-  fileprivate var scaleEffect: CGFloat {
-    guard isTopCard || isNextCard else { return CardAnimationConfig.baseScale }
-    if isTopCard { return CardAnimationConfig.maxScale }
+  private var currentOffset: CGSize {
+    isDragging ? offset : viewModel.getCardState(card.id).offset
+  }
+  
+  private var currentScale: CGSize {
+    let scale = if isDragging {
+      scaleEffect
+    } else {
+      if isTopCard {
+        CardAnimationConfig.maxScale
+      } else if isNextCard {
+        CardAnimationConfig.baseScale
+      } else {
+        CardAnimationConfig.baseScale
+      }
+    }
+    return CGSize(width: scale, height: scale)
+  }
+
+  private var scaleEffect: CGFloat {
+    if isTopCard {
+      return CardAnimationConfig.maxScale
+    }
+    
+    if isNextCard {
+      // Calculate scale for next card based on top card's movement
+      let topCardOffset = isDragging ? offset.width : 0
+      let progress = abs(topCardOffset) / dragThreshold
+      return CardAnimationConfig.baseScale +
+        ((CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * progress)
+    }
+    
     return CardAnimationConfig.baseScale
-      + ((CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * abs(offset.width)
-        / dragThreshold)
   }
 
   fileprivate var verticalOffset: CGFloat {
@@ -167,6 +197,11 @@ extension CardView {
     isDragging = true
     let resistedDrag = value.translation.width * CardAnimationConfig.dragResistance
     offset = CGSize(width: resistedDrag, height: 0)
+    
+    // Update view model state while dragging
+    var state = viewModel.getCardState(card.id)
+    state.offset = offset
+    viewModel.cardState[card.id] = state
   }
 
   fileprivate func handleDragEnd() {
@@ -178,23 +213,22 @@ extension CardView {
             ? CardAnimationConfig.swipeOutDistance : -CardAnimationConfig.swipeOutDistance,
           height: 0
         )
+        
+        // Update view model state
+        var state = viewModel.getCardState(card.id)
+        state.offset = offset
+        viewModel.cardState[card.id] = state
+        
         onRemove(isApproved)
       } else {
         offset = .zero
+        
+        // Reset view model state
+        var state = viewModel.getCardState(card.id)
+        state.offset = .zero
+        viewModel.cardState[card.id] = state
       }
       isDragging = false
-    }
-  }
-
-  func skip() {
-    isSkipping = true
-    withAnimation(
-      .easeInOut(duration: 0.6)
-    ) {
-      offset = CGSize(
-        width: -CardAnimationConfig.swipeOutDistance / 2,
-        height: -100
-      )
     }
   }
 }
@@ -286,6 +320,7 @@ extension CardView {
     isTopCard: true,
     isNextCard: false,
     skipAnimation: .constant(false),
+    viewModel: CardStackViewModel(),
     onRemove: { _ in }
   )
 }
