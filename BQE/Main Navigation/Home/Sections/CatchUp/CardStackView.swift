@@ -106,6 +106,17 @@ struct CardStackView: View {
             if stackViewModel.cards.first != nil {
               skipAnimation = true
               stackViewModel.skipTopCard()
+              undoCounter = 5  // Reset counter
+              undoTimer?.invalidate()  // Invalidate any existing timer
+              undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if undoCounter > 1 {
+                  undoCounter -= 1
+                } else {
+                  undoCounter = 5
+                  stackViewModel.showUndoButton = false
+                  timer.invalidate()
+                }
+              }
             }
           }) {
             HStack(spacing: 4) {
