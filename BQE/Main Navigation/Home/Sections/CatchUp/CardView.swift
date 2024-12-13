@@ -73,7 +73,8 @@ extension CardView {
   fileprivate var cardContent: some View {
     ZStack {
       mainContent
-        .padding(16)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
         .fixedSize(horizontal: false, vertical: true)
 
       CardOverlayView(
@@ -102,6 +103,7 @@ extension CardView {
         costAmount: card.costAmount,
         billable: card.billable
       )
+      .padding(.top, 4)
       Divider()
         .background(.divider)
     }
@@ -121,7 +123,7 @@ extension CardView {
   }
 
   fileprivate var footerView: some View {
-    Group {
+      VStack(spacing: 8) {
       Divider()
         .background(.divider)
       HStack(spacing: 16) {
@@ -137,7 +139,8 @@ extension CardView {
           }
         }
       }
-      .frame(maxWidth: .infinity)
+      .frame(maxWidth: .infinity, minHeight: 24)
+      .padding(.bottom, 4)
     }
   }
 }

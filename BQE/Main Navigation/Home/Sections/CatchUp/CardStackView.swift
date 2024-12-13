@@ -82,7 +82,7 @@ struct CardStackView: View {
           }
         }
         // Todo: try to avoid fixed height
-        .frame(idealHeight: 360)
+        .frame(minHeight: 334)
 
         // Stack toolbar
         HStack {
