@@ -8,6 +8,8 @@ struct ContentView: View {
     @State private var isShowingSheet = false
     @State private var selectedTab = 0
     
+    @FocusState var isInputActive: Bool
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
@@ -17,6 +19,17 @@ struct ContentView: View {
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
                                 DropdownView(selectedOption: $selectedOption, isShowingSheet: $isShowingSheet)
+                            }
+                        }
+                        .focused($isInputActive)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                
+                                Button("Done") {
+                                    isInputActive = false
+                                }
+                                .foregroundStyle(.masterPrimary)
                             }
                         }
                         .navigationTitle("")
@@ -56,6 +69,17 @@ struct ContentView: View {
                         .bqeBackground()
                         .navigationTitle("Search")
                         .navigationBarTitleDisplayMode(.inline)
+                        .focused($isInputActive)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                
+                                Button("Done") {
+                                    isInputActive = false
+                                }
+                                .foregroundStyle(.masterPrimary)
+                            }
+                        }
                 }
                 .tint(.white)
                 .tag(3)
@@ -78,8 +102,8 @@ struct ContentView: View {
             .background(.masterBackground)
             .tint(.masterPrimary)
             
-            Divider().background(.divider)
-                .padding(.bottom, 49)
+//            Divider().background(.divider)
+//                .padding(.bottom, 49)
         }
     }
 }

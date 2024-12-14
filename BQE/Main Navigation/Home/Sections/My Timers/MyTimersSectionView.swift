@@ -18,7 +18,9 @@ struct MyTimersSectionView: View {
                 )
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
-                .background(.clear)
+//                .background(.clear)
+                .background(.masterBackground)
+
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         print("Delete timer")
@@ -42,7 +44,8 @@ struct MyTimersSectionView: View {
                 }
             }
         }
-        .scrollContentBackground(.hidden) // Add this line
+        .scrollContentBackground(.hidden)
+// Add this line
         .listStyle(PlainListStyle())
         .frame(height: 192)
         .scrollDisabled(true)

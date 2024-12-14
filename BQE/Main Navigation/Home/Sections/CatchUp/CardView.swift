@@ -13,6 +13,7 @@ struct CardView: View {
   @State private var offset: CGSize = CGSize.zero
   @State private var isDragging: Bool = false
   @State private var dragThreshold: CGFloat = 0
+  @State private var memo: String = ""
 
   // MARK: - Initialization
   init(
@@ -110,7 +111,7 @@ extension CardView {
   }
 
   fileprivate var detailsView: some View {
-    VStack(alignment: .leading, spacing: 16) {
+    VStack(alignment: .leading, spacing: 12) {
       ForEach(EntryDetail.allCases) { detail in
         EntryRowView(
           label: detail.label,
@@ -119,6 +120,11 @@ extension CardView {
           isDescription: detail == .description
         )
       }
+      TextAreaView(
+        label: "Memo",
+        placeholder: "Add memo",
+        text: $memo
+      )
     }
   }
 
@@ -251,7 +257,6 @@ extension CardView {
     case project
     case client
     case description
-    case memo
 
     var id: Self { self }
 
@@ -262,7 +267,6 @@ extension CardView {
       case .project: return "Project"
       case .client: return "Client"
       case .description: return "Description"
-      case .memo: return "Memo"
       }
     }
 
@@ -273,7 +277,6 @@ extension CardView {
       case .project: return card.project
       case .client: return card.client
       case .description: return card.description
-      case .memo: return card.memo
       }
     }
   }
@@ -310,7 +313,6 @@ extension CardView {
       entryName: "Business lunch",
       description:
         "Business lunch with client team to discuss project requirements and timeline. Total of 4 attendees including project manager and lead architect.",
-      memo: "Team discussed Q4 deliverables and milestones for the upcoming phase",
       date: "8/11/2023",
       resource: "Emma Thompson",
       project: "01-01 - SKYTOWER: Project Management",

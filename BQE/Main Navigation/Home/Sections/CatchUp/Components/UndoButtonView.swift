@@ -23,7 +23,7 @@ struct UndoButtonView: View {
       }
       ZStack {
         Circle()
-          .fill(.white)
+              .fill(.masterBackground)
           .stroke(.masterPrimary, lineWidth: 1)
           .frame(width: 16, height: 16)
         Text("\(counter)")
