@@ -67,7 +67,10 @@ class CardStackViewModel: ObservableObject {
         self.cardState[topCard.id] = state
 
         // Update card order
-        self.cards.removeFirst()
+        if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
+            self.cards.remove(at: index)
+            self.cards.append(topCard)
+        }
         self.skippedCards.append(topCard)
         
         // Add these lines to handle undo button visibility
