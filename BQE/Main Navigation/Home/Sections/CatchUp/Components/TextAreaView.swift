@@ -10,9 +10,10 @@ import SwiftUI
 struct TextAreaView: View {
     let label: String
     let placeholder: String
-
+    
     @Binding var text: String
-
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Text(label)
@@ -26,7 +27,11 @@ struct TextAreaView: View {
                 .padding(.horizontal, 8)
                 .scrollContentBackground(.hidden)
                 .foregroundColor(.typographyPrimary)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(.border, lineWidth: 1))
+                .focused($isFocused)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(isFocused ? .masterPrimary : .border, lineWidth: 1)
+                )
                 .overlay(
                     Group {
                         if text.isEmpty {
@@ -40,12 +45,19 @@ struct TextAreaView: View {
                     },
                     alignment: .topLeading
                 )
-                
-                
-
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") {
+                            isFocused = false
+                        }
+                        .foregroundStyle(.masterPrimary)
+                    }
+                }
         }
     }
 }
+
 
 #Preview {
     @Previewable @State var text = ""

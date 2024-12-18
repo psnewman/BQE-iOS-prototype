@@ -20,7 +20,7 @@ struct CardStackView: View {
   var body: some View {
     VStack(spacing: 16) {
       // Filter component for selecting entry type.
-      FilterEntryType(selectedEntryType: $selectedEntryType)
+        FilterEntryType(selectedEntryType: $selectedEntryType, stackViewModel: stackViewModel)
 
       VStack(spacing: 16) {
         ZStack {
@@ -153,6 +153,7 @@ extension CardStackView {
 
 struct FilterEntryType: View {
   @Binding var selectedEntryType: EntryType
+  @ObservedObject var stackViewModel: CardStackViewModel = CardStackViewModel()
 
   var body: some View {
     HStack(spacing: 24) {
@@ -163,11 +164,11 @@ struct FilterEntryType: View {
           }
         }
       } label: {
-        HStack(spacing: 4) {
-          FAText(iconName: selectedEntryType.icon, size: 16)
+        HStack(spacing: 8) {
+          FAText(iconName: selectedEntryType.icon, size: 12)
             .foregroundColor(.typographySecondary)
 
-          Text(selectedEntryType.rawValue)
+          Text("\(selectedEntryType.rawValue) (\(stackViewModel.expensesLeft))")
             .frame(maxWidth: .infinity, alignment: .leading)
             .bodyStyle()
             .foregroundColor(.typographyPrimary)

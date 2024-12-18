@@ -13,33 +13,33 @@ struct TagView: View {
   private var backgroundColor: Color {
     switch type {
     case .red:
-      return Color("tagRedBackground")
+        return .tagRedBackground
     case .green:
-      return Color("tagGreenBackground")
+        return .tagGreenBackground
     case .grey:
-      return Color("tagGreyBackground")
+        return .masterBackground
     }
   }
 
   private var borderColor: Color {
     switch type {
     case .red:
-      return Color("tagRedBorder")
+        return .tagRedBorder
     case .green:
-      return Color("tagGreenBorder")
+        return .tagGreenBorder
     case .grey:
-      return Color("tagGreyBorder")
+        return .border
     }
   }
 
   private var textColor: Color {
     switch type {
     case .red:
-      return Color("tagRedText")
+        return .tagRedText
     case .green:
-      return Color("tagGreenText")
+        return .tagGreenText
     case .grey:
-      return Color("tagGreyText")
+        return .typographyPrimary
     }
   }
 

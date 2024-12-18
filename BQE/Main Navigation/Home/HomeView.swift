@@ -11,7 +11,7 @@ class HomeSectionsState: ObservableObject {
     "favorites",
     "recent-items",
     "my-timers",
-    "catch-up",
+    "workflows",
     "weekly-timecard",
     "upcoming-events",
   ]
@@ -53,7 +53,7 @@ struct HomeView: View {
       Section("Favorites", id: "favorites") { FavoritesSectionView() },
       Section("Recent Items", id: "recent-items") { RecentItemsSectionView() },
       Section("My timers", id: "my-timers") { MyTimersSectionView() },
-      Section("Catch Up", id: "catch-up") { CardStackView() },
+      Section("Workflows", id: "workflows") { CardStackView() },
       Section("Weekly Timecard", id: "weekly-timecard") { TimeCardSectionView() },
       Section("Upcoming Events", id: "upcoming-events") { EventsSectionView() },
     ]
@@ -63,7 +63,7 @@ struct HomeView: View {
     ScrollView {
       VStack(spacing: 8) {
         ForEach(sections) { section in
-          HomeSectionView(section.label, isExpanded: expandedBinding(for: section.id), showViewAll: section.id == "recent-items" || section.id == "catch-up" ? false : true) {
+          HomeSectionView(section.label, isExpanded: expandedBinding(for: section.id), showViewAll: section.id == "recent-items" || section.id == "workflows" ? false : true) {
             section.content
           }
         }
