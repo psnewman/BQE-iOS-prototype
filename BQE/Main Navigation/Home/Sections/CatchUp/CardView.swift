@@ -7,7 +7,6 @@ struct CardView: View {
   private let isTopCard: Bool
   private let isNextCard: Bool
   private let onRemove: (Bool) -> Void
-  @Binding var skipAnimation: Bool
   @ObservedObject var viewModel: CardStackViewModel
 
   @State private var offset: CGSize = CGSize.zero
@@ -20,14 +19,12 @@ struct CardView: View {
     card: EntryItem,
     isTopCard: Bool,
     isNextCard: Bool,
-    skipAnimation: Binding<Bool> = .constant(false),
     viewModel: CardStackViewModel,
     onRemove: @escaping (Bool) -> Void
   ) {
     self.card = card
     self.isTopCard = isTopCard
     self.isNextCard = isNextCard
-    self._skipAnimation = skipAnimation
     self.viewModel = viewModel
     self.onRemove = onRemove
   }
@@ -50,14 +47,6 @@ struct CardView: View {
         .onChange(of: isTopCard) { oldValue, newValue in
           if !newValue {
             offset = .zero
-          }
-        }
-        .onChange(of: skipAnimation) { _, newValue in
-          if newValue && isTopCard {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-              skipAnimation = false
-              // onRemove(false)
-            }
           }
         }
         .zIndex(Double(viewModel.getCardState(card.id).zIndex))
@@ -324,7 +313,6 @@ extension CardView {
     ),
     isTopCard: true,
     isNextCard: false,
-    skipAnimation: .constant(false),
     viewModel: CardStackViewModel(),
     onRemove: { _ in }
   )

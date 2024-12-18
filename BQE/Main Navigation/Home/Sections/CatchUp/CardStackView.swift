@@ -7,8 +7,6 @@ struct CardStackView: View {
   // ViewModel for managing the state of the card stack, including the logic for card removal and filtering.
   @StateObject private var stackViewModel: CardStackViewModel = CardStackViewModel()
   @State private var selectedEntryType: EntryType = .expense
-  @State private var skipAnimation: Bool = false
-  // @State private var showUndoButton: Bool = false
   @State private var undoCounter: Int = 5
   @State private var undoTimer: Timer? = nil
   @StateObject private var successAnimation = RiveViewModel(
@@ -49,7 +47,6 @@ struct CardStackView: View {
                 card: card,
                 isTopCard: isTopCard,
                 isNextCard: isNextCard,
-                skipAnimation: isTopCard ? $skipAnimation : .constant(false),
                 viewModel: stackViewModel,
                 onRemove: { isApproved in
                   // Handle card removal logic, including showing the undo button.
@@ -104,7 +101,6 @@ struct CardStackView: View {
 
           Button(action: {
             if stackViewModel.cards.first != nil {
-              skipAnimation = true
               stackViewModel.skipTopCard()
               undoCounter = 5  // Reset counter
               undoTimer?.invalidate()  // Invalidate any existing timer
