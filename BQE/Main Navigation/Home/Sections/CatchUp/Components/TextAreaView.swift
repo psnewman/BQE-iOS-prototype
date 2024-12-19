@@ -47,13 +47,16 @@ struct TextAreaView: View {
                 )
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Done") {
-                            isFocused = false
+                        if isFocused {
+                            Spacer()
+                            Button("Done") {
+                                isFocused = false
+                            }
+                            .foregroundStyle(.masterPrimary)
                         }
-                        .foregroundStyle(.masterPrimary)
                     }
                 }
+
         }
     }
 }

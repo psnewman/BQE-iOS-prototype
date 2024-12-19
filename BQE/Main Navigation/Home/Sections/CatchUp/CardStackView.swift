@@ -99,32 +99,32 @@ struct CardStackView: View {
           .opacity(stackViewModel.showUndoButton ? 1 : 0)
           .animation(.easeInOut, value: stackViewModel.showUndoButton)
 
-          Button(action: {
-            if stackViewModel.cards.first != nil {
-              stackViewModel.skipTopCard()
-              undoCounter = 5  // Reset counter
-              undoTimer?.invalidate()  // Invalidate any existing timer
-              undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if undoCounter > 1 {
-                  undoCounter -= 1
-                } else {
-                  undoCounter = 5
-                  stackViewModel.showUndoButton = false
-                  timer.invalidate()
+                Button(action: {
+                    if stackViewModel.cards.first != nil {
+                        stackViewModel.skipTopCard()
+                        undoCounter = 5  // Reset counter
+                        undoTimer?.invalidate()  // Invalidate any existing timer
+                        undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                            if undoCounter > 1 {
+                                undoCounter -= 1
+                            } else {
+                                undoCounter = 5
+                                stackViewModel.showUndoButton = false
+                                timer.invalidate()
+                            }
+                        }
+                    }
+                }) {
+                    HStack(spacing: 4) {
+                        FAText(iconName: "forward", size: 16)
+                        Text("Skip")
+                    }
                 }
-              }
-            }
-          }) {
-            HStack(spacing: 4) {
-              FAText(iconName: "forward", size: 16)
-              Text("Skip")
-            }
-          }
-          .bodyStyle()
-          .foregroundColor(.masterPrimary)
-          .frame(maxWidth: .infinity, alignment: .trailing)
-          .opacity(!stackViewModel.shouldShowSuccess ? 1 : 0)
-
+                .bodyStyle()
+                .foregroundColor(.masterPrimary)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .opacity(!stackViewModel.shouldShowSuccess ? 1 : 0)
+            
         }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, minHeight: 24)
