@@ -73,11 +73,17 @@ struct CardStackView: View {
             }
           }
         }
-        .onChange(of: stackViewModel.cards.count) { oldValue, newValue in
-          if newValue == 0 {
-            successAnimation.triggerInput("startSuccessAnimation")
+          .onChange(of: stackViewModel.shouldShowSuccess) { oldValue, newValue in
+              print("\n=== Success State Changed ===")
+              print("Old value: \(oldValue)")
+              print("New value: \(newValue)")
+              print("Cards count: \(stackViewModel.cards.count)")
+              if newValue {
+                  successAnimation.triggerInput("startSuccessAnimation")
+              }
           }
-        }
+
+          
         // Todo: try to avoid fixed height
         .frame(minHeight: 334)
 
