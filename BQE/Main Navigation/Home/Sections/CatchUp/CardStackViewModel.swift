@@ -99,21 +99,13 @@ class CardStackViewModel: ObservableObject {
                 }
                 
                 var state = self.cardState[topCard.id] ?? CardState()
-                state.zIndex = -1
-                state.offset = .zero
                 state.isSkipping = false
-                state.scale = CGSize(
-                    width: CardAnimationConfig.baseScale,
-                    height: CardAnimationConfig.baseScale
-                )
                 self.cardState[topCard.id] = state
-
                 self.cards.append(topCard)
                 self.skippedCards.append(topCard)
                 self.lastAction = .skipped
                 self.showUndoButton = true
-                
-                self.checkAndUpdateSuccessState()  // Check after skip animation
+                self.checkAndUpdateSuccessState()
                 
                 print("\nArrays after skip:")
                 print("Main Cards: \(self.cards.map { $0.entryName })")

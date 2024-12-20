@@ -87,7 +87,7 @@ struct HomeView: View {
   }
 }
 
-struct DropdownView: View {
+struct NavbarDropdownView: View {
   @Binding var selectedOption: String
   @Binding var isShowingSheet: Bool
 
@@ -119,17 +119,17 @@ struct DropdownView: View {
 
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: 8)
-            .fill(Color(red: 0.88, green: 0.91, blue: 0.94))
+                .fill(.navbarDropdownBackground)
             .frame(minWidth: 160, maxWidth: 260, minHeight: 32, maxHeight: 32)
 
           HStack(spacing: 4) {
             Text(selectedOption)
               .bodyStyle()
-              .foregroundColor(Color(red: 0.12, green: 0.16, blue: 0.23))
+              .foregroundColor(.typographyPrimary)
               .frame(minWidth: 120, maxWidth: 220, alignment: .leading)
             Spacer()
             FAText(iconName: "chevron-down", size: 12)
-              .foregroundColor(.black)
+                  .foregroundColor(.typographyPrimary)
           }
           .padding(.horizontal, 12)
         }

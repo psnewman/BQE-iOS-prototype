@@ -16,7 +16,7 @@ struct ContentView: View {
                         .bqeBackground()
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
-                                DropdownView(selectedOption: $selectedOption, isShowingSheet: $isShowingSheet)
+                                NavbarDropdownView(selectedOption: $selectedOption, isShowingSheet: $isShowingSheet)
                             }
                         }
                         .navigationTitle("")
