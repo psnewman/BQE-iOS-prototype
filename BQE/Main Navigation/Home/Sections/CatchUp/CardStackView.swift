@@ -18,7 +18,7 @@ struct CardStackView: View {
   var body: some View {
     VStack(spacing: 16) {
       // Filter component for selecting entry type.
-        FilterEntryType(selectedEntryType: $selectedEntryType, stackViewModel: stackViewModel)
+      FilterEntryType(selectedEntryType: $selectedEntryType, stackViewModel: stackViewModel)
 
       VStack(spacing: 16) {
         ZStack {
@@ -73,17 +73,13 @@ struct CardStackView: View {
             }
           }
         }
-          .onChange(of: stackViewModel.shouldShowSuccess) { oldValue, newValue in
-              print("\n=== Success State Changed ===")
-              print("Old value: \(oldValue)")
-              print("New value: \(newValue)")
-              print("Cards count: \(stackViewModel.cards.count)")
-              if newValue {
-                  successAnimation.triggerInput("startSuccessAnimation")
-              }
-          }
-
+        .onChange(of: stackViewModel.shouldShowSuccess) { oldValue, newValue in
           
+          if newValue {
+            successAnimation.triggerInput("startSuccessAnimation")
+          }
+        }
+
         // Todo: try to avoid fixed height
         .frame(minHeight: 334)
 
@@ -105,33 +101,33 @@ struct CardStackView: View {
           .opacity(stackViewModel.showUndoButton ? 1 : 0)
           .animation(.easeInOut, value: stackViewModel.showUndoButton)
 
-                Button(action: {
-                    if stackViewModel.cards.first != nil {
-                        stackViewModel.skipTopCard()
-                        undoCounter = 5  // Reset counter
-                        undoTimer?.invalidate()  // Invalidate any existing timer
-                        undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                            if undoCounter > 1 {
-                                undoCounter -= 1
-                            } else {
-                                undoCounter = 5
-                                stackViewModel.showUndoButton = false
-                                timer.invalidate()
-                            }
-                        }
-                    }
-                }) {
-                    HStack(spacing: 4) {
-                        FAText(iconName: "forward", size: 16)
-                        Text("Skip")
-                    }
+          Button(action: {
+            if stackViewModel.cards.first != nil {
+              stackViewModel.skipTopCard()
+              undoCounter = 5  // Reset counter
+              undoTimer?.invalidate()  // Invalidate any existing timer
+              undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if undoCounter > 1 {
+                  undoCounter -= 1
+                } else {
+                  undoCounter = 5
+                  stackViewModel.showUndoButton = false
+                  timer.invalidate()
                 }
-                .bodyStyle()
-                .foregroundColor(.masterPrimary)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .opacity(!stackViewModel.shouldShowSuccess ? 1 : 0)
-            
-        }
+              }
+            }
+          }) {
+            HStack(spacing: 4) {
+              FAText(iconName: "forward", size: 16)
+              Text("Skip")
+            }
+          }
+          .bodyStyle()
+          .foregroundColor(.masterPrimary)
+          .frame(maxWidth: .infinity, alignment: .trailing)
+          .disabled(stackViewModel.cards.count <= 1)
+          .opacity(stackViewModel.cards.count > 1 ? 1 : (stackViewModel.cards.count == 0 ? 0 : 0.5))       
+          }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, minHeight: 24)
       }

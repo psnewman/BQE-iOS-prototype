@@ -34,15 +34,7 @@ class CardStackViewModel: ObservableObject {
     
     func removeTopCard(isApproved: Bool) {
             guard let topCard = cards.first else { return }
-            
-            print("\n=== Removing Top Card ===")
-            print("Card being removed: \(topCard.entryName)")
-            print("Is Approved: \(isApproved)")
-            print("Arrays before removal:")
-            print("Main Cards: \(cards.map { $0.entryName })")
-            print("Approved Cards: \(approvedCards.map { $0.entryName })")
-            print("Rejected Cards: \(rejectedCards.map { $0.entryName })")
-            
+                        
             if isApproved {
                 approvedCards.append(topCard)
                 lastAction = .approved
@@ -54,25 +46,12 @@ class CardStackViewModel: ObservableObject {
             cards.removeFirst()
             expensesLeft = max(0, expensesLeft - 1)
             showUndoButton = true
-            
             checkAndUpdateSuccessState()  // Check after removing card
-            
-            print("\nArrays after removal:")
-            print("Main Cards: \(cards.map { $0.entryName })")
-            print("Approved Cards: \(approvedCards.map { $0.entryName })")
-            print("Rejected Cards: \(rejectedCards.map { $0.entryName })")
-            print("Last Action: \(String(describing: lastAction))")
         }
 
     func skipTopCard() {
             guard let topCard = cards.first else { return }
             let cardWidth = UIScreen.main.bounds.width - 32
-            
-            print("\n=== Skipping Top Card ===")
-            print("Card being skipped: \(topCard.entryName)")
-            print("Arrays before skip:")
-            print("Main Cards: \(cards.map { $0.entryName })")
-            print("Skipped Cards: \(skippedCards.map { $0.entryName })")
             
             // Reset any existing skip states
             for (id, _) in cardState {
@@ -106,11 +85,6 @@ class CardStackViewModel: ObservableObject {
                 self.lastAction = .skipped
                 self.showUndoButton = true
                 self.checkAndUpdateSuccessState()
-                
-                print("\nArrays after skip:")
-                print("Main Cards: \(self.cards.map { $0.entryName })")
-                print("Skipped Cards: \(self.skippedCards.map { $0.entryName })")
-                print("Last Action: \(String(describing: self.lastAction))")
             }
         }
     
@@ -158,13 +132,6 @@ class CardStackViewModel: ObservableObject {
     }
     
     func undoLastAction() {
-        print("\n=== Starting Undo Action ===")
-        print("Current Arrays State:")
-        print("Main Cards: \(cards.map { $0.entryName })")
-        print("Approved Cards: \(approvedCards.map { $0.entryName })")
-        print("Rejected Cards: \(rejectedCards.map { $0.entryName })")
-        print("Skipped Cards: \(skippedCards.map { $0.entryName })")
-        print("Last Action: \(String(describing: lastAction))")
         
         // Clear any existing undo states
         for (id, _) in cardState {
@@ -179,17 +146,14 @@ class CardStackViewModel: ObservableObject {
         switch action {
         case .skipped:
             if let lastSkipped = skippedCards.last {
-                print("\nUndoing Skipped Card: \(lastSkipped.entryName)")
                 handleUndo(card: lastSkipped, from: "skipped", array: &skippedCards)
             }
         case .approved:
             if let lastApproved = approvedCards.last {
-                print("\nUndoing Approved Card: \(lastApproved.entryName)")
                 handleUndo(card: lastApproved, from: "approved", array: &approvedCards)
             }
         case .rejected:
             if let lastRejected = rejectedCards.last {
-                print("\nUndoing Rejected Card: \(lastRejected.entryName)")
                 handleUndo(card: lastRejected, from: "rejected", array: &rejectedCards)
             }
         }
@@ -200,10 +164,6 @@ class CardStackViewModel: ObservableObject {
 
 
     private func handleUndo(card: EntryItem, from source: String, array: inout [EntryItem]) {
-            print("\n--- Handle Undo Details ---")
-            print("Card being undone: \(card.entryName)")
-            print("Source: \(source)")
-            print("Current array count before removal: \(array.count)")
             
             // Position the card before animation
             positionCardForUndo(card: card, from: source)
@@ -214,13 +174,9 @@ class CardStackViewModel: ObservableObject {
             // Remove any existing instances of the card from the main array
             cards.removeAll(where: { $0.id == card.id })
             
-            print("Array count after removal: \(array.count)")
             
             DispatchQueue.main.async {
-                print("\nInserting card into main stack: \(card.entryName)")
-                print("Main stack before insertion: \(self.cards.map { $0.entryName })")
                 self.cards.insert(card, at: 0)
-                print("Main stack after insertion: \(self.cards.map { $0.entryName })")
                 
                 self.checkAndUpdateSuccessState()  // Check after inserting card
                 
@@ -244,14 +200,6 @@ class CardStackViewModel: ObservableObject {
                     self.cardState[card.id] = state
                     
                     self.checkAndUpdateSuccessState()  // Check after animation completes
-                    
-                    print("\n=== Undo Complete ===")
-                    print("Final Arrays State:")
-                    print("Main Cards: \(self.cards.map { $0.entryName })")
-                    print("Approved Cards: \(self.approvedCards.map { $0.entryName })")
-                    print("Rejected Cards: \(self.rejectedCards.map { $0.entryName })")
-                    print("Skipped Cards: \(self.skippedCards.map { $0.entryName })")
-                    print("Should Show Success: \(self.shouldShowSuccess)")
                 }
             }
         
@@ -264,18 +212,13 @@ class CardStackViewModel: ObservableObject {
     }
     
     func checkAndUpdateSuccessState() {
-        print("\n=== Checking Success State ===")
-        print("Current cards count: \(cards.count)")
-        print("Current success state: \(shouldShowSuccess)")
         
         // Update success state whenever cards array becomes empty
         if cards.isEmpty {
             shouldShowSuccess = true
         } else {
             shouldShowSuccess = false
-        }
-        
-        print("New success state: \(shouldShowSuccess)")
+        }        
     }
 
     
