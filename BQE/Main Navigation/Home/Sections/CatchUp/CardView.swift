@@ -36,21 +36,19 @@ struct CardView: View {
             cardContent
                 .modifier(CardStyle(offset: currentOffset, dragThreshold: dragThreshold))
                 .scaleEffect(currentScale)
-                .animation(.spring(response: 0.3), value: scaleEffect)
+                // .animation(.spring(response: 0.3), value: scaleEffect)
+                .animation(.spring(response: 0.3), value: viewModel.topCardOffset)
                 .offset(y: verticalOffset)
                 .offset(x: currentOffset.width, y: currentOffset.height)
-            .rotationEffect(
-                .degrees(
-                    viewModel.getCardState(card.id).isUndoing ?
-                        viewModel.getCardState(card.id).rotation :
-                        viewModel.getCardState(card.id).isSkipping ?
-                            0 :
-                            Double(currentOffset.width / CardAnimationConfig.rotationFactor)
+                .rotationEffect(
+                    .degrees(
+                        viewModel.getCardState(card.id).isUndoing ?
+                            viewModel.getCardState(card.id).rotation :
+                            viewModel.getCardState(card.id).isSkipping ?
+                                0 :
+                                Double(currentOffset.width / CardAnimationConfig.rotationFactor)
+                    )
                 )
-            )
-
-
-            
                 .opacity(isTopCard || isNextCard ? 1 : 0)
                 .gesture(isTopCard ? dragGesture : nil)
                 .onChange(of: isTopCard) { oldValue, newValue in
@@ -65,6 +63,7 @@ struct CardView: View {
                 .frame(width: geometry.size.width)
         }
     }
+
 }
 
 // MARK: - Content Views
@@ -163,41 +162,62 @@ extension CardView {
         return isDragging ? offset : state.offset
     }
     
-    private var currentScale: CGSize {
-        let scale = if isDragging {
-            scaleEffect
-        } else {
-            if isTopCard {
-                CardAnimationConfig.maxScale
-            } else if isNextCard {
-                CardAnimationConfig.baseScale
-            } else {
-                CardAnimationConfig.baseScale
-            }
-        }
+   private var currentScale: CGSize {
+    if isTopCard {
+        return CGSize(width: CardAnimationConfig.maxScale, height: CardAnimationConfig.maxScale)
+    }
+
+    if isNextCard {
+        // Force immediate scale update during drag
+        let topCardOffset = abs(viewModel.topCardOffset.width)
+        let progress = min(topCardOffset / dragThreshold, 1.0)
+        let scale = CardAnimationConfig.baseScale +
+            (CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * progress
+        
         return CGSize(width: scale, height: scale)
     }
+
+    return CGSize(width: CardAnimationConfig.baseScale, height: CardAnimationConfig.baseScale)
+}
+
+
     
     private var scaleEffect: CGFloat {
         if isTopCard {
             return CardAnimationConfig.maxScale
         }
-        
+
         if isNextCard {
-            // Calculate scale for next card based on top card's movement
-            let topCardOffset = isDragging ? offset.width : 0
-            let progress = abs(topCardOffset) / dragThreshold
-            return CardAnimationConfig.baseScale +
-            ((CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * progress)
+            // Use the top card's offset from the view model
+            let topCardOffset = abs(viewModel.topCardOffset.width)
+            let progress = min(topCardOffset / dragThreshold, 1.0)
+            let scale = CardAnimationConfig.baseScale +
+                (CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * progress
+
+            print("""
+                Next Card Debug:
+                - Card ID: \(card.id)
+                - Top Card Offset: \(topCardOffset)
+                - Drag Threshold: \(dragThreshold)
+                - Progress: \(progress)
+                - Calculated Scale: \(scale)
+                """)
+
+            return scale
         }
-        
+
         return CardAnimationConfig.baseScale
     }
     
-    fileprivate var verticalOffset: CGFloat {
-        guard isNextCard else { return 0 }
-        return CardAnimationConfig.verticalOffset * (1 - abs(offset.width) / dragThreshold)
-    }
+    // In CardView.swift
+fileprivate var verticalOffset: CGFloat {
+    guard isNextCard else { return 0 }
+    let topCardOffset = abs(viewModel.topCardOffset.width)
+    let progress = min(topCardOffset / dragThreshold, 1.0)
+    // Start from CardAnimationConfig.verticalOffset (12) and decrease to 0 as progress increases
+    return CardAnimationConfig.verticalOffset * (1 - progress)
+}
+
 }
 
 // MARK: - Gesture Handling
@@ -208,6 +228,7 @@ extension CardView {
             .onEnded { _ in handleDragEnd() }
     }
     
+    // In CardView.swift
     fileprivate func handleDragChange(_ value: DragGesture.Value) {
         isDragging = true
         let resistedDrag = value.translation.width * CardAnimationConfig.dragResistance
@@ -217,9 +238,17 @@ extension CardView {
         var state = viewModel.getCardState(card.id)
         state.offset = offset
         viewModel.cardState[card.id] = state
+        
+        // Update top card offset and force view update
+        withAnimation(.interactiveSpring()) {  // Add animation here
+            viewModel.topCardOffset = offset
+            viewModel.objectWillChange.send()  // Force update
+        }
     }
+
     
-    fileprivate func handleDragEnd() {
+    // In CardView.swift
+    fileprivate func handleDragEnd() {  
         withAnimation(.spring()) {
             if abs(offset.width) > dragThreshold {
                 let isApproved = offset.width > 0
@@ -234,14 +263,28 @@ extension CardView {
                 state.offset = offset
                 viewModel.cardState[card.id] = state
                 
+                // Update top card offset
+                viewModel.topCardOffset = offset
+                
+                // Call onRemove which updates the card stack
                 onRemove(isApproved)
+                
+                // Reset topCardOffset to ensure next card starts from baseScale and verticalOffset starts from 12
+                DispatchQueue.main.async {
+                    withAnimation(.none) {
+                        viewModel.topCardOffset = .zero
+                    }
+                }
+                
             } else {
                 offset = .zero
                 
-                // Reset view model state
+                // Reset view model state and top card offset
                 var state = viewModel.getCardState(card.id)
                 state.offset = .zero
                 viewModel.cardState[card.id] = state
+                
+                viewModel.topCardOffset = .zero
             }
             isDragging = false
         }

@@ -10,6 +10,11 @@ class CardStackViewModel: ObservableObject {
     @Published var cardState: [UUID: CardState] = [:]
     @Published var showUndoButton: Bool = false
     @Published var lastAction: CardAction?
+    @Published var topCardOffset: CGSize = .zero {
+        willSet {
+            objectWillChange.send()  // Force update when topCardOffset changes
+        }
+    }
     
     
     struct CardState {
