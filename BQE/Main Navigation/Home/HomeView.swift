@@ -1,7 +1,6 @@
-import SwiftUI
 import FASwiftUI
 import RiveRuntime
-
+import SwiftUI
 
 class HomeSectionsState: ObservableObject {
   private let defaults = UserDefaults.standard
@@ -63,7 +62,10 @@ struct HomeView: View {
     ScrollView {
       VStack(spacing: 8) {
         ForEach(sections) { section in
-          HomeSectionView(section.label, isExpanded: expandedBinding(for: section.id), showViewAll: section.id == "recent-items" || section.id == "workflows" ? false : true) {
+          HomeSectionView(
+            section.label, isExpanded: expandedBinding(for: section.id),
+            showViewAll: section.id == "recent-items" || section.id == "workflows" ? false : true
+          ) {
             section.content
           }
         }
@@ -71,6 +73,10 @@ struct HomeView: View {
       .padding(.vertical)
     }
     .background(.masterBackground)
+    .sheet(isPresented: $isShowingSheet) {      
+        SelectSampleCompanyView(selectedOption: $selectedOption)      
+      .presentationDetents([.medium])
+    }
   }
 
   private func expandedBinding(for id: String) -> Binding<Bool> {
@@ -123,7 +129,7 @@ struct NavbarDropdownView: View {
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
             .lineLimit(1)
-            Spacer()
+          Spacer()
           FAText(iconName: "chevron-down", size: 12)
             .foregroundColor(.typographyPrimary)
         }
@@ -131,8 +137,6 @@ struct NavbarDropdownView: View {
         .frame(minWidth: 160, maxWidth: 260)
         .frame(height: 32, alignment: .leading)
 
-          
-          
         .background(
           RoundedRectangle(cornerRadius: 8)
             .fill(.navbarDropdownBackground)
