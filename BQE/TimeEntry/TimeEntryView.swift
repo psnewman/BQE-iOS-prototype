@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct TimeEntryView: View {
-  @Environment(\.dismiss) private var dismiss
 
   // State variables
   @State private var showFields: Bool = false
@@ -70,7 +69,7 @@ struct TimeEntryView: View {
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
         Button("Save") {
-          dismiss()
+          // Saving logic...
         }
       }
     }

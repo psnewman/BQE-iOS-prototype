@@ -21,8 +21,8 @@ struct EntryTextRowView: View {
                         .foregroundColor(.typographySecondary)
                         .bodyStyle()
                         .frame(width: 96, alignment: .leading)
-                    Spacer()
-                    Text(value)
+                        
+                    Text(value)                        
                         .foregroundColor(.typographyPrimary)
                         .bodyStyle()
                         .frame(maxWidth: .infinity, alignment: .leading)

@@ -13,7 +13,6 @@
 		4F522B4F2BD83CCF00CC05F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */; };
 		4F522B522BD83CCF00CC05F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B512BD83CCF00CC05F7 /* Preview Assets.xcassets */; };
 		4F52468A2CDEEEE9009CDDD2 /* font-inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */; };
-		4FADBB742C814A1D00C3CD70 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */; };
 		4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */; };
 		4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE153192CF478FF00835B73 /* FASwiftUI */; };
 		4FEA14EC2CE5533600E4D166 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4FEA14EB2CE5533600E4D166 /* .gitignore */; };
@@ -28,7 +27,6 @@
 		4F522B512BD83CCF00CC05F7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-inter.ttf"; sourceTree = "<group>"; };
 		4F5F672F2CDD6C4C00C06AD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		4FEA14EB2CE5533600E4D166 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,7 +74,6 @@
 				4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */,
 				4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */,
 				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
-				4FADBB732C814A1D00C3CD70 /* BottomSheetView.swift */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				4F1A1B252CE0CD7900A024F8 /* Helpers */,
@@ -182,7 +179,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FADBB742C814A1D00C3CD70 /* BottomSheetView.swift in Sources */,
 				4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */,
 				4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */,
 			);

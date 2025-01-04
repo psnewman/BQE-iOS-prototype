@@ -28,24 +28,51 @@ enum BillableStatus {
   case billed
 }
 
-struct EntryItem: Identifiable {
-  let id: UUID = UUID()
-  let entryType: EntryType
-  let entryName: String
-  let description: String
-  // let memo: String
-  let date: String
-  let resource: String
-  let project: String
-  let client: String
-  let units: String
-  let costRate: String
-  let costAmount: String
-  let billable: BillableStatus
+class EntryItem: Identifiable, ObservableObject {
+    let id: UUID = UUID()
+    let entryType: EntryType
+    let entryName: String
+    let description: String
+    @Published var memo: String
+    let date: String
+    let resource: String
+    let project: String
+    let client: String
+    let units: String
+    let costRate: String
+    let costAmount: String
+    let billable: BillableStatus
+
+  init(
+    entryType: EntryType,
+    entryName: String,
+    description: String,
+    memo: String,
+    date: String,
+    resource: String,
+    project: String,
+    client: String,
+    units: String,
+    costRate: String,
+    costAmount: String,
+    billable: BillableStatus
+  ) {
+    self.entryType = entryType
+    self.entryName = entryName
+    self.description = description
+    self.memo = memo
+    self.date = date
+    self.resource = resource
+    self.project = project
+    self.client = client
+    self.units = units
+    self.costRate = costRate
+    self.costAmount = costAmount
+    self.billable = billable
+  }
 }
 
 class CardViewModel: ObservableObject {
-  @Published var memo: String = ""
 
   private let staticData:
     (
@@ -72,7 +99,7 @@ class CardViewModel: ObservableObject {
         "Professional development course on new industry regulations and compliance.",
         "Rental of presentation equipment for client workshop including projector and sound system.",
       ],
-      
+
       expenseTypes: [EntryType.expense, .time, .timeAndExpense],
       dates: ["8/11/2023", "8/12/2023", "8/13/2023", "8/14/2023", "8/15/2023"],
       resources: [
@@ -113,6 +140,7 @@ class CardViewModel: ObservableObject {
         entryType: staticData.expenseTypes[typeIndex],
         entryName: staticData.expenseNames[expenseIndex],
         description: staticData.descriptions[expenseIndex],
+        memo: "",
         date: staticData.dates[dateIndex],
         resource: staticData.resources[resourceIndex],
         project: staticData.projects[projectIndex],

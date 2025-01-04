@@ -1,5 +1,6 @@
 import SwiftUI
 
+// In CardAnimationConfig.swift
 enum CardAnimationConfig {
     static let dragResistance: CGFloat = 0.5
     static let maxOverlayOpacity: Double = 0.8

@@ -7,15 +7,15 @@ struct Event: Identifiable {
     let endTime: Date
     let title: String
     let subtitle: String
-    let attendees: [String]
+    let attendees: [(id: UUID, initial: String)]
 }
 
 struct EventsSectionView: View {
     // Sample data
     let events = [
-        Event(date: Date().addingTimeInterval(86400), startTime: Date().addingTimeInterval(86400 + 18 * 3600), endTime: Date().addingTimeInterval(86400 + 20 * 3600), title: "Color and Material Review Meeting", subtitle: "19-14 - WARNER: Design Development", attendees: ["S", "B", "B", "JS"]),
-        Event(date: Date().addingTimeInterval(2 * 86400), startTime: Date().addingTimeInterval(2 * 86400 + 14 * 3600), endTime: Date().addingTimeInterval(2 * 86400 + 16 * 3600), title: "Project Planning Session", subtitle: "20-05 - ACME: Conceptual Design", attendees: ["A", "C", "D"]),
-        Event(date: Date().addingTimeInterval(3 * 86400), startTime: Date().addingTimeInterval(3 * 86400 + 10 * 3600), endTime: Date().addingTimeInterval(3 * 86400 + 11 * 3600), title: "Client Presentation", subtitle: "18-22 - GLOBEX: Construction Documents", attendees: ["E", "F", "G", "H"])
+        Event(date: Date().addingTimeInterval(86400), startTime: Date().addingTimeInterval(86400 + 18 * 3600), endTime: Date().addingTimeInterval(86400 + 20 * 3600), title: "Color and Material Review Meeting", subtitle: "19-14 - WARNER: Design Development", attendees: ["S", "B", "B", "JS"].map { (UUID(), $0) }),
+        Event(date: Date().addingTimeInterval(2 * 86400), startTime: Date().addingTimeInterval(2 * 86400 + 14 * 3600), endTime: Date().addingTimeInterval(2 * 86400 + 16 * 3600), title: "Project Planning Session", subtitle: "20-05 - ACME: Conceptual Design", attendees: ["A", "C", "D"].map { (UUID(), $0) }),
+        Event(date: Date().addingTimeInterval(3 * 86400), startTime: Date().addingTimeInterval(3 * 86400 + 10 * 3600), endTime: Date().addingTimeInterval(3 * 86400 + 11 * 3600), title: "Client Presentation", subtitle: "18-22 - GLOBEX: Construction Documents", attendees: ["E", "F", "G", "H"].map { (UUID(), $0) })
     ]
     
     var body: some View {
@@ -60,11 +60,11 @@ struct EventView: View {
                 }
                 
                 HStack(spacing: -8) {
-                    ForEach(event.attendees, id: \.self) { attendee in
+                    ForEach(event.attendees, id: \.id) { attendee in
                         Circle()
                             .fill(Color.random)
                             .frame(width: 24, height: 24)
-                            .overlay(Text(attendee).bodySmallStyle().foregroundColor(.typographyPrimary))
+                            .overlay(Text(attendee.initial).bodySmallStyle().foregroundColor(.typographyPrimary))
                             .overlay(
                                 Circle()
                                     .inset(by: 0.5)

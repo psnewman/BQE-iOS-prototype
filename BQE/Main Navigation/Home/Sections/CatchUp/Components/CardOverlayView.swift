@@ -6,7 +6,7 @@ struct CardOverlayView: View {
     let isTopCard: Bool
     let isSkipped: Bool
     let card: EntryItem
-    @ObservedObject var viewModel: CardStackViewModel
+    @ObservedObject var stackViewModel: CardStackViewModel
     
     var body: some View {
         ZStack {
@@ -20,7 +20,7 @@ struct CardOverlayView: View {
     
     private var overlayBackground: some View {
         Group {
-            if isSkipped || (viewModel.getCardState(card.id).undoSource == "skipped" && viewModel.getCardState(card.id).isUndoing) {
+            if isSkipped || (stackViewModel.getCardState(card.id).undoSource == "skipped" && stackViewModel.getCardState(card.id).isUndoing) {
                 Color.blue
             } else if offset.width > 0 {
                 Color.green
@@ -77,7 +77,7 @@ struct CardOverlayView: View {
     private func calculateOverlayOpacity() -> Double {
         guard isTopCard else { return 0 }
         
-        let state = viewModel.getCardState(card.id)
+        let state = stackViewModel.getCardState(card.id)
         
         if state.isUndoing {
             let screenWidth = UIScreen.main.bounds.width - 32

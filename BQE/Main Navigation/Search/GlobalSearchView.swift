@@ -5,7 +5,6 @@ struct GlobalSearchView: View {
   @State private var searchText: String = ""
   @FocusState private var isFocused: Bool
   @State private var placeholder: String = "Search"
-  @Environment(\.dismiss) private var dismiss
 
   private let recentSearches = ["Fount", "John", "Pasadena", "Spotlight", "PTO"]
 

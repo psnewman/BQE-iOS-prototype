@@ -117,27 +117,31 @@ struct NavbarDropdownView: View {
           .resizable()
           .frame(width: 32, height: 32)
 
-        ZStack(alignment: .leading) {
-          RoundedRectangle(cornerRadius: 8)
-                .fill(.navbarDropdownBackground)
-            .frame(minWidth: 160, maxWidth: 260, minHeight: 32, maxHeight: 32)
-
-          HStack(spacing: 4) {
-            Text(selectedOption)
-              .bodyStyle()
-              .foregroundColor(.typographyPrimary)
-              .frame(minWidth: 120, maxWidth: 220, alignment: .leading)
+        // Wrap content in a flexible container
+        HStack(spacing: 4) {
+          Text(selectedOption)
+            .bodyStyle()
+            .foregroundColor(.typographyPrimary)
+            .lineLimit(1)
             Spacer()
-            FAText(iconName: "chevron-down", size: 12)
-                  .foregroundColor(.typographyPrimary)
-          }
-          .padding(.horizontal, 12)
+          FAText(iconName: "chevron-down", size: 12)
+            .foregroundColor(.typographyPrimary)
         }
+        .padding(.horizontal, 12)
+        .frame(minWidth: 160, maxWidth: 260)
+        .frame(height: 32, alignment: .leading)
+
+          
+          
+        .background(
+          RoundedRectangle(cornerRadius: 8)
+            .fill(.navbarDropdownBackground)
+        )
       }
     }
   }
 }
 
 #Preview {
-  HomeView(selectedOption: .constant("My Company 1"), isShowingSheet: .constant(false))
+  HomeView(selectedOption: .constant("My 1"), isShowingSheet: .constant(false))
 }

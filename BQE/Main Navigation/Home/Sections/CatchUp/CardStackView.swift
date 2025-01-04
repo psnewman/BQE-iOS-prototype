@@ -14,6 +14,7 @@ struct CardStackView: View {
     stateMachineName: "State Machine 1",
     autoPlay: false
   )
+  @State private var isMemoSheetPresented = false
 
   var body: some View {
     VStack(spacing: 16) {
@@ -47,7 +48,7 @@ struct CardStackView: View {
                 card: card,
                 isTopCard: isTopCard,
                 isNextCard: isNextCard,
-                viewModel: stackViewModel,
+                stackViewModel: stackViewModel,
                 onRemove: { isApproved in
                   // Handle card removal logic, including showing the undo button.
                   stackViewModel.removeTopCard(isApproved: isApproved)
@@ -63,8 +64,8 @@ struct CardStackView: View {
                     }
                   }
                 }
-
               )
+
               .id(card.id)
               .zIndex(
                 Double(
@@ -74,18 +75,19 @@ struct CardStackView: View {
           }
         }
         .onChange(of: stackViewModel.shouldShowSuccess) { oldValue, newValue in
-          
+
           if newValue {
             successAnimation.triggerInput("startSuccessAnimation")
           }
         }
 
         // Todo: try to avoid fixed height
-        .frame(minHeight: 334)
+        .frame(height: 296)
 
         // Stack toolbar
         HStack {
           Text("\(stackViewModel.expensesLeft) left")
+            .contentTransition(.numericText())
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -125,13 +127,18 @@ struct CardStackView: View {
           .bodyStyle()
           .foregroundColor(.masterPrimary)
           .frame(maxWidth: .infinity, alignment: .trailing)
-          .disabled(stackViewModel.cards.count <= 1)
-          .opacity(stackViewModel.cards.count > 1 ? 1 : (stackViewModel.cards.count == 0 ? 0 : 0.5))       
-          }
+          .disabled(
+            stackViewModel.cards.count <= 1
+              || (stackViewModel.cards.first.map { stackViewModel.getCardState($0.id).isSkipping }
+                ?? false)
+          )
+          .opacity(stackViewModel.cards.count > 1 ? 1 : (stackViewModel.cards.count == 0 ? 0 : 0.5))
+        }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, minHeight: 24)
       }
     }
+
     .onAppear {
       stackViewModel.resetCards()
     }
@@ -167,6 +174,7 @@ struct FilterEntryType: View {
             .foregroundColor(.typographySecondary)
 
           Text("\(selectedEntryType.rawValue) (\(stackViewModel.expensesLeft))")
+            .contentTransition(.numericText())
             .frame(maxWidth: .infinity, alignment: .leading)
             .bodyStyle()
             .foregroundColor(.typographyPrimary)
