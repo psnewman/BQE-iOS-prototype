@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextAreaView: View {
+struct EntryMemoRowView: View {
     let label: String
     let placeholder: String
     
@@ -64,5 +64,5 @@ struct TextAreaView: View {
 
 #Preview {
     @Previewable @State var text = ""
-    TextAreaView(label: "Memo", placeholder: "Enter memo", text: $text)
+    EntryMemoRowView(label: "Memo", placeholder: "Enter memo", text: $text)
 }

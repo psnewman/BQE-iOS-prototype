@@ -6,7 +6,7 @@ enum EntryRowLayout {
 
 }
 
-struct EntryRowView: View {
+struct EntryTextRowView: View {
     let label: String
     let value: String
     let layout: EntryRowLayout
@@ -43,5 +43,5 @@ struct EntryRowView: View {
 }
 
 #Preview {
-    EntryRowView(label: "Memo", value: "Memo text", layout: .horizontal, isDescription: true)
+    EntryTextRowView(label: "Memo", value: "Memo text", layout: .horizontal, isDescription: true)
 }

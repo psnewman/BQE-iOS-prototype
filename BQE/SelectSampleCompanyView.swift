@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BottomSheetView: View {
+struct SelectSampleCompanyView: View {
     @Binding var selectedCompany: String // Non-optional String
     @Environment(\.dismiss) var dismiss // Access dismiss action
     let companies = ["Accounting", "Architectural", "Consulting", "Engineering", "Legal"]
@@ -57,5 +57,5 @@ struct BottomSheetView: View {
 }
 
 #Preview {
-    BottomSheetView(selectedCompany: .constant("Accounting"))
+    SelectSampleCompanyView(selectedCompany: .constant("Accounting"))
 }
