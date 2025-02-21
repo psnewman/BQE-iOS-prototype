@@ -106,14 +106,22 @@ struct CardStackView: View {
           Button(action: {
             if stackViewModel.cards.first != nil {
               stackViewModel.skipTopCard()
-              undoCounter = 5  // Reset counter
-              undoTimer?.invalidate()  // Invalidate any existing timer
+
+              // Reset any existing timer
+              undoTimer?.invalidate()
+
+              // Start new timer
+              undoCounter = 5
               undoTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 if undoCounter > 1 {
-                  undoCounter -= 1
+                  withAnimation {
+                    undoCounter -= 1
+                  }
                 } else {
                   undoCounter = 5
-                  stackViewModel.showUndoButton = false
+                  withAnimation {
+                    stackViewModel.showUndoButton = false
+                  }
                   timer.invalidate()
                 }
               }
@@ -124,6 +132,7 @@ struct CardStackView: View {
               Text("Skip")
             }
           }
+
           .bodyStyle()
           .foregroundColor(.masterPrimary)
           .frame(maxWidth: .infinity, alignment: .trailing)

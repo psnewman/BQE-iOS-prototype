@@ -53,7 +53,7 @@ struct CardView: View {
             offset = .zero
           }
         }
-        .zIndex(Double(stackViewModel.getCardState(card.id).zIndex))
+        .zIndex(stackViewModel.getCardState(card.id).zIndex)
         .onAppear {
           dragThreshold = geometry.size.width * CardAnimationConfig.dragThresholdMultiplier
         }
@@ -66,12 +66,15 @@ struct CardView: View {
             memo: Binding(
               get: { self.card.memo },
               set: { newValue in
-                self.card.memo = newValue  // Update the card directly
-                stackViewModel.updateMemo(for: card.id, memo: newValue)  // Sync with ViewModel
+                self.card.memo = newValue
+                stackViewModel.updateMemo(for: card.id, memo: newValue)
               }
             )
           )
+          .presentationDetents([.medium])
+          .presentationDragIndicator(.visible)
         }
+
 
     }
   }

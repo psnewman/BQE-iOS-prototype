@@ -7,67 +7,80 @@
 
 import SwiftUI
 
-struct MemoBottomSheet: View {
-  @Binding var isMemoSheetPresented: Bool
-  @Binding var memo: String
-  @FocusState private var isFocused: Bool
-  @Environment(\.dismiss) private var dismiss
-
-  var body: some View {
-
-    VStack(spacing: 4) {
-
-      HStack {
-        Button("Cancel") {
-          isMemoSheetPresented = false
-          dismiss()
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundColor(.masterPrimary)
-
-        Spacer()
-
-        Text("Memo")
-          .headlineStyle()
-          .frame(maxWidth: .infinity)
-
-        Spacer()
-          .frame(maxWidth: .infinity, alignment: .trailing)
-      }
-      .padding(.vertical, 8)
-
-      TextEditor(text: $memo)
-        .frame(maxWidth: .infinity, minHeight: 80)
-        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-        .tint(.masterPrimary)
-        .overlay(
-          RoundedRectangle(cornerRadius: 8)
-            .stroke(isFocused ? .masterPrimary : .border, lineWidth: 1)
-        )
-        .focused($isFocused)
-        .onAppear {
-          isFocused = true
-        }
-        .toolbar {
-          ToolbarItemGroup(placement: .keyboard) {
-            Spacer()
-            Button("Done") {
-              isMemoSheetPresented = false
-              isFocused = false
-              dismiss()
-            }
-            .tint(.masterPrimary)
-          }
-        }
-
-      Spacer()
+struct SheetNavigationBarModifier: ViewModifier {
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(Color.masterBackground)
+        appearance.shadowColor = .clear
+        
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
     }
-    .padding(16)
-  }
+    
+    func body(content: Content) -> some View {
+        content
+    }
+}
+
+struct MemoBottomSheet: View {
+    @Binding var isMemoSheetPresented: Bool
+    @Binding var memo: String
+    @FocusState private var isFocused: Bool
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 4) {
+                ZStack(alignment: .top) {
+                    TextEditor(text: $memo)
+                        .frame(maxWidth: .infinity, minHeight: 80)
+                        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                        .tint(.masterPrimary)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(isFocused ? .masterPrimary : .border, lineWidth: 1)
+                        )
+                        .focused($isFocused)
+                }
+                .onAppear {
+                    isFocused = true
+                }
+                
+                Spacer()
+            }
+            .padding(16)
+            .navigationTitle("Memo")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        isMemoSheetPresented = false
+                        dismiss()
+                    }
+                    .foregroundColor(.masterPrimary)
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isFocused = false
+                        isMemoSheetPresented = false
+                        dismiss()
+                    }
+                    .foregroundColor(.masterPrimary)
+                }
+            }
+            .toolbarBackground(.masterBackground, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .modifier(SheetNavigationBarModifier())
+    }
 }
 
 #Preview {
-  @Previewable @State var memo = "Test memo"
-  @Previewable @State var isMemoSheetPresented = true
-  MemoBottomSheet(isMemoSheetPresented: $isMemoSheetPresented, memo: $memo)
+    @Previewable @State var memo = "Test memo"
+    @Previewable @State var isMemoSheetPresented = true
+    MemoBottomSheet(isMemoSheetPresented: $isMemoSheetPresented, memo: $memo)
 }
