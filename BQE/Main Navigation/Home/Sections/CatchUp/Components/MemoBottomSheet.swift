@@ -33,7 +33,7 @@ struct MemoBottomSheet: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 4) {
-                ZStack(alignment: .top) {
+//                ZStack(alignment: .top) {
                     TextEditor(text: $memo)
                         .frame(maxWidth: .infinity, minHeight: 80)
                         .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
@@ -43,14 +43,15 @@ struct MemoBottomSheet: View {
                                 .stroke(isFocused ? .masterPrimary : .border, lineWidth: 1)
                         )
                         .focused($isFocused)
-                }
+//                }
                 .onAppear {
                     isFocused = true
                 }
                 
-                Spacer()
+//                Spacer()
             }
             .padding(16)
+            .frame(maxHeight: .infinity, alignment: .top)
             .navigationTitle("Memo")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -64,7 +65,7 @@ struct MemoBottomSheet: View {
                 
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Done") {
+                    Button("Save") {
                         isFocused = false
                         isMemoSheetPresented = false
                         dismiss()

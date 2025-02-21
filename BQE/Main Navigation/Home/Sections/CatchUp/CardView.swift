@@ -61,21 +61,19 @@ struct CardView: View {
         // In CardView.swift, modify the body property:
 
         .sheet(isPresented: $isMemoSheetPresented) {
-          MemoBottomSheet(
-            isMemoSheetPresented: $isMemoSheetPresented,
-            memo: Binding(
-              get: { self.card.memo },
-              set: { newValue in
-                self.card.memo = newValue
-                stackViewModel.updateMemo(for: card.id, memo: newValue)
-              }
+            MemoBottomSheet(
+                isMemoSheetPresented: $isMemoSheetPresented,
+                memo: Binding(
+                    get: { self.card.memo },
+                    set: { newValue in
+                        self.card.memo = newValue
+                        stackViewModel.updateMemo(for: card.id, memo: newValue)
+                    }
+                )
             )
-          )
-          .presentationDetents([.medium])
-          .presentationDragIndicator(.visible)
+            .presentationDetents([.height(180)])  // Adjust this value as needed
+            .presentationDragIndicator(.visible)
         }
-
-
     }
   }
 
