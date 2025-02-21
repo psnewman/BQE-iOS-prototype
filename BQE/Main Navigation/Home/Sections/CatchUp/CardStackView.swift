@@ -182,7 +182,7 @@ struct FilterEntryType: View {
           FAText(iconName: selectedEntryType.icon, size: 12)
             .foregroundColor(.typographySecondary)
 
-          Text("\(selectedEntryType.rawValue) (\(stackViewModel.expensesLeft))")
+          Text("\(selectedEntryType.rawValue)")
             .contentTransition(.numericText())
             .frame(maxWidth: .infinity, alignment: .leading)
             .bodyStyle()

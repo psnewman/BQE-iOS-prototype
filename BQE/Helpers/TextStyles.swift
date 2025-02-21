@@ -64,7 +64,7 @@ struct BodyBoldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("Inter", size: 14, relativeTo: .body))
-            .fontWeight(.bold)
+            .fontWeight(.semibold)
             .lineSpacing(6)
     }
 }

@@ -20,11 +20,11 @@ struct EntryHeaderView: View {
 
   var body: some View {
     HStack {
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: 0) {
         NavigationLink(destination: TimeEntryView()) {
           HStack {
             Text(entryName)
-              .bodyStyle()
+              .bodyBoldStyle()
               .foregroundColor(.typographyPrimary)
               .lineLimit(1)
               .truncationMode(.tail)
