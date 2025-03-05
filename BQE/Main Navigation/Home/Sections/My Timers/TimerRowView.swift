@@ -13,7 +13,7 @@ struct TimerRowView: View {
     @State private var isActive: Bool = false
     @State private var elapsedTime: TimeInterval = 0
     @State private var isAnimating: Bool = false
-    let clientName: String?
+    let timerName: String?
     let projectDetails: String?
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -35,7 +35,7 @@ struct TimerRowView: View {
                     }
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(clientName ?? "N/A")
+                    Text(timerName ?? "N/A")
                         .lineLimit(1)
                         .bodyStyle()
                         .foregroundColor(.typographyPrimary)
@@ -49,10 +49,12 @@ struct TimerRowView: View {
             Spacer()
             
             Text(formattedElapsedTime)
+                .contentTransition(.numericText())
                 .font(.custom("Inter", size: 14, relativeTo: .body))
                 .fontWeight(.semibold)
                 .monospacedDigit()
                 .foregroundColor(.typographyPrimary)
+                .animation(.easeInOut(duration: 0.3), value: elapsedTime)
         }
         .frame(maxWidth: .infinity, minHeight: 64, maxHeight: 64)
 //        .background(Color.clear)
@@ -131,11 +133,11 @@ struct PlayIcon: Shape {
 #Preview {
     VStack {
         TimerRowView(
-            clientName: "Client Meeting",
+            timerName: "Client Meeting",
             projectDetails: "19-08 - PASADENA: Design Development"
         )
         TimerRowView(
-            clientName: "Project Planning",
+            timerName: "Project Planning",
             projectDetails: "20-08 - SEATTLE: Initial Concepts"
         )
     }

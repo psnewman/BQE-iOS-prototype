@@ -13,17 +13,20 @@ struct HomeSectionView<Content: View>: View {
   let label: String
   let content: Content
   let showViewAll: Bool
+  let isLastSection: Bool
   @Binding var isExpanded: Bool
 
   init(
     _ label: String,
     isExpanded: Binding<Bool>,
     showViewAll: Bool = false,
+    isLastSection: Bool = false,
     @ViewBuilder content: () -> Content
   ) {
     self.label = label
     self._isExpanded = isExpanded
     self.showViewAll = showViewAll
+    self.isLastSection = isLastSection
     self.content = content()
   }
 
@@ -67,9 +70,11 @@ struct HomeSectionView<Content: View>: View {
       if isExpanded {
         content
       }
-
-      Divider()
-        .background(.divider)
+      
+      if !isLastSection {
+        Divider()
+          .background(.divider)
+      }
     }
     .padding(.horizontal, 16)
     .scrollClipDisabled()
@@ -79,7 +84,7 @@ struct HomeSectionView<Content: View>: View {
 #Preview {
   @Previewable @State var isExpanded = true
   
-  HomeSectionView("Test Section", isExpanded: $isExpanded, showViewAll: true) {
+  HomeSectionView("Test Section", isExpanded: $isExpanded, showViewAll: true, isLastSection: false) {
     MyTimersSectionView()
   }
 }

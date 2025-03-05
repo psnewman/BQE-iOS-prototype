@@ -114,7 +114,7 @@ extension CardView {
       EntryHeaderView(
         entryType: card.entryType,
         entryName: card.entryName,
-        costAmount: card.costAmount,
+        billedAmount: card.billedAmount,
         billable: card.billable
       )
       .padding(.top, 4)
@@ -155,7 +155,7 @@ extension CardView {
             layout: .vertical,
             isDescription: false
           )
-          if summary != .costAmount {
+          if summary != .billRate {
             Spacer()
           }
         }
@@ -207,16 +207,6 @@ extension CardView {
       let scale =
         CardAnimationConfig.baseScale
         + (CardAnimationConfig.maxScale - CardAnimationConfig.baseScale) * progress
-
-      print(
-        """
-        Next Card Debug:
-        - Card ID: \(card.id)
-        - Top Card Offset: \(topCardOffset)
-        - Drag Threshold: \(dragThreshold)
-        - Progress: \(progress)
-        - Calculated Scale: \(scale)
-        """)
 
       return scale
     }
@@ -345,25 +335,25 @@ extension CardView {
   }
 
   fileprivate enum EntrySummary: CaseIterable, Identifiable {
-    case units
+    case hours
     case costRate
-    case costAmount
+    case billRate
 
     var id: Self { self }
 
     var label: String {
       switch self {
-      case .units: return "Units"
+      case .hours: return "Hours"
       case .costRate: return "Cost Rate"
-      case .costAmount: return "Cost Amount"
+      case .billRate: return "Bill Rate"
       }
     }
 
     func value(for card: EntryItem) -> String {
       switch self {
-      case .units: return card.units
+      case .hours: return card.units
       case .costRate: return card.costRate
-      case .costAmount: return card.costAmount
+      case .billRate: return card.billRate
       }
     }
   }
@@ -382,8 +372,9 @@ extension CardView {
       project: "01-01 - SKYTOWER: Project Management",
       client: "SKYTOWER Corp",
       units: "1.00",
-      costRate: "$45.00",
+      costRate: "$30.00",
       costAmount: "$45.00",
+      billRate: "$57.00",
       billable: .billable
     ),
     isTopCard: true,

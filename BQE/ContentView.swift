@@ -3,7 +3,7 @@ import RiveRuntime
 import SwiftUI
 
 struct ContentView: View {
-  @State private var selectedOption = "My Company 1"
+  @State private var selectedOption = "Acme Industries"
   @State private var isShowingSheet = false
   @State private var selectedTab = 0
 

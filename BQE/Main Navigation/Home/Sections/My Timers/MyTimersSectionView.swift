@@ -8,19 +8,30 @@
 import SwiftUI
 import FASwiftUI
 
+struct TimerData: Identifiable {
+    let id = UUID()
+    let timerName: String
+    let projectDetails: String
+}
+
 struct MyTimersSectionView: View {
+    // Sample timer data with unique information
+    private let timers: [TimerData] = [
+        TimerData(timerName: "Drafting:", projectDetails: "002 - 002- State Housing Complex"),
+        TimerData(timerName: "Drafting:", projectDetails: "001 - 001- Pasadena State Hospital"),
+        TimerData(timerName: "Drafting:", projectDetails: "002 - 002- State Housing Complex")
+    ]
+    
     var body: some View {
         List {
-            ForEach(0..<3, id: \.self) { index in
+            ForEach(timers) { timer in
                 TimerRowView(
-                    clientName: "Client Meeting",
-                    projectDetails: "19-08 - PASADENA: Design Development"
+                    timerName: timer.timerName,
+                    projectDetails: timer.projectDetails
                 )
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
-//                .background(.clear)
                 .background(.masterBackground)
-
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         print("Delete timer")
@@ -45,13 +56,11 @@ struct MyTimersSectionView: View {
             }
         }
         .scrollContentBackground(.hidden)
-// Add this line
         .listStyle(PlainListStyle())
         .frame(height: 192)
         .scrollDisabled(true)
     }
 }
-
 
 #Preview {
     MyTimersSectionView()

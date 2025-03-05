@@ -8,7 +8,7 @@ struct TimeCardSectionView: View {
         TimeCardDayView(day: "Wed", date: "Apr 3", timeTracked: "6.25"),
         TimeCardDayView(day: "Thu", date: "Apr 4", timeTracked: "4.75"),
         TimeCardDayView(day: "Fri", date: "Apr 5", timeTracked: "5.00"),
-        TimeCardDayView(day: "Sat", date: "Apr 6", timeTracked: "2.50"),
+        TimeCardDayView(day: "Sat", date: "Apr 6", timeTracked: "0.00"),
         TimeCardDayView(day: "Sun", date: "Apr 7", timeTracked: "0.00")
     ]
 

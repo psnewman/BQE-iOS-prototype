@@ -11,11 +11,28 @@ struct Event: Identifiable {
 }
 
 struct EventsSectionView: View {
-    // Sample data
+    // Sample data based on screenshot
     let events = [
-        Event(date: Date().addingTimeInterval(86400), startTime: Date().addingTimeInterval(86400 + 18 * 3600), endTime: Date().addingTimeInterval(86400 + 20 * 3600), title: "Color and Material Review Meeting", subtitle: "19-14 - WARNER: Design Development", attendees: ["S", "B", "B", "JS"].map { (UUID(), $0) }),
-        Event(date: Date().addingTimeInterval(2 * 86400), startTime: Date().addingTimeInterval(2 * 86400 + 14 * 3600), endTime: Date().addingTimeInterval(2 * 86400 + 16 * 3600), title: "Project Planning Session", subtitle: "20-05 - ACME: Conceptual Design", attendees: ["A", "C", "D"].map { (UUID(), $0) }),
-        Event(date: Date().addingTimeInterval(3 * 86400), startTime: Date().addingTimeInterval(3 * 86400 + 10 * 3600), endTime: Date().addingTimeInterval(3 * 86400 + 11 * 3600), title: "Client Presentation", subtitle: "18-22 - GLOBEX: Construction Documents", attendees: ["E", "F", "G", "H"].map { (UUID(), $0) })
+        Event(date: createDate(month: 2, day: 13), 
+              startTime: createTime(month: 2, day: 13, hour: 9, minute: 0), 
+              endTime: createTime(month: 2, day: 13, hour: 10, minute: 0), 
+              title: "Construction All Hands", 
+              subtitle: "002 - 002- State Housing Complex", 
+              attendees: ["A", "AH", "CJ"].map { (UUID(), $0) }),
+        
+        Event(date: createDate(month: 2, day: 21), 
+              startTime: createTime(month: 2, day: 21, hour: 12, minute: 0),
+              endTime: createTime(month: 2, day: 21, hour: 13, minute: 0), 
+              title: "Client Meeting", 
+              subtitle: "002 - 002- State Housing Complex", 
+              attendees: ["A", "M", "AH", "S", "A"].map { (UUID(), $0) }),
+        
+        Event(date: createDate(month: 2, day: 26), 
+              startTime: createTime(month: 2, day: 26, hour: 16, minute: 0), 
+              endTime: createTime(month: 2, day: 26, hour: 17, minute: 0), 
+              title: "Pasadena Sign Off", 
+              subtitle: "001 - 001- Pasadena State Hospital", 
+              attendees: ["S", "A", "AE", "C", "M"].map { (UUID(), $0) })
     ]
     
     var body: some View {
@@ -30,6 +47,19 @@ struct EventsSectionView: View {
 struct EventView: View {
     let event: Event
     
+    var formattedTimeRange: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
+        
+        let startTimeString = formatter.string(from: event.startTime)
+        let endTimeString = formatter.string(from: event.endTime)
+        
+        return startTimeString + " - " + endTimeString
+    }
+    
     var body: some View {
         HStack(spacing: 16) {
             RoundedRectangle(cornerRadius: 8)
@@ -43,9 +73,7 @@ struct EventView: View {
                             .bodySmallStyle()
                             .foregroundStyle(.typographySecondary)
                         Spacer()
-                        (Text(event.startTime, format: .dateTime.hour().minute()) +
-                        Text(" - ") +
-                        Text(event.endTime, format: .dateTime.hour().minute()))
+                        Text(formattedTimeRange)
                             .bodySmallStyle()
                             .foregroundStyle(.typographySecondary)
                     }
@@ -84,6 +112,25 @@ extension Color {
               green: Double.random(in: 0.6...1),
               blue: Double.random(in: 0.6...1))
     }
+}
+
+// Helper functions to create dates with specific values
+func createDate(month: Int, day: Int, year: Int = 2025) -> Date {
+    var components = DateComponents()
+    components.year = year
+    components.month = month
+    components.day = day
+    return Calendar.current.date(from: components) ?? Date()
+}
+
+func createTime(month: Int, day: Int, hour: Int, minute: Int, year: Int = 2025) -> Date {
+    var components = DateComponents()
+    components.year = year
+    components.month = month
+    components.day = day
+    components.hour = hour
+    components.minute = minute
+    return Calendar.current.date(from: components) ?? Date()
 }
 
 #Preview {

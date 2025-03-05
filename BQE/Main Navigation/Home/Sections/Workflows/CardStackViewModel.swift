@@ -62,7 +62,7 @@ class CardStackViewModel: ObservableObject {
     objectWillChange.send()
 
     // Slow slide-out animation (2 seconds)
-    withAnimation(.easeInOut(duration: 2.0).speed(0.5)) {  // Added .speed(0.5) to make it even slower
+    withAnimation(.easeInOut(duration: 2.0).speed(1)) {  // Added .speed(0.5) to make it even slower
         var state = cardState[topCard.id] ?? CardState()
         state.isSkipping = true
         state.offset = CGSize(width: cardWidth + 16, height: 0)

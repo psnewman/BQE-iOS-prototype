@@ -2,6 +2,8 @@ import FASwiftUI
 import RiveRuntime
 import SwiftUI
 
+// Import for Visits Section
+
 class HomeSectionsState: ObservableObject {
   private let defaults = UserDefaults.standard
   private let storageKey = "HomeExpandedSections"
@@ -13,6 +15,8 @@ class HomeSectionsState: ObservableObject {
     "workflows",
     "weekly-timecard",
     "upcoming-events",
+    "recent-trips",
+    "recent-visits",
   ]
 
   @Published var expandedSections: Set<String> {
@@ -51,20 +55,23 @@ struct HomeView: View {
     [
       Section("Favorites", id: "favorites") { FavoritesSectionView() },
       Section("Recent Items", id: "recent-items") { RecentItemsSectionView() },
-      Section("My timers", id: "my-timers") { MyTimersSectionView() },
-      Section("Workflows", id: "workflows") { CardStackView() },
       Section("Weekly Timecard", id: "weekly-timecard") { TimeCardSectionView() },
+      Section("Workflows", id: "workflows") { CardStackView() },
+      Section("My timers", id: "my-timers") { MyTimersSectionView() },
       Section("Upcoming Events", id: "upcoming-events") { EventsSectionView() },
+      Section("Recent Trips", id: "recent-trips") { TripsSectionView() },
+      Section("Recent Visits", id: "recent-visits") { VisitsSectionView() },
     ]
   }
 
   var body: some View {
     ScrollView {
       VStack(spacing: 8) {
-        ForEach(sections) { section in
+        ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
           HomeSectionView(
             section.label, isExpanded: expandedBinding(for: section.id),
-            showViewAll: section.id == "recent-items" || section.id == "workflows" ? false : true
+            showViewAll: section.id == "recent-items" || section.id == "workflows" ? false : true,
+            isLastSection: index == sections.count - 1
           ) {
             section.content
           }

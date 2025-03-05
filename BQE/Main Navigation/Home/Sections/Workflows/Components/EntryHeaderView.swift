@@ -4,7 +4,7 @@ import SwiftUI
 struct EntryHeaderView: View {
   let entryType: EntryType
   let entryName: String
-  let costAmount: String
+  let billedAmount: String
   let billable: BillableStatus
 
   var tagType: TagView.TagType {
@@ -34,7 +34,7 @@ struct EntryHeaderView: View {
         }
       }
       Spacer()
-      TagView(text: costAmount, type: tagType)
+      TagView(text: billedAmount, type: tagType)
     }
   }
 }
@@ -43,7 +43,7 @@ struct EntryHeaderView: View {
   EntryHeaderView(
     entryType: .expense,
     entryName: "Sample ExpenseSample ExpenseSample ExpenseSample Expense",
-    costAmount: "$100.00",
+    billedAmount: "$100.00",
     billable: .billable
   )
 }

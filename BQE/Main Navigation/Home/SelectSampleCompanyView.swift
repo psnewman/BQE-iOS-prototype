@@ -26,7 +26,7 @@ struct SelectSampleCompanyView: View {
 
             List(companies, id: \.self) { company in
                 Button(action: {
-                    selectedOption = company  // Update selectedOption directly
+                    selectedOption = company
                     dismiss()
                 }) {
                     Text(company)

@@ -73,6 +73,7 @@ struct EntryMemoRowView: View {
             units: "1.00",
             costRate: "$100.00",
             costAmount: "$100.00",
+            billRate: "$100.00",
             billable: .billable
         ),
         stackViewModel: CardStackViewModel(),

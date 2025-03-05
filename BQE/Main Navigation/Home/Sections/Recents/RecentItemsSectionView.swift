@@ -1,4 +1,5 @@
 import SwiftUI
+import FASwiftUI
 
 struct RecentItemView: View {
     @State private var icon: String
@@ -15,8 +16,8 @@ struct RecentItemView: View {
         HStack(alignment: .center, spacing: 0) {
             
             HStack(spacing: 0) {
-                Image(icon)
-                    .foregroundColor(Color(red: 0.58, green: 0.64, blue: 0.72))
+                FAText(iconName: icon, size: 20, style: .light)
+                    .foregroundColor(.typographySecondary)
             }
             .frame(width: 32, height: 32)
             .padding(4)
@@ -50,9 +51,9 @@ struct RecentItemView: View {
 }
 
 struct RecentItemsSectionView: View {
-    let items = ["20-08 - SPOTLIGHT: Construction Documents", "20-04 - BRADFORD: Design Development", "Client Meeting"]
-    let types = ["Time Card", "Time Entry", "Timer"]
-    let icons = ["icon-type-timeCard", "icon-type-timeEntry", "icon-type-timer"]
+    let items = ["002 - 002- State Housing Complex | Drafting", "Site Visit: | 001 - 001- Pasadena State Hospital", "Fuel: | 002 - 002- State Housing Complex"]
+    let types = ["Timers", "Time Entries", "Expense Entries"]
+    let icons = ["stopwatch", "calendar-clock", "cart-circle-check"]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
