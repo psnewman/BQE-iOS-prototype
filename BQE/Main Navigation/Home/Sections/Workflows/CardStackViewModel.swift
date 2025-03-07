@@ -61,8 +61,8 @@ class CardStackViewModel: ObservableObject {
     showUndoButton = true
     objectWillChange.send()
 
-    // Slow slide-out animation (2 seconds)
-    withAnimation(.easeInOut(duration: 2.0).speed(1)) {  // Added .speed(0.5) to make it even slower
+    // Slow slide-out animation (3 seconds)
+    withAnimation(.easeInOut(duration: 0.5)) {
         var state = cardState[topCard.id] ?? CardState()
         state.isSkipping = true
         state.offset = CGSize(width: cardWidth + 16, height: 0)
@@ -74,10 +74,10 @@ class CardStackViewModel: ObservableObject {
         self.topCardOffset = state.offset
     }
 
-    // Handle card reordering immediately after slide-out starts
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+    // Update z-index after card has moved halfway
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
         if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.easeInOut(duration: 0.15)) {
                 self.cards.remove(at: index)
                 self.cards.append(topCard)
                 self.skippedCards.append(topCard)
@@ -86,7 +86,7 @@ class CardStackViewModel: ObservableObject {
     }
 
     // Reset states after slide-out completes
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         if self.cards.firstIndex(where: { $0.id == topCard.id }) != nil {
             var state = self.cardState[topCard.id] ?? CardState()
             state.isSkipping = false
