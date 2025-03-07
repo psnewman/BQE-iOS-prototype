@@ -156,7 +156,7 @@ class CardViewModel: ObservableObject {
       ],
       memos: [
         "", "", "", "",
-        "Pending approval", "Submitted", "In review", "Completed", "Rejected"
+        "", "", "", "", ""
       ]
     )
 
