@@ -137,11 +137,11 @@ struct CardStackView: View {
                     .foregroundColor(.masterPrimary)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .disabled(
-                        stackViewModel.cards.count <= 1
-                        || (stackViewModel.cards.first.map { stackViewModel.getCardState($0.id).isSkipping }
+                        stackViewModel.cards.isEmpty || 
+                        (stackViewModel.cards.first.map { stackViewModel.getCardState($0.id).action == .skipped } 
                             ?? false)
                     )
-                    .opacity(stackViewModel.cards.count > 1 ? 1 : (stackViewModel.cards.count == 0 ? 0 : 0.5))
+                    .opacity(stackViewModel.cards.isEmpty ? 0 : 1)
                 }
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity, minHeight: 24)

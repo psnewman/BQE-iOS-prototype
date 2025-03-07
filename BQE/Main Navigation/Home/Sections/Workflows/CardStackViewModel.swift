@@ -23,6 +23,7 @@ class CardStackViewModel: ObservableObject {
     var rotation: Double = 0
     var isUndoing: Bool = false
     var undoSource: String? = nil
+    var action: CardAction? = nil
   }
 
   init() {
@@ -38,13 +39,18 @@ class CardStackViewModel: ObservableObject {
   func removeTopCard(isApproved: Bool) {
     guard let topCard = cards.first else { return }
 
+    // Update card state with action
+    var state = cardState[topCard.id] ?? CardState()
     if isApproved {
       approvedCards.append(topCard)
       lastAction = .approved
+      state.action = .approved
     } else {
       rejectedCards.append(topCard)
       lastAction = .rejected
+      state.action = .rejected
     }
+    cardState[topCard.id] = state
 
     cards.removeFirst()
     withAnimation { expensesLeft = max(0, expensesLeft - 1) }
@@ -53,55 +59,49 @@ class CardStackViewModel: ObservableObject {
   }
 
   func skipTopCard() {
-    guard let topCard = cards.first else { return }
-    let cardWidth = UIScreen.main.bounds.width - 32
+    guard let topCard = cards.first, cards.count > 1 else { return }
+    let screenWidth = UIScreen.main.bounds.width
     
-    // Set these before animation starts
+    // Set action state before animation
     lastAction = .skipped
     showUndoButton = true
-    objectWillChange.send()
-
-    // Slow slide-out animation (3 seconds)
+    
+    // Move the card off-screen to the right with a slight rotation
     withAnimation(.easeInOut(duration: 0.5)) {
         var state = cardState[topCard.id] ?? CardState()
-        state.isSkipping = true
-        state.offset = CGSize(width: cardWidth + 16, height: 0)
-        state.scale = CGSize(
-            width: CardAnimationConfig.maxScale,
-            height: CardAnimationConfig.maxScale
-        )
+        state.offset = CGSize(width: screenWidth, height: 0)
+        state.rotation = 0 // Slight rotation angle
+        state.action = .skipped
         cardState[topCard.id] = state
-        self.topCardOffset = state.offset
+        topCardOffset = state.offset
     }
-
-    // Update z-index after card has moved halfway
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-        if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
-            withAnimation(.easeInOut(duration: 0.15)) {
-                self.cards.remove(at: index)
-                self.cards.append(topCard)
-                self.skippedCards.append(topCard)
-            }
-        }
-    }
-
-    // Reset states after slide-out completes
+    
+    // After animation completes, handle card recycling with proper delays
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        if self.cards.firstIndex(where: { $0.id == topCard.id }) != nil {
-            var state = self.cardState[topCard.id] ?? CardState()
-            state.isSkipping = false
-            state.offset = .zero
-            state.scale = CGSize(
-                width: CardAnimationConfig.baseScale,
-                height: CardAnimationConfig.baseScale
-            )
-            self.cardState[topCard.id] = state
+        // Add a copy to the skipped cards array for tracking
+        self.skippedCards.append(topCard)
+        
+        // Remove card from its current position
+        if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
+            self.cards.remove(at: index)
             
-            withAnimation(.none) {
-                self.topCardOffset = .zero
+            // Move the card to the end of the stack
+            self.cards.append(topCard)
+            
+            // Reset card visual state with a slight delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    var state = self.cardState[topCard.id] ?? CardState()
+                    state.offset = .zero
+                    state.rotation = 0
+                    // Reset the action state completely for recycled cards
+                    state.action = nil
+                    self.cardState[topCard.id] = state
+                    self.topCardOffset = .zero
+                }
+                
+                self.updateCardZIndices()
             }
-            
-            self.updateCardZIndices()
         }
     }
 }
@@ -126,6 +126,7 @@ class CardStackViewModel: ObservableObject {
 
     state.isUndoing = true
     state.undoSource = source
+    state.action = nil // Reset action
 
     switch source {
     case "approved":
@@ -136,8 +137,7 @@ class CardStackViewModel: ObservableObject {
       state.rotation = -CardAnimationConfig.rotationFactor
     case "skipped":
       state.offset = CGSize(width: screenWidth, height: 0)
-      state.rotation = 0
-      state.isSkipping = false  // Reset skipping state immediately
+      state.rotation = 10 // Match the skip rotation for consistency
     default:
       break
     }
@@ -250,7 +250,24 @@ class CardStackViewModel: ObservableObject {
     let total = Double(cards.count)
     for (index, card) in cards.enumerated() {
       var state = cardState[card.id] ?? CardState()
+      
+      // Determine if this card is the top card
+      let isTopCard = index == 0
+      
+      // Set z-index based on position in the stack
       state.zIndex = total - Double(index)
+      
+      // If a card has been skipped and is not the top card, ensure it's properly reset for visual purposes
+      if state.action == .skipped && !isTopCard {
+        state.offset = .zero
+        state.rotation = 0
+      }
+      
+      // If this is the top card, ensure it doesn't have a skip action to allow interaction
+      if isTopCard && state.action == .skipped {
+        state.action = nil
+      }
+      
       cardState[card.id] = state
     }
   }

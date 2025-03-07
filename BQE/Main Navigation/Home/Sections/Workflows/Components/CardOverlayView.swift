@@ -1,10 +1,11 @@
 import SwiftUI
+import FASwiftUI
 
 struct CardOverlayView: View {
     let offset: CGSize
     let dragThreshold: CGFloat
     let isTopCard: Bool
-    let isSkipped: Bool
+    let cardState: CardStackViewModel.CardState
     let card: EntryItem
     @ObservedObject var stackViewModel: CardStackViewModel
     
@@ -20,11 +21,11 @@ struct CardOverlayView: View {
     
     private var overlayBackground: some View {
         Group {
-            if isSkipped || (stackViewModel.getCardState(card.id).undoSource == "skipped" && stackViewModel.getCardState(card.id).isUndoing) {
+            if cardState.action == .skipped || (cardState.undoSource == "skipped" && cardState.isUndoing) {
                 Color.blue
-            } else if offset.width > 0 {
+            } else if cardState.action == .approved || offset.width > 0 {
                 Color.green
-            } else if offset.width < 0 {
+            } else if cardState.action == .rejected || offset.width < 0 {
                 Color.red
             } else {
                 Color.clear
@@ -34,11 +35,11 @@ struct CardOverlayView: View {
     
     private var overlayIcons: some View {
         ZStack(alignment: .bottom) {
-            if isSkipped {
+            if cardState.action == .skipped || (cardState.undoSource == "skipped" && cardState.isUndoing) {
                 skipIcon
-            } else if offset.width > 0 {
+            } else if cardState.action == .approved || offset.width > 0 {
                 approveIcon
-            } else if offset.width < 0 {
+            } else if cardState.action == .rejected || offset.width < 0 {
                 rejectIcon
             }
         }
@@ -46,9 +47,8 @@ struct CardOverlayView: View {
     
     private var approveIcon: some View {
         HStack {
-            Image(systemName: "checkmark.circle.fill")
+            FAText(iconName: "circle-check", size: 50, style: .regular)
                 .foregroundColor(.white)
-                .font(.system(size: 50))
                 .opacity(calculateIconOpacity(isApprove: true))
                 .padding(16)
         }
@@ -56,9 +56,8 @@ struct CardOverlayView: View {
     
     private var rejectIcon: some View {
         HStack {
-            Image(systemName: "xmark.circle.fill")
+            FAText(iconName: "xmark-circle", size: 50, style: .regular)
                 .foregroundColor(.white)
-                .font(.system(size: 50))
                 .opacity(calculateIconOpacity(isApprove: false))
                 .padding(16)
         }
@@ -66,9 +65,8 @@ struct CardOverlayView: View {
     
     private var skipIcon: some View {
         HStack {
-            Image(systemName: "forward.circle.fill")
+            FAText(iconName: "forward-step", size: 50, style: .regular)
                 .foregroundColor(.white)
-                .font(.system(size: 50))
                 .opacity(isTopCard ? 1.0 : 0)
                 .padding(16)
         }
@@ -77,16 +75,18 @@ struct CardOverlayView: View {
     private func calculateOverlayOpacity() -> Double {
         guard isTopCard else { return 0 }
         
-        let state = stackViewModel.getCardState(card.id)
-        
-        if state.isUndoing {
+        if cardState.isUndoing {
             let screenWidth = UIScreen.main.bounds.width - 32
-            let progress = abs(state.offset.width) / screenWidth
+            let progress = abs(cardState.offset.width) / screenWidth
             return progress * CardAnimationConfig.maxOverlayOpacity
         }
         
-        if isSkipped {
-            return state.isSkipping ? CardAnimationConfig.maxOverlayOpacity : 0
+        if cardState.action == .skipped {
+            return CardAnimationConfig.maxOverlayOpacity
+        }
+        
+        if cardState.action == .approved || cardState.action == .rejected {
+            return CardAnimationConfig.maxOverlayOpacity
         }
         
         let normalizedOffset = abs(offset.width) / dragThreshold

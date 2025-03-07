@@ -42,7 +42,7 @@ struct CardView: View {
           .degrees(
             stackViewModel.getCardState(card.id).isUndoing
               ? stackViewModel.getCardState(card.id).rotation
-              : stackViewModel.getCardState(card.id).isSkipping
+              : stackViewModel.getCardState(card.id).action == .skipped
                 ? 0 : Double(currentOffset.width / CardAnimationConfig.rotationFactor)
           )
         )
@@ -92,7 +92,7 @@ extension CardView {
         offset: currentOffset,
         dragThreshold: dragThreshold,
         isTopCard: isTopCard,
-        isSkipped: stackViewModel.getCardState(card.id).isSkipping,
+        cardState: stackViewModel.getCardState(card.id),
         card: card,
         stackViewModel: stackViewModel
       )
