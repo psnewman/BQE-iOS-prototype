@@ -275,7 +275,7 @@ extension CardView {
 
         // Reset topCardOffset to ensure next card starts from baseScale and verticalOffset starts from 12
         DispatchQueue.main.async {
-          withAnimation(.none) {
+          withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
             stackViewModel.topCardOffset = .zero
           }
         }

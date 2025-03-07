@@ -66,12 +66,8 @@ class CardStackViewModel: ObservableObject {
     lastAction = .skipped
     showUndoButton = true
 
-    // var state: CardStackViewModel.CardState = cardState[topCard.id] ?? CardState()
-    // state.isSkipping = true
-    // cardState[topCard.id] = state
-
     // Move the card off-screen to the right
-      withAnimation(.easeIn(duration: 0.5)) {
+    withAnimation(.easeIn(duration: 0.3)) {
       var state: CardStackViewModel.CardState = cardState[topCard.id] ?? CardState()
       state.offset = CGSize(width: screenWidth, height: 0)
       state.rotation = 0
@@ -79,10 +75,10 @@ class CardStackViewModel: ObservableObject {
       cardState[topCard.id] = state
       topCardOffset = state.offset
     } completion: {
-        // Reset the flag in completion handler
-        if var state = self.cardState[topCard.id] {
-          state.isSkipping = false
-          self.cardState[topCard.id] = state
+      // Reset the flag in completion handler
+      if var state = self.cardState[topCard.id] {
+        state.isSkipping = false
+        self.cardState[topCard.id] = state
       }
 
       // Add a copy to the skipped cards array for tracking
@@ -94,7 +90,7 @@ class CardStackViewModel: ObservableObject {
 
         // Move the card to the end of the stack
         self.cards.append(topCard)
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
           var state = self.cardState[topCard.id] ?? CardState()
           state.offset = .zero
           state.rotation = 0
