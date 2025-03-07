@@ -61,51 +61,54 @@ class CardStackViewModel: ObservableObject {
   func skipTopCard() {
     guard let topCard = cards.first, cards.count > 1 else { return }
     let screenWidth = UIScreen.main.bounds.width
-    
+
     // Set action state before animation
     lastAction = .skipped
     showUndoButton = true
-    
-    // Move the card off-screen to the right with a slight rotation
-    withAnimation(.easeInOut(duration: 0.5)) {
-        var state = cardState[topCard.id] ?? CardState()
-        state.offset = CGSize(width: screenWidth, height: 0)
-        state.rotation = 0 // Slight rotation angle
-        state.action = .skipped
-        cardState[topCard.id] = state
-        topCardOffset = state.offset
-    }
-    
-    // After animation completes, handle card recycling with proper delays
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        // Add a copy to the skipped cards array for tracking
-        self.skippedCards.append(topCard)
-        
-        // Remove card from its current position
-        if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
-            self.cards.remove(at: index)
-            
-            // Move the card to the end of the stack
-            self.cards.append(topCard)
-            
-            // Reset card visual state with a slight delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    var state = self.cardState[topCard.id] ?? CardState()
-                    state.offset = .zero
-                    state.rotation = 0
-                    // Reset the action state completely for recycled cards
-                    state.action = nil
-                    self.cardState[topCard.id] = state
-                    self.topCardOffset = .zero
-                }
-                
-                self.updateCardZIndices()
-            }
-        }
-    }
-}
 
+    // var state: CardStackViewModel.CardState = cardState[topCard.id] ?? CardState()
+    // state.isSkipping = true
+    // cardState[topCard.id] = state
+
+    // Move the card off-screen to the right
+      withAnimation(.easeIn(duration: 0.5)) {
+      var state: CardStackViewModel.CardState = cardState[topCard.id] ?? CardState()
+      state.offset = CGSize(width: screenWidth, height: 0)
+      state.rotation = 0
+      state.action = .skipped
+      cardState[topCard.id] = state
+      topCardOffset = state.offset
+    } completion: {
+        // Reset the flag in completion handler
+        if var state = self.cardState[topCard.id] {
+          state.isSkipping = false
+          self.cardState[topCard.id] = state
+      }
+
+      // Add a copy to the skipped cards array for tracking
+      self.skippedCards.append(topCard)
+
+      // Remove card from its current position
+      if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
+        self.cards.remove(at: index)
+
+        // Move the card to the end of the stack
+        self.cards.append(topCard)
+        withAnimation(.easeInOut(duration: 0.2)) {
+          var state = self.cardState[topCard.id] ?? CardState()
+          state.offset = .zero
+          state.rotation = 0
+
+          // Reset the action state completely for recycled cards
+          state.action = nil
+          self.cardState[topCard.id] = state
+          self.topCardOffset = .zero
+        }
+
+        self.updateCardZIndices()
+      }
+    }
+  }
 
   func getCardState(_ cardId: UUID) -> CardState {
     return cardState[cardId] ?? CardState()
@@ -126,7 +129,7 @@ class CardStackViewModel: ObservableObject {
 
     state.isUndoing = true
     state.undoSource = source
-    state.action = nil // Reset action
+    state.action = nil  // Reset action
 
     switch source {
     case "approved":
@@ -137,7 +140,7 @@ class CardStackViewModel: ObservableObject {
       state.rotation = -CardAnimationConfig.rotationFactor
     case "skipped":
       state.offset = CGSize(width: screenWidth, height: 0)
-      state.rotation = 10 // Match the skip rotation for consistency
+      state.rotation = 10  // Match the skip rotation for consistency
     default:
       break
     }
@@ -250,24 +253,24 @@ class CardStackViewModel: ObservableObject {
     let total = Double(cards.count)
     for (index, card) in cards.enumerated() {
       var state = cardState[card.id] ?? CardState()
-      
+
       // Determine if this card is the top card
       let isTopCard = index == 0
-      
+
       // Set z-index based on position in the stack
       state.zIndex = total - Double(index)
-      
+
       // If a card has been skipped and is not the top card, ensure it's properly reset for visual purposes
       if state.action == .skipped && !isTopCard {
         state.offset = .zero
         state.rotation = 0
       }
-      
+
       // If this is the top card, ensure it doesn't have a skip action to allow interaction
       if isTopCard && state.action == .skipped {
         state.action = nil
       }
-      
+
       cardState[card.id] = state
     }
   }

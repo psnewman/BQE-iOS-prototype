@@ -35,7 +35,7 @@ struct CardView: View {
       cardContent
         .modifier(CardStyle(offset: currentOffset, dragThreshold: dragThreshold))
         .scaleEffect(currentScale)
-        .animation(.spring(response: 0.3), value: stackViewModel.topCardOffset)
+        // Conflict with the skip animation
         .offset(y: verticalOffset)
         .offset(x: currentOffset.width, y: currentOffset.height)
         .rotationEffect(
@@ -61,18 +61,18 @@ struct CardView: View {
         // In CardView.swift, modify the body property:
 
         .sheet(isPresented: $isMemoSheetPresented) {
-            MemoBottomSheet(
-                isMemoSheetPresented: $isMemoSheetPresented,
-                memo: Binding(
-                    get: { self.card.memo },
-                    set: { newValue in
-                        self.card.memo = newValue
-                        stackViewModel.updateMemo(for: card.id, memo: newValue)
-                    }
-                )
+          MemoBottomSheet(
+            isMemoSheetPresented: $isMemoSheetPresented,
+            memo: Binding(
+              get: { self.card.memo },
+              set: { newValue in
+                self.card.memo = newValue
+                stackViewModel.updateMemo(for: card.id, memo: newValue)
+              }
             )
-            .presentationDetents([.height(180)])  // Adjust this value as needed
-            .presentationDragIndicator(.visible)
+          )
+          .presentationDetents([.height(180)])  // Adjust this value as needed
+          .presentationDragIndicator(.visible)
         }
     }
   }
