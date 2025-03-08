@@ -65,7 +65,7 @@ struct CardOverlayView: View {
     
     private var skipIcon: some View {
         HStack {
-            FAText(iconName: "forward-step", size: 50, style: .regular)
+            FAText(iconName: "forward", size: 50, style: .regular)
                 .foregroundColor(.white)
                 .opacity(isTopCard ? 1.0 : 0)
                 .padding(16)

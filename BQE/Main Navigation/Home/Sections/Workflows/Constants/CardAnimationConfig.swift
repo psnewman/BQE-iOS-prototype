@@ -11,4 +11,5 @@ enum CardAnimationConfig {
     static let verticalOffset: CGFloat = 12
     static let rotationFactor: CGFloat = 20
     static let swipeOutDistance: CGFloat = 1000
+    static let overlayAppearDuration: CGFloat = 0.2
 }

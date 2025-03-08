@@ -66,42 +66,48 @@ class CardStackViewModel: ObservableObject {
     lastAction = .skipped
     showUndoButton = true
 
-    // Move the card off-screen to the right
-    withAnimation(.easeIn(duration: 0.3)) {
-      var state: CardStackViewModel.CardState = cardState[topCard.id] ?? CardState()
-      state.offset = CGSize(width: screenWidth, height: 0)
-      state.rotation = 0
-      state.action = .skipped
+    withAnimation(.easeIn(duration: CardAnimationConfig.overlayAppearDuration)) {
+      var state = cardState[topCard.id] ?? CardState()
+      state.action = .skipped  // Triggers overlay display
       cardState[topCard.id] = state
-      topCardOffset = state.offset
     } completion: {
-      // Reset the flag in completion handler
-      if var state = self.cardState[topCard.id] {
-        state.isSkipping = false
+      // Move the card off-screen to the right
+      withAnimation(.easeIn(duration: 0.3)) {
+        var state: CardStackViewModel.CardState = self.cardState[topCard.id] ?? CardState()
+        state.offset = CGSize(width: screenWidth, height: 0)
+        state.rotation = 0
+        state.action = .skipped
         self.cardState[topCard.id] = state
-      }
-
-      // Add a copy to the skipped cards array for tracking
-      self.skippedCards.append(topCard)
-
-      // Remove card from its current position
-      if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
-        self.cards.remove(at: index)
-
-        // Move the card to the end of the stack
-        self.cards.append(topCard)
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-          var state = self.cardState[topCard.id] ?? CardState()
-          state.offset = .zero
-          state.rotation = 0
-
-          // Reset the action state completely for recycled cards
-          state.action = nil
+        self.topCardOffset = state.offset
+      } completion: {
+        // Reset the flag in completion handler
+        if var state = self.cardState[topCard.id] {
+          state.isSkipping = false
           self.cardState[topCard.id] = state
-          self.topCardOffset = .zero
         }
 
-        self.updateCardZIndices()
+        // Add a copy to the skipped cards array for tracking
+        self.skippedCards.append(topCard)
+
+        // Remove card from its current position
+        if let index = self.cards.firstIndex(where: { $0.id == topCard.id }) {
+          self.cards.remove(at: index)
+
+          // Move the card to the end of the stack
+          self.cards.append(topCard)
+          withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            var state = self.cardState[topCard.id] ?? CardState()
+            state.offset = .zero
+            state.rotation = 0
+
+            // Reset the action state completely for recycled cards
+            state.action = nil
+            self.cardState[topCard.id] = state
+            self.topCardOffset = .zero
+          }
+
+          self.updateCardZIndices()
+        }
       }
     }
   }
