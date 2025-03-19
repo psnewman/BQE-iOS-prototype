@@ -1,63 +1,69 @@
 import SwiftUI
 
 struct TagView: View {
-  enum TagType {
-    case red
-    case grey
-    case green
-  }
+    let text: String
+    let type: TagType
 
-  let text: String
-  let type: TagType
-
-  private var backgroundColor: Color {
-    switch type {
-    case .red:
-        return .tagRedBackground
-    case .green:
-        return .tagGreenBackground
-    case .grey:
-        return .masterBackground
+    enum TagType {
+        case normal
+        case red
+        case grey
+        case green
     }
-  }
 
-  private var borderColor: Color {
-    switch type {
-    case .red:
-        return .tagRedBorder
-    case .green:
-        return .tagGreenBorder
-    case .grey:
-        return .border
+    var backgroundColor: Color {
+        switch type {
+        case .normal:
+            return Color.masterBackground
+        case .red:
+            return Color.red.opacity(0.2)
+        case .grey:
+            return Color.gray.opacity(0.2)
+        case .green:
+            return Color.green.opacity(0.2)
+        }
     }
-  }
 
-  private var textColor: Color {
-    switch type {
-    case .red:
-        return .tagRedText
-    case .green:
-        return .tagGreenText
-    case .grey:
-        return .typographyPrimary
+    var borderColor: Color {
+        switch type {
+        case .normal:
+            return .border
+        case .red:
+            return Color.red
+        case .grey:
+            return Color.gray
+        case .green:
+            return Color.green
+        }
     }
-  }
 
-  var body: some View {
-    Text(text)
-      .bodyStyle()
-      .foregroundColor(textColor)
-      .padding(.horizontal, 8)
-      .padding(.vertical, 4)
-      .background(backgroundColor)
-      .overlay(
-        RoundedRectangle(cornerRadius: 4)
-          .stroke(borderColor, lineWidth: 1)
-      )
-      .cornerRadius(4)
-  }
+    var foregroundColor: Color {
+        switch type {
+        case .normal:
+            return .typographyPrimary
+        case .red:
+            return Color.red
+        case .grey:
+            return Color.gray
+        case .green:
+            return Color.green
+        }
+    }
+
+    var body: some View {
+        Text(text)
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(backgroundColor)
+            .foregroundColor(foregroundColor)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(borderColor, lineWidth: 0.5)
+            )
+    }
 }
 
 #Preview {
-  TagView(text: "$100", type: .green)
+    TagView(text: "$100.00", type: .normal)
 }
