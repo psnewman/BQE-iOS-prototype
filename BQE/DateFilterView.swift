@@ -9,66 +9,67 @@ import FASwiftUI
 import SwiftUI
 
 struct DateFilterView: View {
-  @State private var fromDate = Date()
-  @State private var toDate = Date()
-  @State private var selectedFilter: DateFilter = .thisWeek
-
-  // Function to create rows of tags based on available width
-  private func createRows(from filters: [DateFilter], availableWidth: CGFloat) -> [[DateFilter]] {
-    var rows: [[DateFilter]] = [[]]
-    var currentRowWidth: CGFloat = 0
-    let tagSpacing: CGFloat = 8
-
-    // Calculate approximate width for each tag
-    // This is an estimation - in a real app, you might want to measure text more precisely
-    for filter in filters {
-      let tagWidth = estimateWidth(for: filter.displayName) + 16  // 16 for horizontal padding inside tag
-
-      if currentRowWidth + tagWidth > availableWidth && !rows[rows.count - 1].isEmpty {
-        // Start a new row
-        rows.append([])
-        currentRowWidth = 0
-      }
-
-      // Add to current row
-      rows[rows.count - 1].append(filter)
-      currentRowWidth += tagWidth + tagSpacing
-    }
-
-    return rows
-  }
-
-  // Helper to estimate text width
-  private func estimateWidth(for text: String) -> CGFloat {
-    let font = UIFont.systemFont(ofSize: 12)  // Match the font size in TagView
-    let attributes = [NSAttributedString.Key.font: font]
-    let size = (text as NSString).size(withAttributes: attributes)
-    return size.width
-  }
-
-  var body: some View {
-    NavigationView {
-      VStack(spacing: 16) {
-        // Date pickers
-        VStack(spacing: 16) {
-          // From date picker
-          VStack(alignment: .leading, spacing: 8) {
-            Text("From")
-              .font(.system(size: 15))
-              .foregroundColor(Color(.secondaryLabel))
-            DatePickerField(date: $fromDate)
-          }
-
-          // To date picker
-          VStack(alignment: .leading, spacing: 8) {
-            Text("To")
-              .font(.system(size: 15))
-              .foregroundColor(Color(.secondaryLabel))
-
-            DatePickerField(date: $toDate)
-          }
+    @State private var fromDate = Date()
+    @State private var toDate = Date()
+    @State private var selectedFilter: DateFilter = .thisWeek
+    
+    // Function to create rows of tags based on available width
+    private func createRows(from filters: [DateFilter], availableWidth: CGFloat) -> [[DateFilter]] {
+        var rows: [[DateFilter]] = [[]]
+        var currentRowWidth: CGFloat = 0
+        let tagSpacing: CGFloat = 8
+        
+        // Calculate approximate width for each tag
+        // This is an estimation - in a real app, you might want to measure text more precisely
+        for filter in filters {
+            let tagWidth = estimateWidth(for: filter.displayName) + 16  // 16 for horizontal padding inside tag
+            
+            if currentRowWidth + tagWidth > availableWidth && !rows[rows.count - 1].isEmpty {
+                // Start a new row
+                rows.append([])
+                currentRowWidth = 0
+            }
+            
+            // Add to current row
+            rows[rows.count - 1].append(filter)
+            currentRowWidth += tagWidth + tagSpacing
         }
-        .padding(16)
+        
+        return rows
+    }
+    
+    // Helper to estimate text width
+    private func estimateWidth(for text: String) -> CGFloat {
+        let font = UIFont.systemFont(ofSize: 14)  // Match the font size in TagView
+        let attributes = [NSAttributedString.Key.font: font]
+        let size = (text as NSString).size(withAttributes: attributes)
+        return size.width
+    }
+    
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .leading) {
+                List {
+                    HStack {
+                        Text("From")
+                            .bodyStyle()
+                            .foregroundColor(.typographyPrimary)
+                        Spacer()
+                        DatePicker("", selection: $fromDate, displayedComponents: .date)
+                            .labelsHidden()
+                    }
+                    HStack {
+                        Text("To")
+                            .bodyStyle()
+                            .foregroundColor(.typographyPrimary)
+                        Spacer()
+                        DatePicker("", selection: $toDate, displayedComponents: .date)
+                            .labelsHidden()
+                    }
+                }
+        .listStyle(.plain)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .frame(maxHeight: 88, alignment: .top)
 
         ScrollView {
           VStack(spacing: 16) {
@@ -76,11 +77,13 @@ struct DateFilterView: View {
             let filters: [[DateFilter]] = [
               [.today, .yesterday],
               [
-                .thisWeek, .thisMonth, .thisYear, .thisQuarter, .thisFiscalQuarter, .thisFiscalYear,
+                .thisWeek, .thisMonth, .thisYear, .thisQuarter, .thisFiscalQuarter,
+                .thisFiscalYear,
                 .thisBiWeekly, .thisSemiMonthly,
               ],
               [
-                .lastWeek, .lastMonth, .lastQuarter, .lastYear, .lastFiscalQuarter, .lastFiscalYear,
+                .lastWeek, .lastMonth, .lastQuarter, .lastYear, .lastFiscalQuarter,
+                .lastFiscalYear,
                 .lastBiWeekly, .lastSemiMonthly,
               ],
               [.next2Weeks, .next12Weeks, .next12Months, .next12Quarters],
@@ -122,7 +125,7 @@ struct DateFilterView: View {
             }
 
           }
-          .padding(.vertical, 16)
+          .padding(.vertical, 8)
         }
       }
       .background(Color(.systemBackground))
@@ -154,7 +157,7 @@ struct SectionHeader: View {
   let title: String
 
   var body: some View {
-    Text(title)
+    Text(title.uppercased())
       .bodySmallStyle()
       .foregroundColor(.typographySecondary)
       .padding(.horizontal, 16)
@@ -174,31 +177,6 @@ struct DateFilterTag: View {
       }
     } label: {
       TagView(text: filter.displayName, type: .normal)
-    }
-  }
-}
-
-struct DatePickerField: View {
-  @Binding var date: Date
-
-  private let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .none
-    return formatter
-  }()
-
-  var body: some View {
-
-    HStack {
-      Text(dateFormatter.string(from: date))
-        .font(.system(size: 17))
-        .foregroundColor(.primary)
-
-      Spacer()
-
-      FAText(iconName: "calendar", size: 16, style: .light)
-        .foregroundColor(Color(.secondaryLabel))
     }
   }
 }
