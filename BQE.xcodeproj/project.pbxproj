@@ -7,18 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E32239D2D8A182200C74101 /* DateFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E32239C2D8A182200C74101 /* DateFilterView.swift */; };
+		3E75B3E72D8B77E800192DA6 /* SwiftUIFlowLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 3E75B3E62D8B77E800192DA6 /* SwiftUIFlowLayout */; };
+		3EBD21FC2D8C57EE0055962E /* DateFilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD21FB2D8C57EE0055962E /* DateFilterModel.swift */; };
 		4F208CB02C8858A1004620BB /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F208CAF2C8858A0004620BB /* Colors.xcassets */; };
 		4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */; };
 		4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */; };
 		4F522B4F2BD83CCF00CC05F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */; };
 		4F522B522BD83CCF00CC05F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B512BD83CCF00CC05F7 /* Preview Assets.xcassets */; };
 		4F52468A2CDEEEE9009CDDD2 /* font-inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */; };
+		4F9B56102D7BCD1800F9F6F8 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9B560F2D7BCD1800F9F6F8 /* RiveRuntime */; };
 		4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */; };
 		4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE153192CF478FF00835B73 /* FASwiftUI */; };
 		4FEA14EC2CE5533600E4D166 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4FEA14EB2CE5533600E4D166 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E32239C2D8A182200C74101 /* DateFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterView.swift; sourceTree = "<group>"; };
+		3EBD21FB2D8C57EE0055962E /* DateFilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterModel.swift; sourceTree = "<group>"; };
 		4F208CAF2C8858A0004620BB /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		4F522B472BD83CCD00CC05F7 /* BQE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BQE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BQEApp.swift; sourceTree = "<group>"; };
@@ -35,6 +41,7 @@
 		4F1A1B262CE0CD9F00A024F8 /* Main Navigation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Main Navigation"; sourceTree = "<group>"; };
 		4F5D9B722CF91F4000948E40 /* TimeEntry */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TimeEntry; sourceTree = "<group>"; };
 		4F5F67262CDD68BD00C06AD8 /* FA files */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "FA files"; sourceTree = "<group>"; };
+		4FBCE8F72D7BC815008964F6 /* Report Center */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Report Center"; sourceTree = "<group>"; };
 		4FCD2BB12CFFAE1000B73C8B /* RiveAssets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RiveAssets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -45,6 +52,8 @@
 			files = (
 				4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */,
 				4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */,
+				3E75B3E72D8B77E800192DA6 /* SwiftUIFlowLayout in Frameworks */,
+				4F9B56102D7BCD1800F9F6F8 /* RiveRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +82,9 @@
 				4F5F672F2CDD6C4C00C06AD8 /* Info.plist */,
 				4F522B4A2BD83CCD00CC05F7 /* BQEApp.swift */,
 				4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */,
+				3E32239C2D8A182200C74101 /* DateFilterView.swift */,
+				3EBD21FB2D8C57EE0055962E /* DateFilterModel.swift */,
+				4FBCE8F72D7BC815008964F6 /* Report Center */,
 				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
@@ -115,6 +127,7 @@
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F5F67262CDD68BD00C06AD8 /* FA files */,
+				4FBCE8F72D7BC815008964F6 /* Report Center */,
 				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 			);
 			name = BQE;
@@ -130,7 +143,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					4F522B462BD83CCD00CC05F7 = {
 						CreatedOnToolsVersion = 15.3;
@@ -149,6 +162,7 @@
 			packageReferences = (
 				4FE152CC2CF470BD00835B73 /* XCRemoteSwiftPackageReference "FASwiftUI" */,
 				4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */,
+				3E75B3E52D8B77E800192DA6 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */,
 			);
 			productRefGroup = 4F522B482BD83CCD00CC05F7 /* Products */;
 			projectDirPath = "";
@@ -180,7 +194,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F522B4D2BD83CCD00CC05F7 /* ContentView.swift in Sources */,
+				3E32239D2D8A182200C74101 /* DateFilterView.swift in Sources */,
 				4F522B4B2BD83CCD00CC05F7 /* BQEApp.swift in Sources */,
+				3EBD21FC2D8C57EE0055962E /* DateFilterModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +238,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HNQXN8HX65;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -285,6 +302,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HNQXN8HX65;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -314,7 +332,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BQE/Preview Content\"";
-				DEVELOPMENT_TEAM = HNQXN8HX65;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BQE/Info.plist;
@@ -344,7 +361,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BQE/Preview Content\"";
-				DEVELOPMENT_TEAM = HNQXN8HX65;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BQE/Info.plist;
@@ -390,6 +406,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3E75B3E52D8B77E800192DA6 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/globulus/swiftui-flow-layout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
 		4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rive-app/rive-ios";
@@ -409,6 +433,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3E75B3E62D8B77E800192DA6 /* SwiftUIFlowLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E75B3E52D8B77E800192DA6 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */;
+			productName = SwiftUIFlowLayout;
+		};
+		4F9B560F2D7BCD1800F9F6F8 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
 		4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */;

@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"swift.buildArguments": [
+			"-Xswiftc",
+			"-sdk",
+			"-Xswiftc",
+			"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.1.sdk",
+			"-Xswiftc",
+			"-target",
+			"-Xswiftc",
+			"arm64-apple-ios17.4-simulator"
+		],
+		"swift.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+		"swift.swiftEnvironmentVariables": {
+			"DEVELOPER_DIR": "/Applications/Xcode.app"
+		}
+	}
+}

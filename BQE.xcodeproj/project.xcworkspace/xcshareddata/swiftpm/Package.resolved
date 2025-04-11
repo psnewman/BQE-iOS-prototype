@@ -1,5 +1,5 @@
 {
-  "originHash" : "28b250d48ad4e9444fb9d382d260cfb0650a668fb1b91f31bb23cd04847c0054",
+  "originHash" : "723ae8fce28ad1e120dc74c92add265b8be010ac7bc84dada6db4b609e40e6a3",
   "pins" : [
     {
       "identity" : "faswiftui",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "3e87b211c6edab7e13d57125982d25e9c4a2019f",
         "version" : "6.4.0"
+      }
+    },
+    {
+      "identity" : "swiftui-flow-layout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-flow-layout",
+      "state" : {
+        "revision" : "de7da3440c3b87ba94adfa98c698828d7746a76d",
+        "version" : "1.0.5"
       }
     }
   ],

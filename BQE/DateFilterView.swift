@@ -29,8 +29,11 @@ struct DateFilterView: View {
             Spacer()
             DatePicker("", selection: $viewModel.fromDate, displayedComponents: .date)
               .labelsHidden()
+              .disabled(!viewModel.areDatePickersEnabled)
 
           }
+          .opacity(viewModel.areDatePickersEnabled ? 1.0 : 0.5)
+          
           HStack {
             Text("To")
               .bodyStyle()
@@ -38,8 +41,9 @@ struct DateFilterView: View {
             Spacer()
             DatePicker("", selection: $viewModel.toDate, displayedComponents: .date)
               .labelsHidden()
-
+              .disabled(!viewModel.areDatePickersEnabled)
           }
+          .opacity(viewModel.areDatePickersEnabled ? 1.0 : 0.5)
         }
         .listStyle(.plain)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))

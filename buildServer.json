@@ -12,8 +12,8 @@
 	"argv": [
 		"/opt/homebrew/bin/xcode-build-server"
 	],
-	"workspace": "/Users/pavelnovitskiy/Desktop/BQEPrototype/BQE.xcodeproj/project.xcworkspace",
-	"build_root": "/Users/pavelnovitskiy/Library/Developer/Xcode/DerivedData/BQE-bxwfkbjcavmjluazbuqzqkbezpdk",
+	"workspace": "/Users/pavlo/Desktop/BQEPrototype/BQE.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/pavlo/Library/Developer/Xcode/DerivedData/BQE-bqauzruvxmpqbsfenvndlpzdifdx",
 	"scheme": "BQE",
 	"kind": "xcode"
 }
