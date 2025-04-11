@@ -72,16 +72,18 @@ class EntryItem: Identifiable, ObservableObject {
     self.costRate = costRate
     self.costAmount = costAmount
     self.billRate = billRate
-    
+
     // Calculate billedAmount by multiplying units with billRate
     if let unitsValue = Double(units.replacingOccurrences(of: ",", with: "")),
-       let billRateValue = Double(billRate.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) {
-        let calculatedAmount = unitsValue * billRateValue
-        self.billedAmount = String(format: "$%.2f", calculatedAmount)
+      let billRateValue = Double(
+        billRate.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))
+    {
+      let calculatedAmount = unitsValue * billRateValue
+      self.billedAmount = String(format: "$%.2f", calculatedAmount)
     } else {
-        self.billedAmount = "$0.00"
+      self.billedAmount = "$0.00"
     }
-    
+
     self.billable = billable
   }
 }
@@ -100,7 +102,7 @@ class CardViewModel: ObservableObject {
         "Design",
         "Taxi trip", "Business lunch", "Office supplies", "Client meeting",
         "Conference registration", "Hotel stay", "Flight ticket",
-        "Software subscription", "Training course", "Equipment rental"
+        "Software subscription", "Training course", "Equipment rental",
       ],
       descriptions: [
         "Design",
@@ -113,95 +115,86 @@ class CardViewModel: ObservableObject {
         "Round-trip flight ticket to New York for client presentation and project review.",
         "Annual subscription renewal for project management software license.",
         "Professional development course on new industry regulations and compliance.",
-        "Rental of presentation equipment for client workshop including projector and sound system."
+        "Rental of presentation equipment for client workshop including projector and sound system.",
       ],
 
       expenseTypes: [.time, .expense, .timeAndExpense],
       dates: [
         "01/29/2025", "02/01/2025", "02/04/2025", "02/06/2025",
-        "8/11/2023", "8/12/2023", "8/13/2023", "8/14/2023", "8/15/2023"
+        "8/11/2023", "8/12/2023", "8/13/2023", "8/14/2023", "8/15/2023",
       ],
       resources: [
         "Alex Hales", "Mathew Wade", "Curtis James", "Steven Smith",
-        "Michael Chen", "Emma Thompson", "Sarah Lee", "John Doe", "Jane Smith"
+        "Michael Chen", "Emma Thompson", "Sarah Lee", "John Doe", "Jane Smith",
       ],
       projects: [
         "001 - 001- Pasadena State Hospital",
         "01-01 - SKYTOWER: Project Management",
         "02-02 - GREENSCAPE: Design Phase",
         "03-03 - URBANEDGE: Construction",
-        "04-04 - TECHHUB: IT Infrastructure"
+        "04-04 - TECHHUB: IT Infrastructure",
       ],
       clients: [
         "Liberty Architects",
         "SKYTOWER Corp", "GREENSCAPE Innovations",
-        "URBANEDGE Developers", "TECHHUB Solutions"
+        "URBANEDGE Developers", "TECHHUB Solutions",
       ],
       units: [
         "5.00", "3.00", "6.00", "5.00",
-        "1.00", "2.50", "3.75", "4.25", "7.00"
+        "1.00", "2.50", "3.75", "4.25", "7.00",
       ],
       costRates: [
         "$34.00", "$34.00", "$34.00", "$34.00",
-        "$33.97", "$45.00", "$55.50", "$65.25", "$75.80"
+        "$33.97", "$45.00", "$55.50", "$65.25", "$75.80",
       ],
       costAmounts: [
         "$160.00", "$201.00", "$6.00", "$435.00",
-        "$33.97", "$112.50", "$208.13", "$277.31", "$379.00"
+        "$33.97", "$112.50", "$208.13", "$277.31", "$379.00",
       ],
-      billables: [.billable, .nonBillable, .billed], // Billable first to match screenshots
+      billables: [.billable, .nonBillable, .billed],
       billRates: [
         "$57.00", "$67.00", "$1.00", "$87.00",
-        "$45.00", "$65.00", "$75.00", "$85.00", "$95.00"
+        "$45.00", "$65.00", "$75.00", "$85.00", "$95.00",
       ],
       memos: [
         "", "", "", "",
-        "", "", "", "", ""
+        "", "", "", "", "",
       ]
     )
 
   func generateSampleCards() -> [EntryItem] {
     var generatedCards: [EntryItem] = []
 
-    // First 4 cards use exact data from screenshots
-    for i in 0..<4 {
-      let card = EntryItem(
-        entryType: staticData.expenseTypes[0], // .time
-        entryName: staticData.expenseNames[0], // "Design"
-        description: staticData.descriptions[0], // "Design"
-        memo: staticData.memos[i],
-        date: staticData.dates[i],
-        resource: staticData.resources[i],
-        project: staticData.projects[0], // Pasadena State Hospital
-        client: staticData.clients[0], // Liberty Architects
-        units: staticData.units[i],
-        costRate: staticData.costRates[i],
-        costAmount: staticData.costAmounts[i],
-        billRate: staticData.billRates[i],
-        billable: staticData.billables[0] // .billable
-      )
+    // Generate 10 cards using consistent mapping from staticData
+    for i in 0..<10 {
+      // Use modulo to cycle through available data in each array
+      let entryTypeIndex = i % staticData.expenseTypes.count
+      let nameIndex = i % staticData.expenseNames.count
+      let memoIndex = i % staticData.memos.count
+      let dateIndex = i % staticData.dates.count
+      let resourceIndex = i % staticData.resources.count
+      let projectIndex = i % staticData.projects.count
+      let clientIndex = i % staticData.clients.count
+      let unitsIndex = i % staticData.units.count
+      let costRateIndex = i % staticData.costRates.count
+      let costAmountIndex = i % staticData.costAmounts.count
+      let billRateIndex = i % staticData.billRates.count
+      let billableIndex = i % staticData.billables.count
 
-      generatedCards.append(card)
-    }
-
-    // Remaining cards use consistent indices (not random)
-    for i in 4..<10 {
-      let index = i % 5 + 1 // Use indices 1-5 for variety but consistently
-      
       let card = EntryItem(
-        entryType: staticData.expenseTypes[i % staticData.expenseTypes.count],
-        entryName: staticData.expenseNames[index],
-        description: staticData.descriptions[index],
-        memo: staticData.memos[i % staticData.memos.count],
-        date: staticData.dates[i % staticData.dates.count],
-        resource: staticData.resources[i % staticData.resources.count],
-        project: staticData.projects[i % staticData.projects.count],
-        client: staticData.clients[i % staticData.clients.count],
-        units: staticData.units[i % staticData.units.count],
-        costRate: staticData.costRates[i % staticData.costRates.count],
-        costAmount: staticData.costAmounts[i % staticData.costAmounts.count],
-        billRate: staticData.billRates[i % staticData.billRates.count],
-        billable: staticData.billables[i % staticData.billables.count]
+        entryType: staticData.expenseTypes[entryTypeIndex],
+        entryName: staticData.expenseNames[nameIndex],
+        description: staticData.descriptions[nameIndex],  // Match description with name for consistency
+        memo: staticData.memos[memoIndex],
+        date: staticData.dates[dateIndex],
+        resource: staticData.resources[resourceIndex],
+        project: staticData.projects[projectIndex],
+        client: staticData.clients[clientIndex],
+        units: staticData.units[unitsIndex],
+        costRate: staticData.costRates[costRateIndex],
+        costAmount: staticData.costAmounts[costAmountIndex],
+        billRate: staticData.billRates[billRateIndex],
+        billable: staticData.billables[billableIndex]
       )
 
       generatedCards.append(card)

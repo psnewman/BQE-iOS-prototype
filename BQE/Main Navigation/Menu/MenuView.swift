@@ -108,30 +108,30 @@ struct MenuItemView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                if let iconName = item.icon {
-                    FAText(iconName: iconName, size: 18)
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(.typographySecondary)
+            // If item has children, show expander and handle tap
+            if item.children != nil && !item.children!.isEmpty {
+                HStack {
+                    menuItemContent
+                    Spacer()
+                    expanderIcon
                 }
-                Text(item.title)
-                    .bodyStyle()
-                Spacer()
-                if item.children != nil && !item.children!.isEmpty {
-                    FAText(iconName: "chevron-down", size: 12)
-                        .foregroundColor(.typographySecondary)
-                        .rotationEffect(.degrees(item.isExpanded ? 180 : 0))
-                        .animation(.easeInOut(duration: 0.3), value: item.isExpanded)
-                }
-            }
-            .padding(.leading, CGFloat(depth * 20))
-            .frame(height: 44)
-            .onTapGesture {
-                if item.children != nil && !item.children!.isEmpty {
+                .padding(.leading, CGFloat(depth * 20))
+                .frame(height: 44)
+                .contentShape(Rectangle()) // Make entire HStack tappable
+                .onTapGesture {
                     item.isExpanded.toggle()
-                } else {
-                    navigateToDetail(for: item)
                 }
+            } else {
+                // If item has no children, use NavigationLink
+                NavigationLink(destination: destinationView(for: item)) {
+                    HStack {
+                        menuItemContent
+                        Spacer()
+                    }
+                    .padding(.leading, CGFloat(depth * 20))
+                    .frame(height: 44)
+                }
+                .buttonStyle(.plain) // Use plain style to avoid default button appearance
             }
             
             if item.isExpanded {
@@ -142,10 +142,46 @@ struct MenuItemView: View {
         }
     }
     
-    private func navigateToDetail(for item: MenuItem) {
-        print("Navigating to \(item.title)")
+    // Helper view for the main content of the menu item (icon + text)
+    private var menuItemContent: some View {
+        HStack(spacing: 12) { // Add spacing between icon and text
+            if let iconName = item.icon {
+                FAText(iconName: iconName, size: 18, style: .light) // Use light style as per memory
+                    .frame(width: 20, alignment: .center)
+                    .foregroundColor(.typographySecondary)
+            } else {
+                // Add placeholder for alignment if no icon
+                Spacer().frame(width: 20)
+            }
+            Text(item.title)
+                .bodyStyle()
+                .foregroundColor(.typographyPrimary) // Ensure text color is standard
+        }
+    }
+    
+    // Helper view for the expander icon
+    private var expanderIcon: some View {
+        FAText(iconName: "chevron-down", size: 12)
+            .foregroundColor(.typographySecondary)
+            .rotationEffect(.degrees(item.isExpanded ? 0 : -90)) // Correct rotation
+            .animation(.easeInOut(duration: 0.2), value: item.isExpanded)
+    }
+    
+    // Determine the destination view based on the item
+    @ViewBuilder
+    private func destinationView(for item: MenuItem) -> some View {
+        // TODO: Add navigation destinations for other items
+        switch item.title {
+        case "Reports":
+            ReportCenterView()
+                .navigationTitle(item.title)
+        default:
+            Text("Navigate to \(item.title)") // Placeholder
+                .navigationTitle(item.title)
+        }
     }
 }
+
 //
 #Preview {
     MenuView()

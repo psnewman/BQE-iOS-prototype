@@ -9,6 +9,7 @@ struct TagView: View {
     case red
     case grey
     case green
+    case blue
   }
 
   var backgroundColor: Color {
@@ -21,6 +22,8 @@ struct TagView: View {
       return Color.gray.opacity(0.2)
     case .green:
       return Color.green.opacity(0.2)
+    case .blue:
+        return .masterBackgroundSelected
     }
   }
 
@@ -34,6 +37,8 @@ struct TagView: View {
       return Color.gray
     case .green:
       return Color.green
+    case .blue:
+        return .masterPrimary
     }
   }
 
@@ -47,6 +52,8 @@ struct TagView: View {
       return Color.gray
     case .green:
       return Color.green
+    case .blue:
+        return .typographyPrimary
     }
   }
 
