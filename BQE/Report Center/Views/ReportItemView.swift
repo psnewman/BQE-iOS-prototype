@@ -14,7 +14,7 @@ struct ReportItemView: View {
       // Header section
       headerView
         .padding(.horizontal, 16)
-        .background(Color("masterBackground"))
+        .background(.masterBackground)
         .contentShape(Rectangle())
         .onTapGesture {
           withAnimation(.easeInOut(duration: 0.3)) {
@@ -27,7 +27,7 @@ struct ReportItemView: View {
         expandedContentView
           .padding(.horizontal, 16)
           .padding(.top, 16)
-          .background(Color("masterBackground"))
+          .background(.masterBackground)
       }
     }
     .background(.masterBackground)
@@ -60,8 +60,8 @@ struct ReportItemView: View {
 
       // Run button
       Button(action: onRun) {
-        HStack(spacing: 4) {
-          FAText(iconName: "play", size: 18, style: .solid)
+        HStack(spacing: 6) {
+          FAText(iconName: "play", size: 14, style: .solid)
             .foregroundColor(Color("masterPrimary"))
 
           Text("Run")
@@ -69,11 +69,8 @@ struct ReportItemView: View {
             .fontWeight(.medium)
             .foregroundColor(Color("masterPrimary"))
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(Color("masterPrimary").opacity(0.1))
-        .cornerRadius(6)
       }
+      .buttonStyle(.borderless)
     }
   }
 
@@ -158,8 +155,7 @@ struct ReportItemView: View {
 }
 
 // MARK: - Preview
-struct ReportItemView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     VStack(spacing: 16) {
       ReportItemView(
         report: Report.sampleReports()[0],
@@ -175,6 +171,4 @@ struct ReportItemView_Previews: PreviewProvider {
         onRun: {}
       )
     }
-    .background(Color("masterBackground"))
-  }
 }

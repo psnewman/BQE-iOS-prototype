@@ -175,6 +175,9 @@ struct MenuItemView: View {
         case "Reports":
             ReportCenterView()
                 .navigationTitle(item.title)
+        case "Time Card":
+            TimeCardView()
+                .navigationTitle(item.title)
         default:
             Text("Navigate to \(item.title)") // Placeholder
                 .navigationTitle(item.title)

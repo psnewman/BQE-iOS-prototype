@@ -28,7 +28,7 @@ struct ReportCenterView: View {
       // Report list
       reportListView
     }
-    .background(Color("masterBackground"))
+    .background(.masterBackground)
     .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchText) { _, newValue in
       viewModel.searchText = newValue
