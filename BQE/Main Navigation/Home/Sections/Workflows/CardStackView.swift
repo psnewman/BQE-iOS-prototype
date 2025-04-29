@@ -20,7 +20,6 @@ struct CardStackView: View {
     VStack(spacing: 16) {
       // Filter component for selecting entry type.
       FilterEntryType(selectedEntryType: $selectedEntryType, stackViewModel: stackViewModel)
-      FAText(iconName: "calendar", size: 16)
 
       VStack(spacing: 16) {
         ZStack {

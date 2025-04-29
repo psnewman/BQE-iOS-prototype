@@ -86,7 +86,7 @@ struct MenuView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(menuItems.enumerated()), id: \.element.id) { index, item in
                         MenuItemView(item: item, depth: 0)
-                        
+
                         if item.title == "Reports" || item.title == "Messages (10)" {
                             Divider().background(.divider)
                                 .padding(.vertical, 8)
@@ -94,7 +94,7 @@ struct MenuView: View {
                     }
                 }
                 .padding(16)
-                
+
             }
         }
         .background(.masterBackground)
@@ -105,7 +105,7 @@ struct MenuView: View {
 struct MenuItemView: View {
     @State var item: MenuItem
     let depth: Int
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // If item has children, show expander and handle tap
@@ -133,7 +133,7 @@ struct MenuItemView: View {
                 }
                 .buttonStyle(.plain) // Use plain style to avoid default button appearance
             }
-            
+
             if item.isExpanded {
                 ForEach(item.children ?? []) { child in
                     MenuItemView(item: child, depth: depth + 1)
@@ -141,7 +141,7 @@ struct MenuItemView: View {
             }
         }
     }
-    
+
     // Helper view for the main content of the menu item (icon + text)
     private var menuItemContent: some View {
         HStack(spacing: 12) { // Add spacing between icon and text
@@ -158,7 +158,7 @@ struct MenuItemView: View {
                 .foregroundColor(.typographyPrimary) // Ensure text color is standard
         }
     }
-    
+
     // Helper view for the expander icon
     private var expanderIcon: some View {
         FAText(iconName: "chevron-down", size: 12)
@@ -166,7 +166,7 @@ struct MenuItemView: View {
             .rotationEffect(.degrees(item.isExpanded ? 0 : -90)) // Correct rotation
             .animation(.easeInOut(duration: 0.2), value: item.isExpanded)
     }
-    
+
     // Determine the destination view based on the item
     @ViewBuilder
     private func destinationView(for item: MenuItem) -> some View {
