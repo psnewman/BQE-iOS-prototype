@@ -21,7 +21,7 @@ struct ReportCenterView: View {
         // Search bar
         searchBarView
       }
-      .padding(.horizontal, 20)
+      .padding(.horizontal, 16)
       .padding(.top, 12)
       .padding(.bottom, 12)
 
@@ -73,46 +73,49 @@ struct ReportCenterView: View {
   }
 
   // MARK: - Folder Selection View
+  @State private var isFolderSheetPresented = false
+
   private var folderSelectionView: some View {
-    Menu {
-      ForEach(viewModel.folders, id: \.self) { folder in
-        Button(action: {
-          viewModel.selectedFolder = folder
-        }) {
-          HStack {
-            Text(folder)
-            if viewModel.selectedFolder == folder {
-              Spacer()
-              FAText(iconName: "check", size: 14, style: .solid)
-                .foregroundColor(Color("#399DEB"))
-            }
-          }
-        }
-      }
+    Button {
+      isFolderSheetPresented = true
     } label: {
-      HStack {
-        FAText(iconName: "folder", size: 16, style: .regular)
-          .foregroundColor(Color("typographySecondary"))
-
-        Text(viewModel.selectedFolder)
-          .font(.custom("Inter", size: 14))
-          .fontWeight(.medium)
-          .foregroundColor(Color("typographyPrimary"))
-
-        Spacer()
-
-        FAText(iconName: "chevron-down", size: 12, style: .solid)
-          .foregroundColor(Color("typographySecondary"))
+      HStack(spacing: 8) {
+        // Left section with label
+        Text("Folder:")
+            .bodyStyle()
+            .foregroundColor(Color("typographySecondary"))
+        
+        // Right section with selected value and icon
+        HStack {
+            Text(viewModel.selectedFolder)
+                .bodyStyle()
+                .foregroundColor(Color("typographyPrimary"))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Spacer()
+            
+            FAText(iconName: "chevron-down", size: 14, style: .regular)
+                .foregroundColor(Color("typographySecondary"))
+                .frame(width: 20, height: 20)
+        }
+        .frame(maxWidth: .infinity)
       }
-      .padding(.horizontal, 10)
-      .padding(.vertical, 8)
-      .background(Color("fieldBackground"))
-      .cornerRadius(6)
-      .overlay(
-        RoundedRectangle(cornerRadius: 6)
-          .stroke(Color("border").opacity(0.2), lineWidth: 1)
-      )
     }
+    .buttonStyle(PlainButtonStyle())
+    .sheet(isPresented: $isFolderSheetPresented) {
+        FolderSelectionSheetView(selectedFolder: $viewModel.selectedFolder, folders: viewModel.folders)
+            .presentationDetents([.fraction(0.4)])
+    }
+    .padding(.horizontal, 12)
+    .frame(maxWidth: .infinity)
+    .frame(height: 40)
+    .background(Color("masterBackground"))
+    .cornerRadius(8)
+    .overlay(
+        RoundedRectangle(cornerRadius: 8)
+            .stroke(Color("border"), lineWidth: 1)
+    )
+    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: viewModel.selectedFolder)
   }
 
   // MARK: - Search Bar View

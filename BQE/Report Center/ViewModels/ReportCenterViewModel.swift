@@ -9,7 +9,7 @@ class ReportCenterViewModel: ObservableObject {
     @Published var selectedFolder: String = "All Reports"
     
     // Available folders
-    let folders = ["All Reports", "Favorites", "Recent", "Shared with me"]
+    let folders = ["All", "Analytics", "Weekly Budget", "Monthly Forecast", "Performance"]
     
     init() {
         loadSampleReports()
