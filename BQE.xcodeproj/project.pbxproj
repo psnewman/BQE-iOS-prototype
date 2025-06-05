@@ -14,7 +14,6 @@
 		4F522B4F2BD83CCF00CC05F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */; };
 		4F522B522BD83CCF00CC05F7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F522B512BD83CCF00CC05F7 /* Preview Assets.xcassets */; };
 		4F52468A2CDEEEE9009CDDD2 /* font-inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5246892CDEEEE9009CDDD2 /* font-inter.ttf */; };
-		4F9B56102D7BCD1800F9F6F8 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9B560F2D7BCD1800F9F6F8 /* RiveRuntime */; };
 		4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */; };
 		4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE153192CF478FF00835B73 /* FASwiftUI */; };
 		4FEA14EC2CE5533600E4D166 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4FEA14EB2CE5533600E4D166 /* .gitignore */; };
@@ -34,11 +33,12 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3E15D6912DC0E03C0046F38D /* TimeCard */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TimeCard; sourceTree = "<group>"; };
+		3E46DD3A2DF0CD4500D46B54 /* MyTimeEntries */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MyTimeEntries; sourceTree = "<group>"; };
 		4F1A1B252CE0CD7900A024F8 /* Helpers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Helpers; sourceTree = "<group>"; };
 		4F1A1B262CE0CD9F00A024F8 /* Main Navigation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Main Navigation"; sourceTree = "<group>"; };
 		4F5D9B722CF91F4000948E40 /* TimeEntry */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TimeEntry; sourceTree = "<group>"; };
 		4F5F67262CDD68BD00C06AD8 /* FA files */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "FA files"; sourceTree = "<group>"; };
-		4FBCE8F72D7BC815008964F6 /* Report Center */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Report Center"; sourceTree = "<group>"; };
+		4FBCE8F72D7BC815008964F6 /* ReportCenter */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ReportCenter; sourceTree = "<group>"; };
 		4FCD2BB12CFFAE1000B73C8B /* RiveAssets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RiveAssets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -50,7 +50,6 @@
 				4FE1531A2CF478FF00835B73 /* FASwiftUI in Frameworks */,
 				4FCD2BB02CFFAD6400B73C8B /* RiveRuntime in Frameworks */,
 				3E75B3E72D8B77E800192DA6 /* SwiftUIFlowLayout in Frameworks */,
-				4F9B56102D7BCD1800F9F6F8 /* RiveRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,8 +80,9 @@
 				4F522B4C2BD83CCD00CC05F7 /* ContentView.swift */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				3E15D6912DC0E03C0046F38D /* TimeCard */,
-				4FBCE8F72D7BC815008964F6 /* Report Center */,
+				4FBCE8F72D7BC815008964F6 /* ReportCenter */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
+				3E46DD3A2DF0CD4500D46B54 /* MyTimeEntries */,
 				4F1A1B252CE0CD7900A024F8 /* Helpers */,
 				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 				4F522B4E2BD83CCF00CC05F7 /* Assets.xcassets */,
@@ -120,11 +120,12 @@
 			);
 			fileSystemSynchronizedGroups = (
 				3E15D6912DC0E03C0046F38D /* TimeCard */,
+				3E46DD3A2DF0CD4500D46B54 /* MyTimeEntries */,
 				4F1A1B252CE0CD7900A024F8 /* Helpers */,
 				4F1A1B262CE0CD9F00A024F8 /* Main Navigation */,
 				4F5D9B722CF91F4000948E40 /* TimeEntry */,
 				4F5F67262CDD68BD00C06AD8 /* FA files */,
-				4FBCE8F72D7BC815008964F6 /* Report Center */,
+				4FBCE8F72D7BC815008964F6 /* ReportCenter */,
 				4FCD2BB12CFFAE1000B73C8B /* RiveAssets */,
 			);
 			name = BQE;
@@ -432,11 +433,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3E75B3E52D8B77E800192DA6 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */;
 			productName = SwiftUIFlowLayout;
-		};
-		4F9B560F2D7BCD1800F9F6F8 /* RiveRuntime */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4FC4EE882CFFA93800D43CDC /* XCRemoteSwiftPackageReference "rive-ios" */;
-			productName = RiveRuntime;
 		};
 		4FCD2BAF2CFFAD6400B73C8B /* RiveRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
