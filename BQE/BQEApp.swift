@@ -44,9 +44,7 @@ struct BQEApp: App {
 
   var body: some Scene {
     WindowGroup {
-      // ContentView()
-      TimerView()
-      // ReportCenterView()
+      ContentView()
     }
   }
 }

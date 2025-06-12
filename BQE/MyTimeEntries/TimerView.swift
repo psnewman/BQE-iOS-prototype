@@ -1,10 +1,3 @@
-//
-//  TimerView.swift
-//  BQE
-//
-//  Created by Paul Newman on 6/4/25.
-//
-
 import FASwiftUI
 import SwiftUI
 
@@ -27,11 +20,83 @@ struct TimerView: View {
             .foregroundColor(.typographyPrimary)
         }
       }
+      
+      HStack {
+        HStack(alignment: .center) {
+          HStack {
+            HStack {
+              FAText(
+                iconName: "play",
+                size: 16,
+                style: .solid
+              )
+              .foregroundColor(.typographyPrimary)
+            }
+            .frame(width: 32, height: 32)
+            .offset(x: 1)
+            .background(Color.masterBackgroundSecondary)
+            .cornerRadius(8)
+            .transition(.opacity)
+            
+            
+            Button {
+              //         Action
+            } label: {
+              HStack {
+                Text("00:00:00")
+                  .bodyStyle()
+                  .foregroundColor(.typographyPrimary)
+              }
+              .padding(.horizontal, 8)
+              .frame(maxHeight: 32)
+              .background(Color.masterBackgroundSecondary)
+              .cornerRadius(8)
+            }
+          }
+          
+          Spacer()
+          
+          HStack(alignment: .center, spacing: 16) {
+            HStack(spacing: 0) {
+              HStack {
+                FAText(
+                  iconName: "flag-checkered",
+                  size: 16,
+                  style: .solid
+                )
+              }
+              .frame(width: 32, height: 32)
+              .background(Color.clear)
+              .cornerRadius(8)
+              
+              HStack(alignment: .center) {
+                Text("Finalize")
+                  .bodyStyle()
+              }
+              .frame(maxHeight: 32)
+            }
+            .foregroundColor(.masterPrimary)
+            
+            HStack {
+              FAText(
+                iconName: "ellipsis",
+                size: 16,
+                style: .solid
+              )
+              .foregroundColor(.typographyPrimary)
+            }
+            .frame(width: 32, height: 32)
+            .background(Color.clear)
+            .cornerRadius(8)
+          }
+        }
+      }
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
     .padding()
     .overlay(
       RoundedRectangle(cornerRadius: 8)
-        .stroke(Color.yellow, lineWidth: 1)
+        .stroke(Color.border, lineWidth: 1)
     )
   }
 }

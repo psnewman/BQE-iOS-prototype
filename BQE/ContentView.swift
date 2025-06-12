@@ -8,6 +8,7 @@ struct ContentView: View {
   @State private var selectedTab = 0
 
   var body: some View {
+    
     ZStack(alignment: .bottom) {
       TabView(selection: $selectedTab) {
         NavigationStack {
@@ -91,6 +92,7 @@ struct ContentView: View {
         }
       }
       .tint(.masterPrimary)
+      
     }
   }
 }

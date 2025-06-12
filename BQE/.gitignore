@@ -19,3 +19,6 @@ xcuserdata/
 # Others
 *.idea/
 *.env
+.clinerules/
+.vscode/
+.windsurf/
